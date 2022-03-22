@@ -1,0 +1,518 @@
+$color: #5A45FF;
+
+.relative {
+  position: relative;
+}
+
+.text-error {
+  color: rgb(226, 121, 121);
+}
+
+.slider__container {
+  transform: rotate(180deg);
+
+  .swiper-slide {
+    transform: rotate(180deg);
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.mainside .log-in {
+  display: flex;
+  gap: 10px;
+}
+
+.mainside .logged-in {
+  display: flex;
+}
+
+.mainside a {
+  padding: 10px 40px;
+}
+
+.explore-container {
+  position: relative;
+  padding: 30px 10px;
+}
+
+.feature-new_checkbox {
+  position: relative;
+  padding: 150px 0;
+  .ellipse {
+    width: 350px;
+    height: 350px;
+    background-color: #FFFFFF0D;
+    border-radius: 50%;
+    position: absolute;
+    &.box-1 {
+      left: -190px;
+      top: 15%;
+    }
+    &.box-2 {
+      left: 30px;
+      top: 50%;
+      width: 280px;
+      height: 280px;
+    }
+    &.box-3 {
+      right: 30px;
+      top: 10%;
+      width: 200px;
+      height: 200px;
+    }
+    &.box-4 {
+      right: -80px;
+      top: 25%;
+      width: 250px;
+      height: 250px;
+    }
+  }
+}
+
+.news-new_checkbox, .seller-new_checkbox, .category-new_checkbox {
+  max-width: 100%;
+  position: relative;
+  &.seller-new_checkbox {
+    background: linear-gradient(180deg, rgba(26, 48, 110, 0.7) 0%, rgba(50, 33, 106, 0.14) 100%);
+  }
+  &.category-new_checkbox {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+  }
+}
+
+.news-content, .seller-content, .category-content {
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  &.seller-content {
+    background-position: center;
+  }
+}
+
+.author-item {
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid #1A306E;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 15px;
+  color: white;
+}
+
+.author_list {
+  padding: 0;
+  .author_list_pp {
+    position: relative;
+    margin-left: 0;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    gap: 10px;
+  }
+}
+
+.icon-box {
+  background: linear-gradient(127.11deg, rgba(26, 46, 107, 0.8) -4.83%, rgba(50, 33, 106, 0.8) 95.57%);
+  border: none;
+  border-radius: 10px;
+  margin: 15px;
+  .categor-icon {
+    padding: 15px;
+  }
+  span {
+    font-size: 20px;
+    text-transform: uppercase;
+    color: white;
+  }
+}
+
+footer.footer-light {
+  .footer-new_checkbox {
+    background: linear-gradient(360deg, rgba(26, 46, 105, 0.35) 0%, rgba(74, 90, 135, 0) 100%);
+    color: white;
+    .widget {
+      a {
+        font-weight: 100;
+        color: white;
+      }
+    }
+  }
+  .subfooter {
+    margin: 0;
+    border: none;
+    padding: 10px 0;
+    i {
+      background-color: #5947FF !important;
+    }
+  }
+}
+
+.items_filter {
+  .quick_search {
+    margin-bottom: 5px;
+    input {
+      margin: 0;
+      color: white;
+      background-color: #151B34;
+      border: 1px solid #5947FF;
+      border-radius: 10px;
+      padding: 15px;
+    }
+  }
+  .dropdownSelect {
+    margin-right: 0px;
+  }
+}
+
+.explore-new_checkbox {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top, bottom;
+}
+
+.breadcumb .collection-breadcumb {
+  padding: 110px 0 110px;
+}
+
+.breadcumb .register-breadcumb {
+  padding: 60px 110px;
+}
+
+// .nft__item_content {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   gap: 10px;
+// }
+
+.nft_coll {
+  cursor: pointer;
+}
+
+.nft__item {
+  background: rgba(90, 70, 255, 0.15);
+  box-shadow: 5px 5px 15px #151B34;
+  border-radius: 15px;
+  border: 1px solid #5947FF;
+  z-index: 0;
+  .nft__item_preview {
+    transition: 0.7s;
+  }
+  &:hover {
+    .nft__item_preview {
+      transform: scale(1.1);
+      transition: 0.7s;
+    }
+  }
+}
+
+.de_countdown {
+  background: #33325e;
+  color: white;
+  top: 25px;
+  border: none;
+}
+
+.form-control {
+  color: white;
+  margin-bottom: 5px;
+}
+
+.form-control[readOnly] {
+  color: white;
+  background-color: transparent;
+}
+
+.img-ratio {
+  max-width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.form-control:focus {
+  background-color: transparent;
+  box-shadow: none;
+  border-color: $color;
+}
+
+.text-grey {
+  color: #cccccc;
+}
+
+.collapse_item {
+  .app {
+    margin: 0 auto;
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+    padding: 3rem 1rem 1rem;
+  
+    &__text {
+      width: 100%;
+    }
+  
+    &__collapse {
+      width: 100%;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+      &--gradient {
+        &:after {
+          pointer-events: none;
+          transition: opacity 300ms;
+          will-change: opacity;
+          opacity: 1;
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          // background: linear-gradient(transparent 50%, white);
+        }
+      }
+  
+      &--active {
+        &:after {
+          opacity: 0;
+        }
+      }
+    }
+  
+    &__content {
+      padding: 1rem 1rem;
+      position: relative;
+      transition: 300ms;
+      background: #36427F80;
+      color: white;
+      border: 1px solid #5947FF;
+      border-top: none;
+      border-radius: 0 0 15px 15px;
+    }
+  
+    &__toggle {
+      width: 100%;
+      margin-top: 1rem;
+      border: 1px solid #5947FF;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #FFFFFF66;
+      border-radius: 15px;
+      transition: background-color 100ms, border-radius 100ms;
+      &--active {
+        background-color: #FFFFFF66;
+        border-radius: 15px 15px 0px 0px;
+        border-bottom: none;
+      }
+    }
+  
+    &__toggle-text {
+      font-size: inherit;
+    }
+  
+    &__button {
+      display: block;
+      width: 20rem;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+  
+    &__image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+  
+  .icon {
+    width: 1em;
+    height: 1em;
+    transition: transform 300ms cubic-bezier(0, 1, 0, 1);
+    will-change: transform;
+    &--expanded {
+      transform: rotateZ(-179.99deg);
+    }
+  }
+  
+  .rotate90 {
+    transform: rotateZ(90deg);
+  }
+}
+
+input, textarea {
+  color: white !important;
+}
+
+input:focus, textarea:focus {
+  color: white !important;
+}
+
+.dropzone:hover {
+  border: 1px dashed;
+}
+
+.dropzone-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .dropzone-icon {
+    visibility: hidden;
+  }
+  &:hover {
+    img {
+      opacity: .5;
+    }
+    .dropzone-icon {
+      visibility: visible;
+    }
+  }
+}
+
+.dropzone-icon {
+  position: absolute;
+}
+.dropzone-icon svg {
+  font-size: 2.5rem;
+  color: #cccccc;
+}
+
+.profile_name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+}
+
+#btn_copy {
+  position: relative;
+}
+
+/* The new_checkbox */
+.new_checkbox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  color: white;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.new_checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  color: white;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.new_checkbox:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.new_checkbox input:checked ~ .checkmark {
+  background-color: #7323ff;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.new_checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.new_checkbox .checkmark:after {
+  left: 10px;
+  top: 6px;
+  width: 7px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+/*****    SweetAlert Toast        ******/
+.swal2-toast-shown .swal2-container.swal2-top {
+  width: 400px !important;
+}
+.colored-toast.swal2-icon-success {
+  background-color: #a5dc86 !important;
+}
+
+.colored-toast.swal2-icon-error {
+  background-color: #f27474 !important;
+}
+
+.colored-toast.swal2-icon-warning {
+  background-color: #f8bb86 !important;
+}
+
+.colored-toast.swal2-icon-info {
+  background-color: #3fc3ee !important;
+}
+
+.colored-toast.swal2-icon-question {
+  background-color: #87adbd !important;
+}
+
+.colored-toast .swal2-title {
+  color: white;
+  line-height: 1.5em !important;
+}
+
+.colored-toast .swal2-close {
+  color: white;
+}
+
+.colored-toast .swal2-html-container {
+  color: white;
+}

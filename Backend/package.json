@@ -1,0 +1,32 @@
+{
+  "name": "pink-banana-back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "concurrently --kill-others \"npm run start_server\" \"npm run start_db\"",
+    "start_db": "mongod --dbpath ./db",
+    "start_server": "nodemon src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.2",
+    "concurrently": "^7.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "formidable": "^2.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
+    "mongoose": "^6.2.2",
+    "mongose": "^0.0.2-security",
+    "nodemon": "^2.0.15",
+    "set-interval-async": "^2.0.3",
+    "socket.io": "^4.4.1",
+    "web3": "^1.7.1"
+  }
+}
