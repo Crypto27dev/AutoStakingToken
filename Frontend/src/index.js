@@ -28,23 +28,7 @@ const checkValidLogin = async () => {
 			await updateBalanceOfAccount();
 			store.dispatch(setWalletAddr(connection.address));
 		}
-		if (localStorage.jwtToken !== undefined &&
-			localStorage.jwtToken !== "" &&
-			localStorage.jwtToken !== null) {
-			const decoded = jwt_decode(localStorage.jwtToken);
-			const currTime = Date.now() / 1000;
-			let connection = await getValidWallet();
-			if (connection.success) {
-				if (decoded.app < currTime) {
-					store.dispatch(setAuthState({}));
-					localStorage.removeItem("jwtToken");
-					alert("Session timeouted. Plese sign in again.")
-				}
-				else {
-					store.dispatch(setAuthState(decoded._doc));
-				}
-			}
-		}
+		
 	} catch (error) {
 		console.log(error);
 	}

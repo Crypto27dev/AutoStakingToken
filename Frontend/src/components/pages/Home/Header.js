@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { navigate } from '@reach/router';
 import { Link } from 'react-scroll'
+import { useScrollSection } from "react-scroll-section";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 
 import logoMain from "../../../assets/images/logo.png";
@@ -9,6 +10,12 @@ import navIcon2 from "../../../assets/images/nav-icon-2.svg";
 import navIcon3 from "../../../assets/images/nav-icon-3.svg";
 
 const Header = () => {
+    const ourstory = useScrollSection('ourstory');
+    const ourmission = useScrollSection('ourmission');
+    const howitwork = useScrollSection('howitwork');
+    const ourteam = useScrollSection('ourteam');
+    const faq = useScrollSection('faq');
+    
     useEffect(() => {
         const header = document.getElementById("my_nav");
         const totop = document.getElementById("scroll-to-top");
@@ -35,11 +42,11 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ms-auto mt-4 mt-lg-0">
-                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0" to="ourstory" activeClass="active" spy={true} duration={1000} offset={-100} delay={100}>Our Story</Link>
-                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0 mt-1 mt-xl-0" to="ourmission" activeClass="active" spy={true} duration={1000} offset={-100} delay={100}>Our Mission</Link>
-                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0 mt-1 mt-xl-0" to="howitwork" activeClass="active" spy={true} duration={1000} offset={-100} delay={100}>How it Works</Link>
-                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0 mt-1 mt-xl-0" to="ourteam" activeClass="active" spy={true} duration={1000} offset={-100} delay={100}>Team</Link>
-                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0 mt-1 mt-xl-0" to="faq" activeClass="active" spy={true} duration={1000} offset={-100} delay={100}>FAQs</Link>
+                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0" onClick={() => ourstory.onClick()} selected={ourstory.selected} to="">Our Story</Link>
+                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0 mt-1 mt-xl-0" onClick={() => ourmission.onClick()} selected={ourmission.selected} to="">Our Mission</Link>
+                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0 mt-1 mt-xl-0" onClick={() => howitwork.onClick()} selected={howitwork.selected} to="">How it Works</Link>
+                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0 mt-1 mt-xl-0" onClick={() => ourteam.onClick()} selected={ourteam.selected} to="">Team</Link>
+                        <Link href="" className="top-nav-link mx-0 mx-lg-3 mb-2 mb-xl-0 mt-1 mt-xl-0" onClick={() => faq.onClick()} selected={faq.selected} to="">FAQs</Link>
 
                         {/* <Nav.Link href="#ourstory" className="ms-0 ms-lg-2 me-0 me-lg-2" to="ourstory" activeClass="active" spy={true} smooth={true} duration={1000} >Our Story</Nav.Link>
                         <Nav.Link href="#ourmission" className="ms-0 ms-lg-2 me-0 me-lg-2" to="ourmission" activeClass="active" spy={true} smooth={true} duration={1000}>Our Mission</Nav.Link>

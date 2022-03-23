@@ -53,7 +53,7 @@ class editProfile extends Component {
       banner_image: {},
       user_name: '',
       user_email: '',
-      user_address: props.authWallet,
+      user_address: props.userWallet,
       user_bio: '',
       selectAvatar: null,
       selectBanner: null,
@@ -78,7 +78,7 @@ class editProfile extends Component {
     const logo_preview = { preview: getAvatar(currentUser) };
     const banner_preview = { preview: (currentUser && currentUser.banner) ? api.imgUrl + currentUser.banner : "/img/background/1.jpg" };
     this.setState({
-      user_address: this.props.authWallet,
+      user_address: this.props.userWallet,
       user_name: (currentUser && currentUser.username) && currentUser.username,
       user_email: (currentUser && currentUser.email) && currentUser.email,
       user_bio: (currentUser && currentUser.userBio) && currentUser.userBio,
@@ -92,7 +92,7 @@ class editProfile extends Component {
     const logo_preview = { preview: getAvatar(currentUser)};
     const banner_preview = { preview: (currentUser && currentUser.banner) ? api.imgUrl + currentUser.banner : "img/background/1.jpg" };
     this.setState({
-      user_address: nextProps.authWallet,
+      user_address: nextProps.userWallet,
       user_name: (currentUser && currentUser.username) && currentUser.username,
       user_email: (currentUser && currentUser.email) && currentUser.email,
       user_bio: (currentUser && currentUser.userBio) && currentUser.userBio,
@@ -351,7 +351,7 @@ class editProfile extends Component {
 
 const mapStateToProps = state => ({
   currentUser: state.auth.user,
-  authWallet: state.auth.wallet,
+  userWallet: state.auth.wallet,
 });
 
 const mapDispatchToProps = (dispatch) => {

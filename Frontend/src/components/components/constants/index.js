@@ -19,7 +19,6 @@ export const settings = {
       settings: {
         slidesToShow: 5,
         slidesToScroll: 1,
-        infinite: true
       }
     },
     {
@@ -27,7 +26,6 @@ export const settings = {
       settings: {
         slidesToShow: 4,
         slidesToScroll: 1,
-        infinite: true
       }
     },
     {
@@ -35,7 +33,6 @@ export const settings = {
       settings: {
         slidesToShow: 3,
         slidesToScroll: 1,
-        infinite: true
       }
     },
     {
@@ -43,7 +40,6 @@ export const settings = {
       settings: {
         slidesToShow: 2,
         slidesToScroll: 1,
-        infinite: true
       }
     },
     {
@@ -59,7 +55,6 @@ export const settings = {
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
-        dots: true
       }
     }
   ]

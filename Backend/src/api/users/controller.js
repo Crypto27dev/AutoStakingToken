@@ -30,7 +30,7 @@ exports.create = (req, res) => {
     });
 
     //avoid re - resistering     
-    Users.find({ address: req.body.adderss }, function (err, docs) {
+    Users.find({ address: req.body.address }, function (err, docs) {
         if (err) {
             return res.status(501).send({ success: false, message: "Internal Server Error." });
         }

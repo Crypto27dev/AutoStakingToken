@@ -10,20 +10,17 @@ exports.create = (req, res) => {
     console.log("[api/item/create] req.body = ", req.body);
     var reqItem = req.body;
     const item = new Items({
-        name: reqItem.itemName,
-        logoURL: reqItem.itemLogoURL,
-        description: reqItem.itemDescription,
-        royalty: reqItem.itemRoyalty,
+        symbol: reqItem.symbol,
+        imgUri: reqItem.imgUri,
+        priceUSDC: reqItem.priceUSDC,
+        priceAVAX: reqItem.priceAVAX,
         price: reqItem.price,
-        chain: reqItem.itemChain,
-        isSale: 0,
+        coin_type: reqItem.coin_type,
+        chain: reqItem.chain,
         auctionPrice: reqItem.auctionPrice,
         auctionPeriod: reqItem.auctionPeriod,
         auctionStarted: Date.now(),
-        // size: reqItem.itemSize,
-        // property: reqItem.itemProperty,
-        // metaData: reqItem.metaData,
-        collection_id: ObjectId(reqItem.collectionId),
+        isSale: 0,
         creator: ObjectId(reqItem.creator),
         owner: ObjectId(reqItem.owner)
     });

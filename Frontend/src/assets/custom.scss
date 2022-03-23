@@ -237,6 +237,21 @@ footer.footer-light {
   border: none;
 }
 
+input, textarea {
+  margin: 0 !important;
+  width: 100%;
+  color: white !important;
+  background-color: #151B34 !important;
+  border: 1px solid #5947FF !important;
+  border-radius: 10px !important;
+  padding: 10px !important;
+}
+
+.logged-in .d-name h4 {
+  margin: 0;
+  font-family: "Muli", sans-serif;
+}
+
 .form-control {
   color: white;
   margin-bottom: 5px;
@@ -254,9 +269,9 @@ footer.footer-light {
 }
 
 .form-control:focus {
-  background-color: transparent;
-  box-shadow: none;
-  border-color: $color;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border-color: $color !important;
 }
 
 .text-grey {
@@ -519,6 +534,7 @@ input:focus, textarea:focus {
 .colored-toast .swal2-title {
   color: white;
   line-height: 1.5em !important;
+  font-family: "Muli", sans-serif !important;
 }
 
 .colored-toast .swal2-close {

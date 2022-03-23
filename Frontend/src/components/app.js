@@ -54,7 +54,7 @@ const app = () => (
     <PosedRouter>
       <ScrollTop path="/">
         <Home exact path="/">
-          <Redirect to="/home" />
+          <Redirect to="/" />
         </Home>
         <Dashboard path="/dashboard" />
         <MintEarning path="/mint" />

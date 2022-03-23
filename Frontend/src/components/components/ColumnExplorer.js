@@ -50,7 +50,50 @@ const GlobalStyles = createGlobalStyle`
       color: #FF0;
     }
   }
+  .btn2{
+    background: transparent;
+    border: solid 2px #5947FF;
+  }
 `;
+
+
+const default_nfts = [
+  {
+    "name": "Dolphin",
+    "image": "/img/nfts/dolphin.png",
+    "price": 500,
+    "count": 5
+  },
+  {
+    "name": "Dog",
+    "image": "/img/nfts/dog.png",
+    "price": 2500,
+    "count": 5
+  },
+  {
+    "name": "Phoenix",
+    "image": "/img/nfts/dolphin.png",
+    "price": 5000,
+    "count": 5
+  },
+  {
+    "name": "Astro",
+    "image": "/img/nfts/astro.png",
+    "price": 10000,
+    "count": 5
+  },
+  {
+    "name": "Dolphin",
+    "image": "/img/nfts/dog.png",
+    "price": 15000,
+    "count": 5
+  }, {
+    "name": "Dog",
+    "image": "/img/nfts/dolphin.png",
+    "price": 100000,
+    "count": 5
+  },
+];
 
 // const defaultValue = [{
 //   value: 0,
@@ -245,16 +288,6 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
       <div className="col-lg-3 col-md-4 col-xs-12 filter-container">
         <h3><i className="fa fa-search"></i> Filter</h3>
         <div className='row'>
-          <div className="col-md-12 mt-3 items_filter">
-            <CustomInput
-              id="name_1"
-              name="name_1"
-              placeholder="search item here..."
-              type="text"
-              onChange={handleSearch}
-            />
-          </div>
-          
           <div className="spacer-20"></div>
 
           <div className="col-md-12">Status</div>
@@ -264,12 +297,6 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
           </div>
           <div className='col-md-6 col-sm-12'>
             <ToggleButton selected={auction} value="auction" onClick={toggleAuction}>On Auction</ToggleButton>
-          </div>
-          <div className='col-md-6 col-sm-12'>
-            <ToggleButton selected={newItem} value="new" onClick={toggleNew}>New</ToggleButton>
-          </div>
-          <div className='col-md-6 col-sm-12'>
-            <ToggleButton selected={offer} value="offers" onClick={toggleOffer}>Has Offers</ToggleButton>
           </div>
           
           <div className="spacer-20"></div>
@@ -319,13 +346,13 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
       <div className="col-lg-9 col-md-8 col-xs-12">
         <div className='row'>
           <div className="mt-3"></div>
-          {collections && collections.map((nft, index) => (
+          {default_nfts && default_nfts.map((nft, index) => (
             <NftCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} />
           ))}
           {showLoadMore &&
             <div className='col-lg-12'>
               <div className="spacer-single"></div>
-              <span onClick={onLoadMore} className="btn-main m-auto">Load More</span>
+              <span onClick={onLoadMore} className="btn-main btn2 m-auto">Load More</span>
             </div>
           }
         </div>

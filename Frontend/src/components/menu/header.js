@@ -35,81 +35,18 @@ const NavLink = props => (
 
 const Header = function () {
   const dispatch = useDispatch();
-  const [openMenu1, setOpenMenu1] = React.useState(false);
-  const [openMenu2, setOpenMenu2] = React.useState(false);
-  const currentUser = useSelector(selectors.userState);
+  const currentUser = useSelector(selectors.userWallet);
   const userBalance = useSelector(selectors.userBalance);
   const chainID = useSelector(selectors.authChainID);
 
-  const handleBtnClick1 = () => {
-    setOpenMenu1(!openMenu1);
-  };
-  const handleBtnClick2 = () => {
-    setOpenMenu2(!openMenu2);
-  };
-  const closeMenu1 = () => {
-    setOpenMenu1(false);
-  };
-  const closeMenu2 = () => {
-    setOpenMenu2(false);
-  };
-
-  const ref1 = useOnclickOutside(() => {
-    closeMenu1();
-  });
-  const ref2 = useOnclickOutside(() => {
-    closeMenu2();
-  });
-
-  const onClickSignIn = async () => {
-    try {
-      let connection = await connectWallet();
-      if (connection.success === true) {
-        let signedString = "";
-        signedString = await signString(connection.address);
-        if (signedString !== "") {
-          const params = {};
-          params.address = connection.address;
-          params.password = signedString;
-          const result = await setLogin(params);
-          if (result.success) {
-            dispatch(setAuthState(result.data._doc));
-            navigate('/');
-          } else {
-            Toast.fire({
-              icon: 'error',
-              title: result.error
-            })
-          }
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const onClickSignUp = async () => {
+  const onConnect = async () => {
     let connection = await connectWallet();
     if (connection.success === true) {
       dispatch(setWalletAddr(connection.address));
-      navigate('/register');
     }
   }
 
   const [showmenu, btn_icon] = useState(false);
-  const [showpop, btn_icon_pop] = useState(false);
-  const closePop = () => {
-    btn_icon_pop(false);
-  };
-  const refpop = useOnclickOutside(() => {
-    closePop();
-  });
-
-  const handleSignOut = () => {
-    dispatch(setAuthState({}));
-    localStorage.removeItem("jwtToken");
-    navigate('/');
-  }
 
   useEffect(() => {
     const header = document.getElementById("myHeader");
@@ -126,7 +63,6 @@ const Header = function () {
           header.classList.remove("sticky");
           totop.classList.remove("show");
         } if (window.pageYOffset > sticky) {
-          closeMenu1();
         }
       }
     });
@@ -164,21 +100,7 @@ const Header = function () {
           </div>
         </div>
 
-        {/* <Paper
-            component="form"
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
-            className="search"
-          >
-            <IconButton type="submit" sx={{ p: '10px' }} aria-label="search" style={{ color: "grey" }}>
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="Search items, collections, and accounts"
-              inputProps={{ 'aria-label': 'Search items, collections, and accounts' }}
-            />
-          </Paper> */}
-        <div className="d-flex">
+        <div className="d-flex gap-3">
           <BreakpointProvider>
             <Breakpoint l down>
               {showmenu &&
@@ -195,7 +117,7 @@ const Header = function () {
                   </div>
                   <div className='navbar-item'>
                     <NavLink to="/explore" onClick={() => btn_icon(!showmenu)}>
-                      Explore
+                      Open Market
                     </NavLink>
                   </div>
                 </div>
@@ -218,7 +140,7 @@ const Header = function () {
                 </div>
                 <div className='navbar-item'>
                   <NavLink to="/explore">
-                    Explore
+                    Open Market
                     <span className='lines'></span>
                   </NavLink>
                 </div>
@@ -226,51 +148,18 @@ const Header = function () {
             </Breakpoint>
           </BreakpointProvider>
 
-          <div className='mainside'>
-            {currentUser && currentUser._id === undefined && (
+          <div className='mainside d-flex align-items-center'>
+            {!currentUser && (
               <div className="log-in">
-                <button className="btn-main" onClick={() => onClickSignIn()}>Sign In</button>
-                <button className="btn-main" onClick={() => onClickSignUp()}>Sign Up</button>
+                <button className="btn-main" onClick={() => onConnect()}>Connect Wallet</button>
               </div>
             )}
-            {currentUser && currentUser._id !== undefined && (
+            {currentUser && (
               <div className="logged-in">
-                <div id="de-click-menu-profile" className="de-menu-profile" onClick={() => btn_icon_pop(!showpop)} ref={refpop}>
-                  <img src={getAvatar(currentUser)} alt="" />
-                  {showpop &&
-                    <div className="popshow">
-                      <div className="d-name">
-                        <h4>{(currentUser && currentUser.username) && currentUser.username}</h4>
-                      </div>
-                      <div className="d-balance">
-                        <h4>Balance</h4>
-                        {userBalance} {getCoinName(chainID)}
-                      </div>
-                      <div className="d-wallet">
-                        <h4>My Wallet</h4>
-                        <span id="wallet" className="d-wallet-address">{(currentUser && currentUser.address) && currentUser.address}</span>
-                        <button id="btn_copy" title="Copy Text">Copy</button>
-                      </div>
-                      <div className="d-line"></div>
-                      <ul className="de-submenu-profile">
-                        <li onClick={() => navigate('/profile')}>
-                          <span>
-                            <i className="fa fa-user"></i> My profile
-                          </span>
-                        </li>
-                        <li onClick={() => navigate('/edit_profile')}>
-                          <span>
-                            <i className="fa fa-pencil"></i> Edit profile
-                          </span>
-                        </li>
-                        <li onClick={handleSignOut}>
-                          <span>
-                            <i className="fa fa-sign-out"></i> Sign out
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  }
+                <div className="d-name">
+                  {currentUser && (
+                    <div className="text-white">{currentUser && (currentUser.slice(0, 6) + "..." + currentUser.slice(currentUser.length - 4, currentUser.length))}</div>
+                  )}
                 </div>
               </div>
             )}

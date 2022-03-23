@@ -13,9 +13,9 @@ const StyledButton = styled('button')(
   box-sizing: border-box;
   min-height: calc(1.5em + 22px);
   min-width: 100%;
-  background: transparent;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
+  background: #151b34;
+  border: 1px solid #5947FF;
+  border-radius: 10px;
   padding: 10px;
   text-align: left;
   line-height: 1.5;
@@ -103,7 +103,7 @@ CustomSelect.propTypes = {
 
 export default function UnstyledSelectRichOptions({ value, onChange, disabled }) {
   return (
-    <CustomSelect defaultValue={0} value={value} onChange={onChange} disabled>
+    <CustomSelect defaultValue={0} value={value} onChange={onChange} disabled={disabled}>
       {coins.map((c) => (
         <StyledOption key={c.code} value={c.code}>
           <img
@@ -119,8 +119,13 @@ export default function UnstyledSelectRichOptions({ value, onChange, disabled })
   );
 }
 
+// const coins = [
+//   { code: 0, label: 'AVAX' },
+//   { code: 1, label: 'MATIC' },
+//   { code: 2, label: 'BNB' }
+// ];
+
 const coins = [
   { code: 0, label: 'AVAX' },
-  { code: 1, label: 'MATIC' },
-  { code: 2, label: 'BNB' }
+  { code: 1, label: 'USDC' }
 ];

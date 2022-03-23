@@ -830,17 +830,17 @@ a{
       }
       &.active{
         transition: all 0.3s ease;
-        &:before{
-          content: '';
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          z-index: 0;
-          left: 0;
-          top: 0;
-          background: 0;
-          cursor: pointer;
-        }
+        // &:before{
+        //   content: '';
+        //   width: 100%;
+        //   height: 100%;
+        //   position: absolute;
+        //   z-index: 0;
+        //   left: 0;
+        //   top: 0;
+        //   background: 0;
+        //   cursor: pointer;
+        // }
       }
     }
     .navbar-title {
@@ -926,7 +926,7 @@ a{
         .mainside{
           position: absolute;
           right: 60px;
-          top: 28px;
+          top: 10px;
         }
         .dropdown-custom.btn{
           color: $gray;
@@ -949,7 +949,7 @@ a{
       }
       .nav-icon {
       position: absolute;
-      top: 35px;
+      top: 25px;
       right: 25px;
       display: block;
       width: 20px;
@@ -1707,20 +1707,20 @@ footer{
     width: max-content;
     height: max-content;
     position: fixed;
-    right: 25px;
+    right: 10px;
     z-index: 999;
     &.init{
       bottom: -60px;
-      transition: all 0.3s ease;
+      transition: all 1s ease;
     }
     &.show{
-      bottom: 60px;
-      transition: all 0.3s ease;
+      bottom: 20px;
+      transition: all 0.5s ease;
     }
     div{
       font-size: .8rem;
-      width: 100px;
-      height: 160px;
+      width: 80px;
+      height: 110px;
       text-align: center;
       line-height: 40px;
       border-radius: 40px;
@@ -3777,7 +3777,7 @@ img.img-rounded{
 /*** create 2 ***/
 .de_tab.tab_methods{
   .de_nav{
-    text-align: left;
+    // text-align: left;
     li{
       margin: 0 10px 0 0;
       span{

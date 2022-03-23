@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
 import styled from "styled-components";
-import Clock from "./Clock";
-import { navigate } from '@reach/router';
 import api from '../../core/api';
 
 const Outer = styled.div`
@@ -14,7 +12,7 @@ const Outer = styled.div`
 `;
 
 //react functional component
-const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4', height, onImgLoad }) => {
+const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4', height, onImgLoad, onClaim, onSell }) => {
 
   return (
     <div className={className}>
@@ -55,7 +53,10 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
           </div>
         </div>
         <div className="spacer-10"></div>
-        <button className='btn-main m-auto'>Claim Now</button>
+        <div className="d-flex justify-content-between">
+          <button className='btn-main' onClick={() => onClaim(nft)}>Claim</button>
+          <button className='btn-main' onClick={() => onSell(nft)}>Sell</button>
+        </div>
       </div>
     </div>
   );

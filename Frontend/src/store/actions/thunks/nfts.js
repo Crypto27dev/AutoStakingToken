@@ -95,3 +95,7 @@ export const fetchNftList = (collectionId) => async (dispatch) => {
     dispatch(actions.getNftList.failure(err));
   }
 };
+
+export const sellNft = (nft) => {
+  
+}

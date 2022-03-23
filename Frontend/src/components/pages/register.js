@@ -8,7 +8,7 @@ import ImageUpload from '../components/ImageUpload';
 import Header from '../menu/header';
 import Footer from '../components/footer';
 import { signString } from "../../web3/web3";
-import { isEmpty } from '../../utils';
+import { isEmpty, Toast } from '../../utils';
 import api from '../../core/api';
 import { setAuthState } from '../../store/actions';
 
@@ -47,7 +47,7 @@ class register extends Component {
       logo_image: {},
       user_name: '',
       user_email: '',
-      user_address: props.authWallet,
+      user_address: props.userWallet,
       user_bio: '',
       saveMode: 0,
       detailedUserInfo: 0,
@@ -67,7 +67,7 @@ class register extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ user_address: nextProps.authWallet })
+    this.setState({ user_address: nextProps.userWallet })
   }
 
   addLogoImages = file => {
@@ -99,15 +99,21 @@ class register extends Component {
       data: params
     })
       .then(function (response) {
-        console.log(response);
         if (response.data.success === true) {
           //set the token to sessionStroage   
           const token = response.data.token;
           localStorage.setItem("jwtToken", response.data.token);
           const decoded = jwt_decode(token);
-          console.log(decoded);
           setAuthState(decoded._doc);
-          navigate("/");
+          Toast.fire({
+            icon: 'success',
+            title: 'Registered successfully!'
+          }).then(() => navigate("/dashboard"));
+        } else {
+          Toast.fire({
+            icon: 'error',
+            title: 'Internal Server Error.'
+          });
         }
       })
       .catch(function (error) {
@@ -135,7 +141,7 @@ class register extends Component {
           that.doLogin(params.address, params.password);
         })
         .catch(function (error) {
-          console.log(error);
+          console.log(error.message);
         });
     } else if (this.state.saveMode === 1) {
       await axios({
@@ -144,8 +150,17 @@ class register extends Component {
         data: params
       })
         .then(function (response) {
-          console.log(response);
-          navigate("/");
+          if (response.data.success) {
+            Toast.fire({
+              icon: 'success',
+              title: 'Registered successfully!'
+            }).then(() => navigate("/dashboard"));
+          } else {
+            Toast.fire({
+              icon: 'error',
+              title: 'Internal Server Error.'
+            });
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -305,7 +320,7 @@ class register extends Component {
 };
 
 const mapStateToProps = state => ({
-  authWallet: state.auth.wallet,
+  userWallet: state.auth.wallet,
 });
 
 const mapDispatchToProps = (dispatch) => {

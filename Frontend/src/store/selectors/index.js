@@ -6,7 +6,7 @@ import { createSelector, createStructuredSelector } from "reselect";
 // auth
 export const userState = (state) => state.auth.user;
 export const userBalance = (state) => state.auth.balance;
-export const authWallet = (state) => state.auth.wallet;
+export const userWallet = (state) => state.auth.wallet;
 export const authChainID = (state) => state.auth.chainID;
 export const loadingState = (state) => state.auth.loading;
 
