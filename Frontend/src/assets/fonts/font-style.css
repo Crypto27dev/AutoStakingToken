@@ -1,0 +1,6 @@
+    @font-face {
+    font-family: 'Marsek Demi';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Marsek Demi'), url('Marsek-Demi.woff') format('woff');
+    }

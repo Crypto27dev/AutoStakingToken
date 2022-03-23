@@ -5,6 +5,7 @@ import { createGlobalStyle } from 'styled-components';
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import ImageUpload from '../components/ImageUpload';
+import Header from '../menu/header';
 import Footer from '../components/footer';
 import { signString } from "../../web3/web3";
 import { isEmpty } from '../../utils';
@@ -215,7 +216,7 @@ class register extends Component {
     return (
       <div>
         <GlobalStyles />
-
+        <Header />
         <section className='jumbotron breadcumb no-bg' style={{ backgroundImage: `url(${'./img/background/subheader.jpg'})` }}>
           <div className='register-breadcumb'>
             <div className='container'>

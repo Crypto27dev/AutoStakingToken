@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../menu/header';
 import ColumnExplorer from '../components/ColumnExplorer';
 import Footer from '../components/footer';
 import { createGlobalStyle } from 'styled-components';
@@ -56,7 +57,7 @@ const Explore = () => {
   return (
     <div>
       <GlobalStyles />
-
+      <Header />
       <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${api.rootUrl}/img/background/explore.png)` }}>
         <div className='collection-breadcumb'>
           <div className='container'>

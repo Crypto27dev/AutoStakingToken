@@ -137,40 +137,39 @@ const Header = function () {
   return (
     <header id="myHeader" className='navbar white'>
       <div className='container'>
-        <div className='row w-100-nav'>
-          <div className='logo px-0'>
-            <div className='navbar-title navbar-item'>
-              <NavLink to="/">
-                <img
-                  src="/img/logo.png"
-                  className="img-fluid d-block"
-                  alt="#"
-                />
-                <img
-                  src="/img/logo-2.png"
-                  className="img-fluid d-3"
-                  alt="#"
-                />
-                <img
-                  src="/img/logo-3.png"
-                  className="img-fluid d-4"
-                  alt="#"
-                />
-                <img
-                  src="/img/logo-light.png"
-                  className="img-fluid d-none"
-                  alt="#"
-                />
-              </NavLink>
-            </div>
+        <div className='logo px-0'>
+          <div className='navbar-title navbar-item'>
+            <NavLink to="/">
+              <img
+                src="/img/logo.png"
+                className="img-fluid d-block"
+                alt="#"
+              />
+              <img
+                src="/img/logo-2.png"
+                className="img-fluid d-3"
+                alt="#"
+              />
+              <img
+                src="/img/logo-3.png"
+                className="img-fluid d-4"
+                alt="#"
+              />
+              <img
+                src="/img/logo-light.png"
+                className="img-fluid d-none"
+                alt="#"
+              />
+            </NavLink>
           </div>
+        </div>
 
-          <Paper
+        {/* <Paper
             component="form"
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
             className="search"
           >
-            <IconButton type="submit" sx={{ p: '10px' }} aria-label="search" style={{color: "grey"}}>
+            <IconButton type="submit" sx={{ p: '10px' }} aria-label="search" style={{ color: "grey" }}>
               <SearchIcon />
             </IconButton>
             <InputBase
@@ -178,60 +177,26 @@ const Header = function () {
               placeholder="Search items, collections, and accounts"
               inputProps={{ 'aria-label': 'Search items, collections, and accounts' }}
             />
-          </Paper>
-
+          </Paper> */}
+        <div className="d-flex">
           <BreakpointProvider>
             <Breakpoint l down>
               {showmenu &&
                 <div className='menu'>
                   <div className='navbar-item'>
-                    <NavLink to="/" onClick={() => btn_icon(!showmenu)}>
-                      Home
+                    <NavLink to="/dashboard" onClick={() => btn_icon(!showmenu)}>
+                      Dashboard
                     </NavLink>
                   </div>
                   <div className='navbar-item'>
-                    <div ref={ref1}>
-                      <div className="dropdown-custom dropdown-toggle btn"
-                        onMouseEnter={handleBtnClick1}>
-                        Explore
-                        <span className='lines'></span>
-                        {openMenu1 && (
-                          <div className='item-dropdown'>
-                            <div className="dropdown" onClick={closeMenu1}>
-                              <NavLink to="/explore" onClick={() => btn_icon(!showmenu)}>All NFTs</NavLink>
-                              <NavLink to="/collection/art" onClick={() => btn_icon(!showmenu)}>Art</NavLink>
-                              <NavLink to="/collection/game" onClick={() => btn_icon(!showmenu)}>Game</NavLink>
-                              <NavLink to="/collection/photo" onClick={() => btn_icon(!showmenu)}>Photo</NavLink>
-                              <NavLink to="/collection/music" onClick={() => btn_icon(!showmenu)}>Music</NavLink>
-                              <NavLink to="/collection/video" onClick={() => btn_icon(!showmenu)}>Video</NavLink>
-                              <NavLink to="/collection/utility" onClick={() => btn_icon(!showmenu)}>Utility</NavLink>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className='navbar-item'>
-                    <NavLink to="/createOption" onClick={() => btn_icon(!showmenu)}>
-                      Create
+                    <NavLink to="/mint" onClick={() => btn_icon(!showmenu)}>
+                      Mint & Earning
                     </NavLink>
                   </div>
                   <div className='navbar-item'>
-                    <div ref={ref2}>
-                      <div className="dropdown-custom dropdown-toggle btn"
-                        onMouseEnter={handleBtnClick2}>
-                        Stats
-                        <span className='lines'></span>
-                        {openMenu2 && (
-                          <div className='item-dropdown'>
-                            <div className="dropdown" onClick={closeMenu2}>
-                              <NavLink to="/ranking" onClick={() => btn_icon(!showmenu)}>Ranking</NavLink>
-                              <NavLink to="/activity" onClick={() => btn_icon(!showmenu)}>Activity</NavLink>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    <NavLink to="/explore" onClick={() => btn_icon(!showmenu)}>
+                      Explore
+                    </NavLink>
                   </div>
                 </div>
               }
@@ -240,55 +205,22 @@ const Header = function () {
             <Breakpoint xl>
               <div className='menu'>
                 <div className='navbar-item'>
-                  <NavLink to="/">
-                    Home
+                  <NavLink to="/dashboard">
+                    Dashboard
                     <span className='lines'></span>
                   </NavLink>
                 </div>
                 <div className='navbar-item'>
-                  <div ref={ref1}>
-                    <div className="dropdown-custom dropdown-toggle btn"
-                      onMouseEnter={handleBtnClick1} onMouseLeave={closeMenu1}>
-                      Explore
-                      <span className='lines'></span>
-                      {openMenu1 && (
-                        <div className='item-dropdown'>
-                          <div className="dropdown" onClick={closeMenu1}>
-                            <NavLink to="/explore">All NFTs</NavLink>
-                            <NavLink to="/collection/art">Art</NavLink>
-                            <NavLink to="/collection/game">Game</NavLink>
-                            <NavLink to="/collection/photo">Photo</NavLink>
-                            <NavLink to="/collection/music">Music</NavLink>
-                            <NavLink to="/collection/video">Video</NavLink>
-                            <NavLink to="/collection/utility">Utility</NavLink>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className='navbar-item'>
-                  <NavLink to="/createOptions">
-                    Create
+                  <NavLink to="/mint">
+                    Mint & Earning
                     <span className='lines'></span>
                   </NavLink>
                 </div>
                 <div className='navbar-item'>
-                  <div ref={ref2}>
-                    <div className="dropdown-custom dropdown-toggle btn"
-                      onMouseEnter={handleBtnClick2} onMouseLeave={closeMenu2}>
-                      Stats
-                      <span className='lines'></span>
-                      {openMenu2 && (
-                        <div className='item-dropdown'>
-                          <div className="dropdown" onClick={closeMenu2}>
-                            <NavLink to="/ranking">Ranking</NavLink>
-                            <NavLink to="/activity">Activity</NavLink>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <NavLink to="/explore">
+                    Explore
+                    <span className='lines'></span>
+                  </NavLink>
                 </div>
               </div>
             </Breakpoint>
@@ -303,65 +235,6 @@ const Header = function () {
             )}
             {currentUser && currentUser._id !== undefined && (
               <div className="logged-in">
-                {/* <div id="de-click-menu-notification" className="de-menu-notification" onClick={() => btn_icon_not(!shownot)} ref={refpopnot}>
-                  <div className="d-count">8</div>
-                  <i className="fa fa-bell"></i>
-                  {shownot &&
-                    <div className="popshow">
-                      <div className="de-flex">
-                        <h4>Notifications</h4>
-                        <span className="viewaall">Show all</span>
-                      </div>
-                      <ul>
-                        <li>
-                          <div className="mainnot">
-                            <img className="lazy" src="../../img/author/author-2.jpg" alt="" />
-                            <div className="d-desc">
-                              <span className="d-name"><b>Mamie Barnett</b> started following you</span>
-                              <span className="d-time">1 hour ago</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="mainnot">
-                            <img className="lazy" src="../../img/author/author-3.jpg" alt="" />
-                            <div className="d-desc">
-                              <span className="d-name"><b>Nicholas Daniels</b> liked your item</span>
-                              <span className="d-time">2 hours ago</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="mainnot">
-                            <img className="lazy" src="../../img/author/author-4.jpg" alt="" />
-                            <div className="d-desc">
-                              <span className="d-name"><b>Lori Hart</b> started following you</span>
-                              <span className="d-time">18 hours ago</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="mainnot">
-                            <img className="lazy" src="../../img/author/author-5.jpg" alt="" />
-                            <div className="d-desc">
-                              <span className="d-name"><b>Jimmy Wright</b> liked your item</span>
-                              <span className="d-time">1 day ago</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="mainnot">
-                            <img className="lazy" src="../../img/author/author-6.jpg" alt="" />
-                            <div className="d-desc">
-                              <span className="d-name"><b>Karla Sharp</b> started following you</span>
-                              <span className="d-time">3 days ago</span>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  }
-                </div> */}
                 <div id="de-click-menu-profile" className="de-menu-profile" onClick={() => btn_icon_pop(!showpop)} ref={refpop}>
                   <img src={getAvatar(currentUser)} alt="" />
                   {showpop &&
@@ -390,11 +263,6 @@ const Header = function () {
                             <i className="fa fa-pencil"></i> Edit profile
                           </span>
                         </li>
-                        <li onClick={() => navigate('/my_collection')}>
-                          <span>
-                            <i className="fa fa-th"></i> My Collections
-                          </span>
-                        </li>
                         <li onClick={handleSignOut}>
                           <span>
                             <i className="fa fa-sign-out"></i> Sign out
@@ -407,7 +275,6 @@ const Header = function () {
               </div>
             )}
           </div>
-
         </div>
 
         <button className="nav-icon" onClick={() => btn_icon(!showmenu)}>

@@ -8,6 +8,12 @@ $color: #5A45FF;
   color: rgb(226, 121, 121);
 }
 
+.nft-carousel {
+  .slick-slide {
+    padding: 0 10px !important;
+  }
+}
+
 .slider__container {
   transform: rotate(180deg);
 
@@ -160,16 +166,14 @@ footer.footer-light {
 }
 
 .items_filter {
-  .quick_search {
-    margin-bottom: 5px;
-    input {
-      margin: 0;
-      color: white;
-      background-color: #151B34;
-      border: 1px solid #5947FF;
-      border-radius: 10px;
-      padding: 15px;
-    }
+  margin-bottom: 5px;
+  input {
+    margin: 0;
+    color: white;
+    background-color: #151B34;
+    border: 1px solid #5947FF;
+    border-radius: 10px;
+    padding: 10px;
   }
   .dropdownSelect {
     margin-right: 0px;
@@ -197,12 +201,17 @@ footer.footer-light {
 //   gap: 10px;
 // }
 
+.nft__item_price {
+  font-size: 2.5rem;
+  margin: 30px 0;
+}
+
 .nft_coll {
   cursor: pointer;
 }
 
 .nft__item {
-  background: rgba(90, 70, 255, 0.15);
+  background: #161830;
   box-shadow: 5px 5px 15px #151B34;
   border-radius: 15px;
   border: 1px solid #5947FF;
@@ -215,6 +224,9 @@ footer.footer-light {
       transform: scale(1.1);
       transition: 0.7s;
     }
+  }
+  span {
+    color: #878fa9;
   }
 }
 

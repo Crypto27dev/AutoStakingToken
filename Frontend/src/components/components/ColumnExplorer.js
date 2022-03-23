@@ -129,16 +129,6 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
   const [chain, setChain] = useState({ avax: true, matic: true, bsc: true });
   const [search, setSearch] = useState('');
   const [refresh, setRefresh] = useState(false);
-  // const [date, setDate] = useState(dateOptions[0]);
-  // const [price, setPrice] = useState(priceOptions[0]);
-  // const [likes, setLikes] = useState(likesOptions[0]);
-  // const [creator, setCreator] = useState(creatorOptions[0]);
-  // const [sorting, setSorting] = useState(sortingOptions[0]);
-  // const [range, setRange] = useState([]);
-
-  // const [values, setValues] = useState([5]);
-  // const [visible, setVisible] = useState(false);
-
   const [height, setHeight] = useState(0);
   const [collections, setCollections] = useState([]);
   const [page, setPage] = useState(0);
@@ -255,7 +245,20 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
       <div className="col-lg-3 col-md-4 col-xs-12 filter-container">
         <h3><i className="fa fa-search"></i> Filter</h3>
         <div className='row'>
+          <div className="col-md-12 mt-3 items_filter">
+            <CustomInput
+              id="name_1"
+              name="name_1"
+              placeholder="search item here..."
+              type="text"
+              onChange={handleSearch}
+            />
+          </div>
+          
+          <div className="spacer-20"></div>
+
           <div className="col-md-12">Status</div>
+          <div className="spacer-10"></div>
           <div className='col-md-6 col-sm-12'>
             <ToggleButton selected={buyNow} value="now" onClick={toggleNow}>Buy Now</ToggleButton>
           </div>
@@ -268,7 +271,10 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
           <div className='col-md-6 col-sm-12'>
             <ToggleButton selected={offer} value="offers" onClick={toggleOffer}>Has Offers</ToggleButton>
           </div>
-          <div className='col-md-12 mt-3'>Price</div>
+          
+          <div className="spacer-20"></div>
+
+          <div className='col-md-12'>Price</div>
           {/* <div className='col-md-12'>
             <Select
               styles={customStyles}
@@ -276,16 +282,24 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
               onChange={handlePrice}
             />
           </div> */}
-          <div className="col-md-6 mt-3">
+          <div className="spacer-10"></div>
+
+          <div className="col-md-6 items_filter">
             <input className="form-control" type='number' placeholder="Min..." onChange={handleMin} autoComplete="off"></input>
           </div>
-          <div className="col-md-6 mt-3">
+          <div className="col-md-6 items_filter">
             <input className="form-control" type='number' placeholder="Max..." onChange={handleMax} autoComplete="off"></input>
           </div>
-          <div className="col-md-12 mt-3">
+
+          <div className="spacer-10"></div>
+
+          <div className="col-md-12">
             <button className='btn-main' disabled={(!isEmpty(maxPrice) && !isEmpty(minPrice) && maxPrice < minPrice) ? true : false} onClick={handleApply}>Apply</button>
           </div>
-          <div className='col-md-12 mt-4'>Chain</div>
+
+          <div className="spacer-20"></div>
+
+          <div className='col-md-12'>Chain</div>
           <div className='col-md-12 d-flex flex-column'>
             <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/avax.png"} alt="" width="30px"></img> Avalanche
               <input type="checkbox" name="avax" defaultChecked onChange={handleCheck} disabled/>
@@ -303,27 +317,7 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
         </div>
       </div>
       <div className="col-lg-9 col-md-8 col-xs-12">
-        <div className='row items_filter'>
-          <div className={"quick_search mt-3 " + (!showCategory ? 'col-lg-4 offset-lg-8' : 'col-lg-4')}>
-            <CustomInput
-              id="name_1"
-              name="name_1"
-              placeholder="search item here..."
-              type="text"
-              onChange={handleSearch}
-            />
-          </div>
-          {showCategory && (
-            <div className="col-lg-8 d-flex flex-row flex-wrap gap-2 mt-3">
-              <span className={'category-item ' + (category === 0 ? 'selected' : '')} onClick={() => setCategory(0)}>All NFTs</span>
-              <span className={'category-item ' + (category === 1 ? 'selected' : '')} onClick={() => setCategory(1)}>Art</span>
-              <span className={'category-item ' + (category === 2 ? 'selected' : '')} onClick={() => setCategory(2)}>Game</span>
-              <span className={'category-item ' + (category === 3 ? 'selected' : '')} onClick={() => setCategory(3)}>Photo</span>
-              <span className={'category-item ' + (category === 4 ? 'selected' : '')} onClick={() => setCategory(4)}>Music</span>
-              <span className={'category-item ' + (category === 5 ? 'selected' : '')} onClick={() => setCategory(5)}>Video</span>
-              <span className={'category-item ' + (category === 6 ? 'selected' : '')} onClick={() => setCategory(6)}>Utility</span>
-            </div>
-          )}
+        <div className='row'>
           <div className="mt-3"></div>
           {collections && collections.map((nft, index) => (
             <NftCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} />
@@ -331,7 +325,7 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
           {showLoadMore &&
             <div className='col-lg-12'>
               <div className="spacer-single"></div>
-              <span onClick={onLoadMore} className="btn-main lead m-auto">Load More</span>
+              <span onClick={onLoadMore} className="btn-main m-auto">Load More</span>
             </div>
           }
         </div>

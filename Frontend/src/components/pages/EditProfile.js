@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import ImageUpload from '../components/NavImageUpload';
+import Header from '../menu/header';
 import Footer from '../components/footer';
 import { signString } from "../../web3/web3";
 import { isEmpty, Toast, getAvatar } from '../../utils';
@@ -267,7 +268,7 @@ class editProfile extends Component {
     return (
       <div>
         <GlobalStyles />
-
+        <Header />
         <section id='profile_banner' className='jumbotron breadcumb no-bg'>
           <div className='mainbreadcumb'>
             <ImageUpload addFile={this.addBannerImage} file={banner_image} width="100%" height="400px" />

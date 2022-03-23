@@ -1,7 +1,7 @@
 const api = {
     rootUrl: window.location.origin,
-    baseUrl: 'http://localhost:5000/api', //mock data base folder
-    imgUrl: "http://localhost:5000/uploads/",
+    baseUrl: 'http://192.168.103.57:5000/api', //mock data base folder
+    imgUrl: "http://192.168.103.57:5000/uploads/",
     user: '/users',
     utils: '/utils',
     collection: '/collection',

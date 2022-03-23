@@ -56,11 +56,13 @@ $color_more: #403f83;
 
 /*font*/
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
 
 /*general*/
 html {scroll-behavior: auto;}
 body {
-  font-family: "DM Sans", Helvetica, Arial, sans-serif;
+  font-family: "Quicksand", Helvetica, Arial, sans-serif;
   font-weight: 300;
   font-size: 16px;
   color: $general;
@@ -180,7 +182,7 @@ section{
     transition: all 0.3s ease;
   }
   &:hover::before{
-    opacity: 1;
+    // opacity: 1;
     transition: all 0.3s ease;
   }
   &:hover {
@@ -784,7 +786,7 @@ a{
 /*navbar*/
 .navbar {
     padding: 0;
-    position: absolute;
+    position: fixed !important;
     top: 0;
     left: 0;
     width: 100%;
@@ -849,7 +851,6 @@ a{
     .navbar-item {
         position: relative;
         display: inline-block;
-        padding: 30px 6px;
         height: max-content;
         cursor: default;
         .lines{
@@ -868,6 +869,8 @@ a{
         }
     }
     .breakpoint__xl-only {
+      display: flex;
+      align-items: center;
       width: max-content;
       margin-left: auto;
     }
@@ -892,7 +895,7 @@ a{
     .menu{
       display: flex;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 32px;
     }
     .nav-icon{
       display: none;
@@ -1023,7 +1026,7 @@ a{
       position: fixed;
       top: 0;
       width: 100%;
-      background: #1b1b1b;
+      // background: #1b1b1b;
       border-bottom: solid 1px #403f83;
       transition: all 0.6s ease;
         &.white{
@@ -1704,24 +1707,24 @@ footer{
     width: max-content;
     height: max-content;
     position: fixed;
-    right: 10px;
+    right: 25px;
     z-index: 999;
     &.init{
       bottom: -60px;
       transition: all 0.3s ease;
     }
     &.show{
-      bottom: 15px;
+      bottom: 60px;
       transition: all 0.3s ease;
     }
     div{
       font-size: .8rem;
-      width: 40px;
-      height: 40px;
+      width: 100px;
+      height: 160px;
       text-align: center;
       line-height: 40px;
       border-radius: 40px;
-      background: $color;
+      // background: $color;
       transition: all 0.3s ease;
       &:hover{
         transform: scale(1.1);
@@ -2741,6 +2744,9 @@ i.font60 {
     margin-bottom: 25px;
     background: #ffffff;
     transition: .7s;
+    &.round {
+      margin-top: 80px;
+    }
     &:hover{
       box-shadow: 2px 2px 30px 0px rgba(10, 10, 10, 0.1);
       transition: .7s;
@@ -2750,6 +2756,7 @@ i.font60 {
   cursor: pointer;
   line-height: 28px;
   margin-bottom: -22px;
+  justify-content: center;
 }
 .nft__item h4 {
     font-weight: 800;
@@ -2761,7 +2768,7 @@ i.font60 {
     font-weight: 600;
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    justify-content: center;
     span {
       font-weight: 700;
       color: #777;
@@ -2823,6 +2830,17 @@ i.font60 {
       margin-right: 5px;
     }
 }
+.nft_info_round {
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  img {
+    border-radius: 50% !important;
+    width: 60% !important;
+  }
+}
 .author_list_pp {
     cursor: pointer;
     position: absolute;
@@ -2835,6 +2853,10 @@ i.font60 {
     border-radius: 100% !important;
     z-index: 1;
     transition: .3s;
+    &.round {
+      width: 150px;
+      top: -75px;
+    }
     &:hover img{
       padding: 3px;
       -webkit-box-shadow: 0px 0px 0px 2px $color;

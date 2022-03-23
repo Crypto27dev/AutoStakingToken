@@ -1,0 +1,543 @@
+// _variable.scss
+//---------------------------------------------------------//
+// bootstrap custom color set
+//----------------------------------------------------------//
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+$primary: #020521;
+$secondary: #B6C1E7;
+$common-text: #878FA9;
+
+$theme-colors: (
+        "primary": #020521,
+        "secondary": #B6C1E7,
+        "common": #878FA9,
+);
+
+
+// $theme-colors: (
+//   "primary":    $primary,
+//   "secondary":  $secondary,
+//   "success":    $success,
+//   "info":       $info,
+//   "warning":    $warning,
+//   "danger":     $danger,
+//   "light":      $light,
+//   "dark":       $dark
+// );
+
+
+$orange: #ed4e26;
+$orange-hover: #d13b15;
+$text: #878FA9;
+
+//---------------------------------------------------------//
+// breakpoint
+//----------------------------------------------------------//
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px,
+        xxl: 1600px,
+);
+
+@function breakpoint-next($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map-keys($breakpoints)) {
+        $n: index($breakpoint-names, $name);
+        @return if($n < length($breakpoint-names), nth($breakpoint-names, $n + 1), null);
+}
+
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+        $min: map-get($breakpoints, $name);
+        @return if($min !=0, $min, null);
+}
+
+@function breakpoint-max($name, $breakpoints: $grid-breakpoints) {
+        $next: breakpoint-next($name, $breakpoints);
+        @return if($next, breakpoint-min($next, $breakpoints) - 0.02px, null);
+}
+
+@function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
+        @return if(breakpoint-min($name, $breakpoints) ==null, "", "-#{$name}");
+}
+
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+        $min: breakpoint-min($name, $breakpoints);
+
+        @if $min {
+                @media screen and (min-width: $min) {
+                        @content;
+                }
+        } @else {
+                @content;
+        }
+}
+
+@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
+        $max: breakpoint-max($name, $breakpoints);
+
+        @if $max {
+                @media (max-width: $max) {
+                        @content;
+                }
+        } @else {
+                @content;
+        }
+}
+
+@mixin media-breakpoint-between($lower, $upper, $breakpoints: $grid-breakpoints) {
+        $min: breakpoint-min($lower, $breakpoints);
+        $max: breakpoint-max($upper, $breakpoints);
+
+        @if $min !=null and $max !=null {
+                @media (min-width: $min) and (max-width: $max) {
+                        @content;
+                }
+        } @else if $max==null {
+                @include media-breakpoint-up($lower, $breakpoints) {
+                        @content;
+                }
+        } @else if $min==null {
+                @include media-breakpoint-down($upper, $breakpoints) {
+                        @content;
+                }
+        }
+}
+
+@mixin media-breakpoint-only($name, $breakpoints: $grid-breakpoints) {
+        $min: breakpoint-min($name, $breakpoints);
+        $max: breakpoint-max($name, $breakpoints);
+
+        @if $min !=null and $max !=null {
+                @media (min-width: $min) and (max-width: $max) {
+                        @content;
+                }
+        } @else if $max==null {
+                @include media-breakpoint-up($name, $breakpoints) {
+                        @content;
+                }
+        } @else if $min==null {
+                @include media-breakpoint-down($name, $breakpoints) {
+                        @content;
+                }
+        }
+}
+
+//---------------------------------------------------------//
+// container-width
+//----------------------------------------------------------//
+// Grid containers
+$container-max-widths: (
+        xs: 100%,
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1170px,
+        xxl: 1470px,
+);
+
+@mixin make-max-widths-container-width($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+        @each $breakpoint, $container-max-width in $max-widths {
+                @include media-breakpoint-up($breakpoint, $breakpoints) {
+                        max-width: $container-max-width;
+                }
+        }
+}
+
+.container {
+        @include make-max-widths-container-width();
+}
+
+//---------------------------------------------------------//
+//opacity list
+//----------------------------------------------------------//
+$opacity: (
+        0: 0,
+        10: 0.1,
+        20: 0.2,
+        30: 0.3,
+        40: 0.4,
+        50: 0.5,
+        60: 0.6,
+        70: 0.7,
+        80: 0.8,
+        90: 0.9,
+        100: 1,
+);
+
+@each $name, $value in $opacity {
+        .opacity-#{$name} {
+                opacity: $value !important;
+        }
+
+        .hover-opacity-#{$name} {
+                &.active,
+                &:hover {
+                        opacity: $value !important;
+                }
+        }
+}
+
+//---------------------------------------------------------//
+//Gray colors
+//----------------------------------------------------------//
+$gray-100: #f3f6f9;
+$gray-200: #ebedf3;
+$gray-300: #e4e6ef;
+$gray-400: #d1d3e0;
+$gray-500: #b5b5c3;
+$gray-600: #7e8299;
+$gray-700: #5e6278;
+$gray-800: #3f4254;
+$gray-900: #181c32;
+
+// Gray colors list
+$grays: (
+        "100": $gray-100,
+        "200": $gray-200,
+        "300": $gray-300,
+        "400": $gray-400,
+        "500": $gray-500,
+        "600": $gray-600,
+        "700": $gray-700,
+        "800": $gray-800,
+        "900": $gray-900,
+); // Custom variable
+
+@each $name, $value in $grays {
+        .gray-#{$name} {
+                color: $value !important;
+        }
+}
+
+//---------------------------------------------------------//
+// Heights & Widths
+//----------------------------------------------------------//
+
+$heights-and-widths: (
+        100: 100%,
+        50: 50%,
+        25: 25%,
+        auto: auto,
+        1px: 1px,
+        2px: 2px,
+        3px: 3px,
+        4px: 4px,
+        5px: 5px,
+        10px: 10px,
+        15px: 15px,
+        20px: 20px,
+        25px: 25px,
+        30px: 30px,
+        35px: 35px,
+        40px: 40px,
+        45px: 45px,
+        50px: 50px,
+        55px: 55px,
+        60px: 60px,
+        65px: 65px,
+        70px: 70px,
+        75px: 75px,
+        80px: 80px,
+        85px: 85px,
+        90px: 90px,
+        95px: 95px,
+        100px: 100px,
+        105px: 105px,
+        110px: 110px,
+        115px: 115px,
+        120px: 120px,
+        125px: 125px,
+        130px: 130px,
+        135px: 135px,
+        140px: 140px,
+        145px: 145px,
+        150px: 150px,
+        175px: 175px,
+        180px: 180px,
+        200px: 200px,
+        225px: 225px,
+        250px: 250px,
+        255px: 255px,
+        260px: 260px,
+        265px: 265px,
+        275px: 275px,
+        295px: 295px,
+        300px: 300px,
+        325px: 325px,
+        350px: 350px,
+        375px: 375px,
+        400px: 400px,
+        425px: 425px,
+        450px: 450px,
+        475px: 475px,
+        500px: 500px,
+        550px: 550px,
+        575px: 575px,
+        600px: 600px,
+        650px: 650px,
+        700px: 700px,
+        750px: 750px,
+        800px: 800px,
+        825px: 825px,
+        850px: 850px,
+        900px: 900px,
+        950px: 950px,
+        1000px: 1000px,
+);
+
+// Responsive widths
+@each $breakpoint in map-keys($grid-breakpoints) {
+        @include media-breakpoint-up($breakpoint) {
+                $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+                @each $name, $value in $heights-and-widths {
+                        // Height
+                        .w#{$infix}-#{$name} {
+                                width: $value !important;
+                        }
+
+                        // Width
+                        .h#{$infix}-#{$name} {
+                                height: $value !important;
+                        }
+
+                        // Min width
+                        .min-w#{$infix}-#{$name} {
+                                min-width: $value !important;
+                        }
+
+                        // Min
+                        .min-h#{$infix}-#{$name} {
+                                min-height: $value !important;
+                        }
+
+                        .max-h#{$infix}-#{$name} {
+                                max-height: $value !important;
+                        }
+
+                        .max-w#{$infix}-#{$name} {
+                                max-width: $value !important;
+                        }
+                }
+        }
+}
+
+//---------------------------------------------------------//
+// font-size
+//----------------------------------------------------------//
+$font-size: (
+        8px: 8px,
+        9px: 9px,
+        10px: 10px,
+        11px: 11px,
+        12px: 12px,
+        13px: 13px,
+        14px: 14px,
+        15px: 15px,
+        16px: 16px,
+        17px: 17px,
+        18px: 18px,
+        19px: 19px,
+        20px: 20px,
+        21px: 21px,
+        22px: 22px,
+        23px: 23px,
+        24px: 24px,
+        25px: 25px,
+        26px: 26px,
+        27px: 27px,
+        28px: 28px,
+        29px: 29px,
+        30px: 30px,
+        31px: 31px,
+        32px: 32px,
+        33px: 33px,
+        34px: 34px,
+        35px: 35px,
+        36px: 36px,
+        37px: 37px,
+        38px: 38px,
+        39px: 39px,
+        40px: 40px,
+        41px: 41px,
+        42px: 42px,
+        48px: 48px,
+        56px: 56px,
+        64px: 64px,
+        72px: 72px,
+);
+
+// Responsive widths
+@each $breakpoint in map-keys($grid-breakpoints) {
+        @include media-breakpoint-up($breakpoint) {
+                $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+                @each $name, $value in $font-size {
+                        // font-size:
+                        .fs#{$infix}-#{$name} {
+                                font-size: $value !important;
+                        }
+                }
+        }
+}
+
+//---------------------------------------------------------//
+// font-weight
+//----------------------------------------------------------//
+$font-weight: (
+        300: 300,
+        400: 400,
+        500: 500,
+        600: 600,
+        700: 700,
+        800: 800,
+        900: 900,
+);
+
+// Responsive widths
+@each $breakpoint in map-keys($grid-breakpoints) {
+        @include media-breakpoint-up($breakpoint) {
+                $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+                @each $name, $value in $font-weight {
+                        // font-size:
+                        .fw#{$infix}-#{$name} {
+                                font-weight: $value !important;
+                        }
+                }
+        }
+}
+
+//---------------------------------------------------------//
+// @mixin
+//----------------------------------------------------------//
+@mixin transform($property) {
+        -webkit-transform: $property;
+        -moz-transform: $property;
+        -ms-transform: $property;
+        -o-transform: $property;
+        transform: $property;
+}
+
+@mixin border-radius($property) {
+        -webkit-border-radius: $property;
+        -moz-border-radius: $property;
+        -ms-border-radius: $property;
+        -o-border-radius: $property;
+        border-radius: $property;
+}
+
+@mixin box-shadow($property) {
+        -webkit-box-shadow: $property;
+        -moz-box-shadow: $property;
+        -ms-box-shadow: $property;
+        -o-box-shadow: $property;
+        box-shadow: $property;
+}
+
+@mixin transition($property) {
+        -webkit-transition: $property;
+        -moz-transition: $property;
+        -ms-transition: $property;
+        -o-transition: $property;
+        transition: $property;
+}
+
+@mixin animation($property) {
+        -webkit-animation: $property;
+        -moz-animation: $property;
+        -ms-animation: $property;
+        -o-animation: $property;
+        animation: $property;
+}
+
+@mixin keyframes($animationName) {
+        @-webkit-keyframes #{$animationName} {
+                $browser: "-webkit-" !global;
+                @content;
+        }
+
+        @-moz-keyframes #{$animationName} {
+                $browser: "-moz-" !global;
+                @content;
+        }
+
+        @-o-keyframes #{$animationName} {
+                $browser: "-o-" !global;
+                @content;
+        }
+
+        @keyframes #{$animationName} {
+                $browser: "" !global;
+                @content;
+        }
+}
+
+$browser: null;
+
+// @extend .transition;
+.transition {
+        @include transition(all 0.1s ease-in-out);
+}
+
+// @extend .shadow;
+.shadow {
+        @include box-shadow(0 2px 6px rgba($dark, 0.08) !important);
+}
+
+.rounded-sm {
+        @include border-radius(3px !important);
+}
+
+.rounded-md {
+        @include border-radius(8px !important);
+}
+
+.rounded-lg {
+        @include border-radius(10px !important);
+}
+
+.rounded-xl {
+        @include border-radius(15px !important);
+}
+
+.rounded-circle {
+        @include border-radius(50% !important);
+}
+
+.rounded-0 {
+        @include border-radius(0 !important);
+}
+.rounded-6 {
+        @include border-radius(6px !important);
+}
+.rounded-18 {
+        @include border-radius(18px !important);
+}
+.rounded-20 {
+        @include border-radius(20px !important);
+}
+.head_color {
+        color: #14213d;
+}
+.text-orange {
+        color: $orange;
+}
+.para_color {
+        color: #57627b;
+}
+
+.btn {
+        @extend .fs-xl-16px;
+        @extend .fs-14px;
+        @extend .fw-500;
+        line-height: 18px;
+        padding: 15px 30px;
+        @extend .rounded-6;
+        @media screen and(max-width:1199px) {
+                padding: 15px 15px;
+        }
+}

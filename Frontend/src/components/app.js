@@ -1,8 +1,9 @@
 import React from 'react';
 import { Router, Location, Redirect } from '@reach/router';
 import ScrollToTopBtn from './menu/ScrollToTop';
-import Header from './menu/header';
-import Home from './pages/home';
+import Home from './pages/Home/HomePage';
+import Dashboard from './pages/home';
+import MintEarning from './pages/mintEarning';
 import Explore from './pages/explore';
 import RankingRedux from './pages/RankingRedux';
 import ColectionList from './pages/colectionList';
@@ -29,7 +30,7 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 export const ScrollTop = ({ children, location }) => {
-  React.useEffect(() => window.scrollTo(0,0), [location])
+  React.useEffect(() => window.scrollTo(0, 0), [location])
   return children
 }
 
@@ -47,15 +48,16 @@ const PosedRouter = ({ children }) => (
   </Location>
 );
 
-const app= () => (
+const app = () => (
   <div className="wraper">
-  <GlobalStyles />
-    <Header/>
-      <PosedRouter>
+    <GlobalStyles />
+    <PosedRouter>
       <ScrollTop path="/">
         <Home exact path="/">
           <Redirect to="/home" />
         </Home>
+        <Dashboard path="/dashboard" />
+        <MintEarning path="/mint" />
         <Explore path="/explore" />
         <RankingRedux path="/ranking" />
         <ColectionList path="/collection/:categoryId" />
@@ -72,8 +74,8 @@ const app= () => (
         <Profile path="/profile" />
         <EditProfile path="/edit_profile" />
         <MyCollection path="/my_collection" />
-        </ScrollTop>
-      </PosedRouter>
+      </ScrollTop>
+    </PosedRouter>
     <ScrollToTopBtn />
   </div>
 );

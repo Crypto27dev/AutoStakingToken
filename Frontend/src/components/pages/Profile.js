@@ -1,8 +1,9 @@
 import React, { memo, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import ColumnNewRedux from '../components/ColumnNewRedux';
-import Footer from '../components/footer';
 import { createGlobalStyle } from 'styled-components';
+import ColumnNewRedux from '../components/ColumnNewRedux';
+import Header from "../menu/header";
+import Footer from '../components/footer';
 import * as selectors from '../../store/selectors';
 import { fetchAuthorList } from "../../store/actions/thunks";
 import { getAvatar } from "../../utils";
@@ -107,6 +108,7 @@ const Colection = ({ authorId }) => {
   return (
     <div>
       <GlobalStyles />
+      <Header />
       <section id='profile_banner' className='jumbotron breadcumb no-bg'>
         <div className='mainbreadcumb'>
           <img className="profile_img" src={navImage} width="100%" height="400px" alt=""></img>
