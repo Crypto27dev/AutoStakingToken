@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import styled from "styled-components";
+import { fromWei, getUTCDate } from '../../utils';
 import api from '../../core/api';
 
 const Outer = styled.div`
@@ -20,7 +21,7 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
         <div className="nft__item_wrap" style={{ height: `${height}px` }}>
           <Outer>
             <span>
-              <img onLoad={onImgLoad} src={api.rootUrl + nft.image} className="lazy nft__item_preview" alt="" />
+              <img onLoad={onImgLoad} src={nft.imgUri} className="lazy nft__item_preview" alt="" />
             </span>
           </Outer>
         </div>
@@ -34,7 +35,7 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
         <div className='d-flex justify-content-between'>
           <div>
             <span>Purchase on</span>
-            <div>10 Feb 2022</div>
+            <div>{getUTCDate(nft.createdTime)}</div>
           </div>
           <div align="right">
             <span>Days</span>
@@ -45,11 +46,11 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
         <div className='d-flex justify-content-between'>
           <div>
             <span>Current ROI</span>
-            <div>1%</div>
+            <div>{nft.currentROI}%</div>
           </div>
           <div align="right">
             <span>Total Revenue</span>
-            <div>$100</div>
+            <div>${fromWei(nft.nftRevenue).toFixed(5)}</div>
           </div>
         </div>
         <div className="spacer-10"></div>

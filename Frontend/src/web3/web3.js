@@ -282,6 +282,23 @@ export const getNFTCardInfos = async () => {
   }
 }
 
+export const getAvaxPrice = async (usdc) => {
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return 0;
+  }
+  try {
+    const avaxPerUSDC = await window.contract.methods.ONE_USDC_AVAX().call();
+    const avaxPrice = Number(avaxPerUSDC) * Number(usdc);
+    let avaxWei = web3.utils.fromWei(avaxPrice.toString(), 'ether');
+    return avaxWei;
+  } catch (error) {
+    return 0;
+  }
+}
+
 export const getAllNFTInfos = async () => {
   const web3 = window.web3;
   try {
@@ -293,7 +310,8 @@ export const getAllNFTInfos = async () => {
     };
   }
   try {
-    const nftInfos = await window.contract.methods.getAllNFTInfos().call();
+    let accounts = await web3.eth.getAccounts();
+    const nftInfos = await window.contract.methods.getAllNFTInfos().call({ from: accounts[0] });
     return {
       success: true,
       nftInfos
@@ -541,8 +559,6 @@ export const addNftCardInfo = async (nft, file) => {
 }
 
 export const setNFTCardInfo = async (id, imgUri, nft) => {
-  console.log(nft);
-
   const web3 = window.web3;
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
@@ -555,6 +571,59 @@ export const setNFTCardInfo = async (id, imgUri, nft) => {
   try {
     let accounts = await web3.eth.getAccounts();
     const tx = await window.contract.methods.setNFTCardInfo(id, nft.symbol, imgUri, nft.priceUSDC, 0, nft.supply).send({ from: accounts[0] });
+    return {
+      success: true,
+      tx
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
+  }
+}
+
+export const mintNfts = async (id, count, avax) => {
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 1: " + error.message,
+    };
+  }
+  try {
+    let item_price = web3.utils.toWei(avax.toString(), 'ether');
+    let accounts = await web3.eth.getAccounts();
+    const tx = await window.contract.methods.mintNFTs(id, count).send({ from: accounts[0], value: item_price });
+    return {
+      success: true,
+      tx
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
+  }
+}
+
+export const claimByNft = async (id) => {
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 1: " + error.message,
+    };
+  }
+  try {
+    let accounts = await web3.eth.getAccounts();
+    const tx = await window.contract.methods.claimByNFT(Number(id)).send({ from: accounts[0] });
     return {
       success: true,
       tx

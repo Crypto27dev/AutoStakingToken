@@ -5,7 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import NftClaimCard from "./NftClaimCard";
 import SelectCoin from './SelectCoin';
-import { getAllNFTInfos } from '../../web3/web3';
+import { getAllNFTInfos, claimByNft } from '../../web3/web3';
+import { Toast } from "../../utils";
 
 const default_nfts = [
   {
@@ -101,7 +102,7 @@ const ClaimNft = () => {
   const [height, setHeight] = useState(0);
   const [openSell, setOpenSell] = useState(false);
   const [nftInfos, setNftInfos] = useState([]);
-  const [nft, setNft] = useState({});
+  const [nftDetail, setNftDetail] = useState({});
   const [inputValue, setInputValue] = useState({});
   const [itemCoin, setItemCoin] = useState(0);
   const [method, setMethod] = useState('buy_now');
@@ -117,7 +118,18 @@ const ClaimNft = () => {
   const getNFTInfos = async () => {
     const result = await getAllNFTInfos();
     if (result.success) {
-      setNftInfos(result.nftInfos);
+      const data = result.nftInfos;
+      let nftArray = [];
+      for(let i = 0; i < data.tokenIDs.length; i ++) {
+        const createdTime = data.createdTime[i];
+        const currentROI = data.currentROI[i];
+        const nftRevenue = data.nftRevenue[i];
+        const tokenID = data.tokenIDs[i];
+        const imgUri = data.uris[i];
+        const nft = {createdTime, currentROI, nftRevenue, tokenID, imgUri};
+        nftArray.push(nft);
+      }
+      setNftInfos(nftArray);
     }
   }
 
@@ -125,14 +137,23 @@ const ClaimNft = () => {
     getNFTInfos();
   }, []);
 
-  console.log('[NFT Infos]', nftInfos);
-
-  const onClaim = (nft) => {
-
+  const onClaim = async (nft) => {
+    const result = await claimByNft(nft.tokenID);
+    if (result.success) {
+      Toast.fire({
+        icon: 'success',
+        title: 'Created a new NFT successfully!'
+      })
+    } else {
+      Toast.fire({
+        icon: 'error',
+        title: 'Something went wrong.'
+      })
+    }
   }
 
   const onSell = (nft) => {
-    setNft(nft);
+    setNftDetail(nft);
     setOpenSell(true);
   }
 
@@ -196,7 +217,7 @@ const ClaimNft = () => {
       </div> */}
       <div className="mt-3"></div>
       {nftInfos && nftInfos.map((nft, index) => (
-        <NftClaimCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} onCliam={onClaim} onSell={onSell} />
+        <NftClaimCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} onClaim={onClaim} onSell={onSell} />
       ))}
     </div>
 

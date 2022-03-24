@@ -1,4 +1,5 @@
 import moment from "moment";
+import web3 from 'web3';
 import Swal from 'sweetalert2';
 import api from "./core/api";
 
@@ -131,6 +132,11 @@ export function getUTCTimestamp(date) {
   return date_utc;
 }
 
+export function getUTCDate(timestamp) {
+  var dateString = moment.unix(timestamp).utc().format("LL");
+  return dateString;
+}
+
 export function getDeadlineTimestamp(start_time, duration) {
   const utc_date = new Date(parseInt(start_time));
   const start_utc = Date.UTC(utc_date.getUTCFullYear(), utc_date.getUTCMonth(), utc_date.getUTCDate(), utc_date.getUTCHours(), utc_date.getUTCMinutes(), utc_date.getUTCSeconds());
@@ -184,13 +190,13 @@ export function classList(classes) {
 }
 
 export function fromWei(value) {
-  const data = Number(value) / 100;
-  return data;
+  const data = web3.utils.fromWei(value.toString());
+  return Number(data);
 }
 
 export function toWei(value) {
-  const data = Number(value) * 100;
-  return data.toString();
+  const data = web3.utils.toWei(value);
+  return numberWithCommas(data);
 }
 
 export const numberWithCommas = (x) => {
