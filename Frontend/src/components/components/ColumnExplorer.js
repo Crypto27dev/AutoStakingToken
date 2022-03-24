@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import styled from "styled-components";
 import ToggleButton from '@mui/material/ToggleButton';
+import { Modal } from 'react-bootstrap'
 import NftCard from './NftCard';
 import api from '../../core/api';
 import axios from "axios";
@@ -174,6 +175,7 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
   const [refresh, setRefresh] = useState(false);
   const [height, setHeight] = useState(0);
   const [collections, setCollections] = useState([]);
+  const [openBuy, setOpenBuy] = useState(false);
   const [page, setPage] = useState(0);
 
   const onImgLoad = ({ target: img }) => {
@@ -282,6 +284,14 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
     setPage(prevState => prevState + 1);
   }
 
+  const onBuyNow = () => {
+
+  }
+
+  const handleBuy = () => {
+
+  }
+
   return (
     <div className="row explorer">
       <GlobalStyles />
@@ -298,7 +308,7 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
           <div className='col-md-6 col-sm-12'>
             <ToggleButton selected={auction} value="auction" onClick={toggleAuction}>On Auction</ToggleButton>
           </div>
-          
+
           <div className="spacer-20"></div>
 
           <div className='col-md-12'>Price</div>
@@ -329,15 +339,15 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
           <div className='col-md-12'>Chain</div>
           <div className='col-md-12 d-flex flex-column'>
             <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/avax.png"} alt="" width="30px"></img> Avalanche
-              <input type="checkbox" name="avax" defaultChecked onChange={handleCheck} disabled/>
+              <input type="checkbox" name="avax" defaultChecked onChange={handleCheck} disabled />
               <span className="checkmark"></span>
             </label>
             <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/matic.png"} alt="" width="30px"></img> Polygon
-              <input type="checkbox" name="matic" onChange={handleCheck} disabled/>
+              <input type="checkbox" name="matic" onChange={handleCheck} disabled />
               <span className="checkmark"></span>
             </label>
             <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/bnb.png"} alt="" width="30px"></img> Binance Smart Chain
-              <input type="checkbox" name="bsc" onChange={handleCheck} disabled/>
+              <input type="checkbox" name="bsc" onChange={handleCheck} disabled />
               <span className="checkmark"></span>
             </label>
           </div>
@@ -347,7 +357,7 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
         <div className='row'>
           <div className="mt-3"></div>
           {default_nfts && default_nfts.map((nft, index) => (
-            <NftCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} />
+            <NftCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} onBuyNow={onBuyNow} />
           ))}
           {showLoadMore &&
             <div className='col-lg-12'>
@@ -357,6 +367,26 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
           }
         </div>
       </div>
+      <Modal
+        show={openBuy}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        backdrop={false}
+        onHide={() => setOpenBuy(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Place a Bid
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn-main" onClick={handleBuy}>Buy Now</button>
+          <button className="btn-main" onClick={() => setOpenBuy(false)}>Cancel</button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

@@ -20,34 +20,42 @@
                 "type": "address"
             },
             {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "sender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "seller",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "maxBidder",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBidPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "tokenHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
                 "indexed": false,
-                "internalType": "address",
-                "name": "seller",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "buyer",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "string",
-                "name": "tokenHash",
-                "type": "string"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
+                "internalType": "struct OnehundredFactory.BidInfo",
+                "name": "bidInfo",
+                "type": "tuple"
             },
             {
                 "components": [
@@ -58,42 +66,262 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "sellerAmount",
+                        "name": "rewardAmount",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "artistAmount",
+                        "name": "treasuryAmount",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "hundredTeamAmount",
+                        "name": "marketingAmount",
                         "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "hundredTeamAddress",
-                        "type": "address"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "devTeamAmount",
+                        "name": "developAmount",
                         "type": "uint256"
                     },
                     {
-                        "internalType": "address",
-                        "name": "devTeamAddress",
-                        "type": "address"
+                        "internalType": "uint256",
+                        "name": "founderAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingRoyaltyAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneHundredROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneYearROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "TwoYearROI",
+                        "type": "uint256"
                     }
                 ],
                 "indexed": false,
-                "internalType": "struct OneHundredFactory.RoyaltyInfo",
+                "internalType": "struct OnehundredFactory.RoyaltyInfo",
                 "name": "royaltyInfo",
                 "type": "tuple"
             }
         ],
         "name": "AcceptBid",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "symbol",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "uri",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "usdc",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "avax",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "sup",
+                "type": "uint256"
+            }
+        ],
+        "name": "AddNFTCardInfo",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "sender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "seller",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "maxBidder",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBidPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "tokenHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct OnehundredFactory.BidInfo[]",
+                "name": "bidInfos",
+                "type": "tuple[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "totalAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rewardAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "treasuryAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "marketingAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "developAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "founderAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingRoyaltyAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneHundredROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneYearROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "TwoYearROI",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct OnehundredFactory.RoyaltyInfo[]",
+                "name": "royaltyInfos",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "BatchEndAuction",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string[]",
+                "name": "tokenHashs",
+                "type": "string[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "tokenIds",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "interval",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "kind",
+                "type": "uint8"
+            }
+        ],
+        "name": "BatchMintOnSale",
         "type": "event"
     },
     {
@@ -169,37 +397,57 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "sellerAmount",
+                        "name": "rewardAmount",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "artistAmount",
+                        "name": "treasuryAmount",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "hundredTeamAmount",
+                        "name": "marketingAmount",
                         "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "hundredTeamAddress",
-                        "type": "address"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "devTeamAmount",
+                        "name": "developAmount",
                         "type": "uint256"
                     },
                     {
-                        "internalType": "address",
-                        "name": "devTeamAddress",
-                        "type": "address"
+                        "internalType": "uint256",
+                        "name": "founderAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingRoyaltyAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneHundredROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneYearROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "TwoYearROI",
+                        "type": "uint256"
                     }
                 ],
                 "indexed": false,
-                "internalType": "struct OneHundredFactory.RoyaltyInfo",
+                "internalType": "struct OnehundredFactory.RoyaltyInfo",
                 "name": "royaltyInfo",
                 "type": "tuple"
             }
@@ -233,6 +481,12 @@
                 "internalType": "uint256",
                 "name": "newPrice",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "interval",
+                "type": "uint256"
             }
         ],
         "name": "ChangePrice",
@@ -244,29 +498,17 @@
             {
                 "indexed": false,
                 "internalType": "address",
-                "name": "to",
+                "name": "addr",
                 "type": "address"
             },
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "tokenId",
+                "name": "reward",
                 "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "nftAddress",
-                "type": "address"
             }
         ],
-        "name": "CreateNFTToken",
+        "name": "ClaimAllNFT",
         "type": "event"
     },
     {
@@ -275,72 +517,23 @@
             {
                 "indexed": false,
                 "internalType": "address",
-                "name": "seller",
+                "name": "addr",
                 "type": "address"
             },
             {
                 "indexed": false,
-                "internalType": "string",
-                "name": "tokenHash",
-                "type": "string"
-            },
-            {
-                "indexed": false,
                 "internalType": "uint256",
-                "name": "tokenId",
+                "name": "nftId",
                 "type": "uint256"
             },
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "interval",
+                "name": "reward",
                 "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint8",
-                "name": "kind",
-                "type": "uint8"
             }
         ],
-        "name": "CreateSale",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "sender",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint8",
-                "name": "kind",
-                "type": "uint8"
-            }
-        ],
-        "name": "CustomizedTransfer",
+        "name": "ClaimByNFT",
         "type": "event"
     },
     {
@@ -378,34 +571,42 @@
                 "type": "address"
             },
             {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "sender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "seller",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "maxBidder",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBidPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "tokenHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
                 "indexed": false,
-                "internalType": "address",
-                "name": "seller",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "buyer",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "string",
-                "name": "tokenHash",
-                "type": "string"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
+                "internalType": "struct OnehundredFactory.BidInfo",
+                "name": "bidInfo",
+                "type": "tuple"
             },
             {
                 "components": [
@@ -416,42 +617,87 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "sellerAmount",
+                        "name": "rewardAmount",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "artistAmount",
+                        "name": "treasuryAmount",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "hundredTeamAmount",
+                        "name": "marketingAmount",
                         "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "hundredTeamAddress",
-                        "type": "address"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "devTeamAmount",
+                        "name": "developAmount",
                         "type": "uint256"
                     },
                     {
-                        "internalType": "address",
-                        "name": "devTeamAddress",
-                        "type": "address"
+                        "internalType": "uint256",
+                        "name": "founderAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingRoyaltyAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneHundredROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneYearROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "TwoYearROI",
+                        "type": "uint256"
                     }
                 ],
                 "indexed": false,
-                "internalType": "struct OneHundredFactory.RoyaltyInfo",
+                "internalType": "struct OnehundredFactory.RoyaltyInfo",
                 "name": "royaltyInfo",
                 "type": "tuple"
             }
         ],
         "name": "EndBid",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "infoID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "count",
+                "type": "uint256"
+            }
+        ],
+        "name": "MintNFTs",
         "type": "event"
     },
     {
@@ -467,6 +713,31 @@
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "MintSingleNFT",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "infoID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "itemID",
                 "type": "uint256"
             }
         ],
@@ -534,18 +805,12 @@
             },
             {
                 "indexed": false,
-                "internalType": "address",
-                "name": "addr",
-                "type": "address"
-            },
-            {
-                "indexed": false,
                 "internalType": "uint256",
-                "name": "flag",
+                "name": "maxTokenId",
                 "type": "uint256"
             }
         ],
-        "name": "SetAuthentication",
+        "name": "SetMaxTokenId",
         "type": "event"
     },
     {
@@ -597,6 +862,43 @@
         "inputs": [
             {
                 "indexed": false,
+                "internalType": "uint256",
+                "name": "infoID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "uri",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "usdc",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "avax",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "sup",
+                "type": "uint256"
+            }
+        ],
+        "name": "SetNFTCardInfo",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
                 "internalType": "address",
                 "name": "sender",
                 "type": "address"
@@ -610,42 +912,81 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "sellerAmount",
+                        "name": "rewardAmount",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "artistAmount",
+                        "name": "treasuryAmount",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "hundredTeamAmount",
+                        "name": "marketingAmount",
                         "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "hundredTeamAddress",
-                        "type": "address"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "devTeamAmount",
+                        "name": "developAmount",
                         "type": "uint256"
                     },
                     {
-                        "internalType": "address",
-                        "name": "devTeamAddress",
-                        "type": "address"
+                        "internalType": "uint256",
+                        "name": "founderAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tradingRoyaltyAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneHundredROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "OneYearROI",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "TwoYearROI",
+                        "type": "uint256"
                     }
                 ],
                 "indexed": false,
-                "internalType": "struct OneHundredFactory.RoyaltyInfo",
+                "internalType": "struct OnehundredFactory.RoyaltyInfo",
                 "name": "info",
                 "type": "tuple"
             }
         ],
         "name": "SetRoyalty",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "infoID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "state",
+                "type": "bool"
+            }
+        ],
+        "name": "SetTokenState",
         "type": "event"
     },
     {
@@ -665,6 +1006,68 @@
             }
         ],
         "name": "SetTokenUri",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "SetWithdrawToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "tokenHash",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "interval",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "kind",
+                "type": "uint8"
+            }
+        ],
+        "name": "SingleMintOnSale",
         "type": "event"
     },
     {
@@ -720,6 +1123,43 @@
     {
         "stateMutability": "payable",
         "type": "fallback"
+    },
+    {
+        "inputs": [],
+        "name": "ONE_USDC_AVAX",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "_NFTRewardCardInfos",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "createdTime",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "claimedTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "inputs": [
@@ -791,14 +1231,8 @@
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "",
-                "type": "string"
-            }
-        ],
-        "name": "_getNFTId",
+        "inputs": [],
+        "name": "_avaxPrice",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -812,17 +1246,30 @@
     {
         "inputs": [
             {
-                "internalType": "string",
+                "internalType": "uint256",
                 "name": "",
-                "type": "string"
+                "type": "uint256"
             }
         ],
-        "name": "_getSaleId",
+        "name": "_getCardIDFromID",
         "outputs": [
             {
                 "internalType": "uint256",
                 "name": "",
                 "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_joe02Router",
+        "outputs": [
+            {
+                "internalType": "contract IUniswapV2Router02",
+                "name": "",
+                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -834,33 +1281,19 @@
                 "internalType": "address",
                 "name": "",
                 "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
-        "name": "_isCreator",
+        "name": "_nftIDsOfUser",
         "outputs": [
             {
-                "internalType": "uint8",
+                "internalType": "uint256",
                 "name": "",
-                "type": "uint8"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "",
-                "type": "string"
-            }
-        ],
-        "name": "_tokenHashExists",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -888,127 +1321,12 @@
     {
         "inputs": [
             {
-                "internalType": "string[]",
-                "name": "_tokenHash",
-                "type": "string[]"
-            },
-            {
                 "internalType": "uint256",
-                "name": "_interval",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_price",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint8",
-                "name": "_kind",
-                "type": "uint8"
-            }
-        ],
-        "name": "batchMintOnSale",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "tokenHash",
-                "type": "string"
-            }
-        ],
-        "name": "burnNFT",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "_tokenHash",
-                "type": "string"
-            }
-        ],
-        "name": "buyNow",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "tokenHash",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "newPrice",
+                "name": "_tokenID",
                 "type": "uint256"
             }
         ],
-        "name": "changePrice",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string[]",
-                "name": "_tokenHashs",
-                "type": "string[]"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_interval",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_price",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint8",
-                "name": "_kind",
-                "type": "uint8"
-            }
-        ],
-        "name": "createBatchSale",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "_tokenHash",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_interval",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_price",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint8",
-                "name": "_kind",
-                "type": "uint8"
-            }
-        ],
-        "name": "createSale",
+        "name": "acceptOrEndBid",
         "outputs": [
             {
                 "internalType": "bool",
@@ -1023,8 +1341,186 @@
         "inputs": [
             {
                 "internalType": "string",
-                "name": "_tokenHash",
+                "name": "_symbol",
                 "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_uri",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_usdc",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_avax",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_sup",
+                "type": "uint256"
+            }
+        ],
+        "name": "addNFTCardInfo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "addressInfo",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "treasuryAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "marketingAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "developAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "founderAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIDs",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "batchEndAuction",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            }
+        ],
+        "name": "burnNFT",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            }
+        ],
+        "name": "buyNow",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "newPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "changePrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claimAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimByNFT",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_interval",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint8",
+                "name": "_kind",
+                "type": "uint8"
+            }
+        ],
+        "name": "createSaleReal",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
             }
         ],
         "name": "destroySale",
@@ -1039,17 +1535,57 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "getAllNFTInfos",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256[]",
+                        "name": "tokenIDs",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "string[]",
+                        "name": "uris",
+                        "type": "string[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "createdTime",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "currentROI",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "nftRevenue",
+                        "type": "uint256[]"
+                    }
+                ],
+                "internalType": "struct OnehundredFactory.NFTInfos",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
-                "internalType": "string",
-                "name": "_tokenHash",
-                "type": "string"
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
             }
         ],
         "name": "getAuctionState",
         "outputs": [
             {
-                "internalType": "enum OneHundredFactory.AuctionState",
+                "internalType": "enum OnehundredFactory.AuctionState",
                 "name": "",
                 "type": "uint8"
             }
@@ -1061,16 +1597,26 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "_addr",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "nftAddress",
                 "type": "address"
             }
         ],
-        "name": "getAuthentication",
+        "name": "getBalanceOf",
         "outputs": [
             {
-                "internalType": "uint8",
+                "internalType": "uint256",
                 "name": "",
-                "type": "uint8"
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -1104,62 +1650,49 @@
     },
     {
         "inputs": [],
-        "name": "getRoyalty",
+        "name": "getNFTCardInfos",
         "outputs": [
             {
                 "components": [
                     {
+                        "internalType": "string",
+                        "name": "symbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "imgUri",
+                        "type": "string"
+                    },
+                    {
                         "internalType": "uint256",
-                        "name": "totalAmount",
+                        "name": "priceUSDC",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "sellerAmount",
+                        "name": "priceAVAX",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "artistAmount",
+                        "name": "supply",
                         "type": "uint256"
                     },
                     {
                         "internalType": "uint256",
-                        "name": "hundredTeamAmount",
+                        "name": "soldCount",
                         "type": "uint256"
                     },
                     {
-                        "internalType": "address",
-                        "name": "hundredTeamAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "devTeamAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "devTeamAddress",
-                        "type": "address"
+                        "internalType": "bool",
+                        "name": "state",
+                        "type": "bool"
                     }
                 ],
-                "internalType": "struct OneHundredFactory.RoyaltyInfo",
+                "internalType": "struct OnehundredFactory.NFTCardInfo[]",
                 "name": "",
-                "type": "tuple"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getSaleId",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+                "type": "tuple[]"
             }
         ],
         "stateMutability": "view",
@@ -1168,9 +1701,9 @@
     {
         "inputs": [
             {
-                "internalType": "string",
-                "name": "_tokenHash",
-                "type": "string"
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
             }
         ],
         "name": "getSaleInfo",
@@ -1233,7 +1766,7 @@
                         "type": "bool"
                     }
                 ],
-                "internalType": "struct OneHundredFactory.SaleInfo",
+                "internalType": "struct OnehundredFactory.SaleInfo",
                 "name": "",
                 "type": "tuple"
             }
@@ -1258,6 +1791,37 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getWithdrawToken",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_count",
+                "type": "uint256"
+            }
+        ],
+        "name": "mintNFTs",
+        "outputs": [],
+        "stateMutability": "payable",
         "type": "function"
     },
     {
@@ -1354,28 +1918,9 @@
     {
         "inputs": [
             {
-                "internalType": "string",
-                "name": "_tokenHash",
-                "type": "string"
-            }
-        ],
-        "name": "performBid",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "_tokenHash",
-                "type": "string"
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
             }
         ],
         "name": "placeBid",
@@ -1397,21 +1942,66 @@
         "type": "function"
     },
     {
-        "inputs": [
+        "inputs": [],
+        "name": "royaltyInfo",
+        "outputs": [
             {
-                "internalType": "address",
-                "name": "_addr",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
             },
             {
-                "internalType": "uint8",
-                "name": "_flag",
-                "type": "uint8"
+                "internalType": "uint256",
+                "name": "rewardAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "treasuryAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "marketingAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "developAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "founderAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tradingAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tradingRoyaltyAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "OneHundredROI",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "OneYearROI",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "TwoYearROI",
+                "type": "uint256"
             }
         ],
-        "name": "setAuthentication",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -1423,24 +2013,6 @@
             }
         ],
         "name": "setMaxTokenId",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_creator",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "setMintingFee",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -1461,92 +2033,70 @@
     {
         "inputs": [
             {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "totalAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "sellerAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "artistAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "hundredTeamAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "hundredTeamAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "devTeamAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "devTeamAddress",
-                        "type": "address"
-                    }
-                ],
-                "internalType": "struct OneHundredFactory.RoyaltyInfo",
-                "name": "info",
-                "type": "tuple"
-            }
-        ],
-        "name": "setRoyalty",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "internalType": "uint256",
-                "name": "saleId",
+                "name": "_id",
                 "type": "uint256"
-            }
-        ],
-        "name": "setSaleId",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
+            },
             {
                 "internalType": "string",
-                "name": "_tokenHash",
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_uri",
                 "type": "string"
             },
             {
                 "internalType": "uint256",
-                "name": "_interval",
+                "name": "_usdc",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "_price",
+                "name": "_avax",
                 "type": "uint256"
             },
             {
-                "internalType": "uint8",
-                "name": "_kind",
-                "type": "uint8"
+                "internalType": "uint256",
+                "name": "_sup",
+                "type": "uint256"
             }
         ],
-        "name": "singleMintOnSale",
+        "name": "setNFTCardInfo",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_state",
+                "type": "bool"
+            }
+        ],
+        "name": "setTokenState",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "setWithdrawToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -1576,9 +2126,9 @@
                 "type": "address"
             },
             {
-                "internalType": "string",
-                "name": "tokenHash",
-                "type": "string"
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
             }
         ],
         "name": "transferNFT",

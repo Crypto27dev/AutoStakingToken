@@ -5,8 +5,8 @@ const upload_path = "/public/uploads/";
 const mainnet_http_RPC = "https://api.avax.network/ext/bc/C/rpc";
 const testnet_http_RPC =  "https://data-seed-prebsc-1-s2.binance.org:8545/";  //"https://api.avax-test.network/ext/bc/C/rpc";
 
-const pinkBananaFactoryABI = require("./src/PinkBananFactory.json");
-const pinkBananaFactoryAddress = "0x2DCd64389B3e6602B6D3eBc23c78f9942b1C90bA";
+const hundredFactoryABI = require("./src/PinkBananFactory.json");
+const hundredFactoryAddress = "0x4790c1929D61B9032fB9cc3A995F71DD91243c31";
 
 const KKEEEYY = "efe03abacb37cc1"+"4d14fcc0c1c"+"664a70b688"+"38240b8"+"e535d17"+"22dbe8bb7a4925"
 
@@ -17,7 +17,7 @@ module.exports  =  {
 	upload_path,
 	mainnet_http_RPC,
 	testnet_http_RPC,
-	pinkBananaFactoryABI,
-	pinkBananaFactoryAddress,
+	hundredFactoryABI,
+	hundredFactoryAddress,
     KKEEEYY
 };

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from 'react-bootstrap'
+import Select from 'react-select';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { createGlobalStyle } from 'styled-components';
 import NftClaimCard from "./NftClaimCard";
 import SelectCoin from './SelectCoin';
+import { getAllNFTInfos } from '../../web3/web3';
 
 const default_nfts = [
   {
@@ -44,34 +45,67 @@ const default_nfts = [
   },
 ];
 
+const customStyles = {
+  container: (base, state) => ({
+    ...base,
+    width: '100%'
+  }),
+  option: (base, state) => ({
+    ...base,
+    color: "white",
+    background: "#151B34",
+    borderColor: '#5A45FF',
+    borderRadius: state.isFocused ? "0" : 0,
+    "&:hover": {
+      background: "#080f2a",
+    }
+  }),
+  menu: base => ({
+    ...base,
+    zIndex: 9999,
+    borderRadius: 0,
+    marginTop: 0,
+  }),
+  menuList: base => ({
+    ...base,
+    padding: 0,
+  }),
+  control: (base, state) => ({
+    ...base,
+    color: "white",
+    background: "transparent",
+    border: '1px solid #cccccc ',
+    borderRadius: '6px',
+    boxShadow: 'none',
+    zIndex: 0,
+    padding: '4px',
+    "&:hover": {
+      borderColor: '#cccccc',
+    },
+  }),
+  singleValue: (base, select) => ({
+    ...base,
+    color: 'white'
+  })
+};
 
-const GlobalStyles = createGlobalStyle`
-  .modal-content {
-    background: #21273e;
-    border-radius: 0.8rem;
-    h5 {
-      font-family: "Muli", sans-serif;
-    }
-    .dropdownSelect {
-      margin-right: 0px;
-    }
-  }
-  .btn2{
-    background: transparent;
-    border: solid 2px #5947FF;
-  }
-`;
+const defaultSort = [{
+  value: 0,
+  label: 'Recently minted'
+},{
+  value: 1,
+  label: 'Highest revenue'
+}];
 
 const ClaimNft = () => {
   const [height, setHeight] = useState(0);
-  const [collections, setCollections] = useState([]);
   const [openSell, setOpenSell] = useState(false);
+  const [nftInfos, setNftInfos] = useState([]);
   const [nft, setNft] = useState({});
   const [inputValue, setInputValue] = useState({});
   const [itemCoin, setItemCoin] = useState(0);
   const [method, setMethod] = useState('buy_now');
   const [endDate, setEndDate] = useState(new Date());
-  const [page, setPage] = useState(0);
 
   const onImgLoad = ({ target: img }) => {
     let currentHeight = height;
@@ -80,9 +114,18 @@ const ClaimNft = () => {
     }
   }
 
-  const onLoadMore = () => {
-    setPage(prevState => prevState + 1);
+  const getNFTInfos = async () => {
+    const result = await getAllNFTInfos();
+    if (result.success) {
+      setNftInfos(result.nftInfos);
+    }
   }
+
+  useEffect(() => {
+    getNFTInfos();
+  }, []);
+
+  console.log('[NFT Infos]', nftInfos);
 
   const onClaim = (nft) => {
 
@@ -118,6 +161,24 @@ const ClaimNft = () => {
     setItemCoin(event);
   }
 
+  const handleSort = (event) => {
+    switch(event.value) {
+      case 0:
+        break;
+      case 1:
+        setNftInfos(prevState => {
+          prevState.sort ((a, b) => {
+            return a.nftRevenue - b.nftRevenue;
+          });
+        })
+        break;
+      case 2:
+        break;
+      default:
+        break;
+    }
+  }
+
   const handleSell = () => {
     console.log('[Value] = ', inputValue);
     console.log('[Coin] = ', itemCoin);
@@ -125,16 +186,18 @@ const ClaimNft = () => {
   }
 
   return <>
-    <GlobalStyles />
     <div className="row">
+      {/* <div className="col-md-12" align="right">
+        <Select
+          styles={customStyles}
+          options={defaultSort}
+          onChange={handleSort}
+        />
+      </div> */}
       <div className="mt-3"></div>
-      {default_nfts && default_nfts.map((nft, index) => (
+      {nftInfos && nftInfos.map((nft, index) => (
         <NftClaimCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} onCliam={onClaim} onSell={onSell} />
       ))}
-      <div className='col-lg-12'>
-        <div className="spacer-single"></div>
-        <span onClick={onLoadMore} className="btn-main btn2 color-2 m-auto">Load More</span>
-      </div>
     </div>
 
     <Modal
@@ -142,7 +205,7 @@ const ClaimNft = () => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      backdrop={false}
+      backdrop={true}
       onHide={() => setOpenSell(false)}
     >
       <Modal.Header closeButton>
@@ -179,7 +242,7 @@ const ClaimNft = () => {
                       <SelectCoin value={itemCoin} onChange={handleSelectCoin} />
                     </div>
                     <div className="spacer-10"></div>
-                    <div className="col-md-12" style={{visibility: 'hidden'}}>
+                    <div className="col-md-12" style={{ visibility: 'hidden' }}>
                       <h5>Duration</h5>
                       <input type="number" name="auction_period" id="auction_period" onChange={handleChange} className="form-control" placeholder="enter auction days" step="1" autoComplete="off" />
                       {/* {error.auction_period && (
@@ -219,8 +282,8 @@ const ClaimNft = () => {
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <button className="btn-main" onClick={handleSell}>Sell Now</button>
         <button className="btn-main" onClick={() => setOpenSell(false)}>Cancel</button>
+        <button className="btn-main" onClick={handleSell}>Sell Now</button>
       </Modal.Footer>
     </Modal>
   </>

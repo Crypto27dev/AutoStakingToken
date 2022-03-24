@@ -1,24 +1,22 @@
 import Web3 from 'web3/dist/web3.min.js';
+import { create } from 'ipfs-http-client';
 import config from "../config";
 import store from "../store";
 import { setChainID, setWalletAddr, setBalance } from '../store/actions';
 import { Toast } from '../utils';
+import api from '../core/api';
 const hundredContractABI = config.hundredContractAbi;
 const hundredContractAddress = config.hundredContractAddress;
 
-export const ipfsAddress = "https://ipfs.infura.io/ipfs/";
-export const loadWeb3 = async () => 
-{
-  if (window.ethereum) 
-  {
+export const loadWeb3 = async () => {
+  if (window.ethereum) {
     window.web3 = new Web3(window.ethereum);
     window.web3.eth.handleRevert = true
-  } 
-  else if (window.web3) 
-  {
+  }
+  else if (window.web3) {
     window.web3 = new Web3(Web3.givenProvider);
     window.web3.eth.handleRevert = true
-  } 
+  }
   else {
     window.alert(
       "Non-Ethereum browser detected. You should consider trying MetaMask!"
@@ -33,14 +31,14 @@ export const loadWeb3 = async () =>
     window.web3.eth.getChainId().then((chainId) => {
       checkNetworkById(chainId);
     })
-    window.ethereum.on('disconnect', function(error  /*:ProviderRpcError*/) {
+    window.ethereum.on('disconnect', function (error  /*:ProviderRpcError*/) {
       store.dispatch(setWalletAddr(0));
     });
-    window.ethereum.on('accountsChanged', function(accounts /*: Array<string>*/) {
-       console.log("wallet "+accounts[0]+" is connected");
-       if(accounts[0]   !== undefined) {
+    window.ethereum.on('accountsChanged', function (accounts /*: Array<string>*/) {
+      console.log("wallet " + accounts[0] + " is connected");
+      if (accounts[0] !== undefined) {
         store.dispatch(setWalletAddr(accounts[0]));
-       }
+      }
     });
   }
 };
@@ -54,58 +52,74 @@ export const checkNetwork = async () => {
 
 export const checkNetworkById = async (chainId) => {
   if (window.web3.utils.toHex(chainId) !== window.web3.utils.toHex(config.chainId)) {
-    await changeNetwork();      
+    await changeNetwork();
   }
   const cid = await window.web3.eth.getChainId();
   store.dispatch(setChainID(cid));
-  return (window.web3.utils.toHex(cid) === window.web3.utils.toHex(config.chainId) )
+  return (window.web3.utils.toHex(cid) === window.web3.utils.toHex(config.chainId))
 }
 
-const changeNetwork = async () => 
-{
+const changeNetwork = async () => {
   try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: window.web3.utils.toHex(config.chainId) }],
-      });
-    } 
-  catch (switchError) 
-    {
-      // This error code indicates that the chain has not been added to MetaMask.
-      if (switchError.code === 4902) 
-      {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: window.web3.utils.toHex(config.chainId),
-                chainName: 'Avalanche',
-                rpcUrls: [config.mainNetUrl] /* ... */,
-              },
-            ],
-          });
-          return {
-            success : true,
-            message : "switching succeed"
-          }
-        } catch (addError) {          
-          return {
-            success : false,
-            message : "Switching failed." + addError.message
-          }
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: window.web3.utils.toHex(config.chainId) }],
+    });
+  }
+  catch (switchError) {
+    // This error code indicates that the chain has not been added to MetaMask.
+    if (switchError.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: window.web3.utils.toHex(config.chainId),
+              chainName: 'Avalanche',
+              rpcUrls: [config.mainNetUrl] /* ... */,
+            },
+          ],
+        });
+        return {
+          success: true,
+          message: "switching succeed"
+        }
+      } catch (addError) {
+        return {
+          success: false,
+          message: "Switching failed." + addError.message
         }
       }
     }
+  }
 }
 
-export const signString = async (data) => 
-{
+export const isOwner = async () => {
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return false;
+  }
+  try {
+    let accounts = await web3.eth.getAccounts();
+    const owner = await window.contract.methods.owner().call();
+
+    if (compareWalllet(accounts[0], owner)) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
+export const signString = async (data) => {
   var address = data;
   var msgHash = window.web3.utils.keccak256(data);
   var signedString = "";
-  await window.web3.eth.sign(msgHash, address, function (err, result) 
-  {
+  await window.web3.eth.sign(msgHash, address, function (err, result) {
     if (err) return console.error(err)
     signedString = result;
   })
@@ -199,8 +213,7 @@ export const getValidWallet = async () => {
   }
 };
 
-export const updateBalanceOfAccount = async () => 
-{
+export const updateBalanceOfAccount = async () => {
   const web3 = window.web3;
   try {
     let accounts = await web3.eth.getAccounts();
@@ -220,8 +233,7 @@ export const updateBalanceOfAccount = async () =>
   }
 }
 
-export const compareWalllet = (first, second) => 
-{
+export const compareWalllet = (first, second) => {
   if (!first || !second) {
     return false;
   }
@@ -231,34 +243,105 @@ export const compareWalllet = (first, second) =>
   return false;
 }
 
-const parseErrorMsg = (errMsg) =>
-{  
-  var returStr  = "";
+const parseErrorMsg = (errMsg) => {
+  var returStr = "";
   let startPos = JSON.stringify(errMsg).search("message");
-  if(startPos >= 0)
-  {
-    let subStr = errMsg.substring(startPos+4, errMsg.length)
+  if (startPos >= 0) {
+    let subStr = errMsg.substring(startPos + 4, errMsg.length)
     let endPos = subStr.indexOf("\"");
-    if(endPos >= 0)
-    {
+    if (endPos >= 0) {
       subStr = subStr.substring(0, endPos);
       returStr = subStr;
     }
-  }else returStr = errMsg;
+  } else returStr = errMsg;
   return returStr;
 }
 
-export const singleMintOnSale = async (currentAddr, itemId, auctionInterval, auctionPrice, kind = 0) => 
-{
+export const getNFTCardInfos = async () => {
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 1: " + error.message,
+    };
+  }
+  try {
+    const cardInfos = await window.contract.methods.getNFTCardInfos().call();
+    return {
+      success: true,
+      cardInfos
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
+  }
+}
+
+export const getAllNFTInfos = async () => {
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 1: " + error.message,
+    };
+  }
+  try {
+    const nftInfos = await window.contract.methods.getAllNFTInfos().call();
+    return {
+      success: true,
+      nftInfos
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
+  }
+}
+
+export const getRewardAmountByNFT = async () => {
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 1: " + error.message,
+    };
+  }
+  try {
+    const rewardAmount = await window.contract.methods.getRewardAmountByNFT().call();
+    return {
+      success: true,
+      rewardAmount
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
+  }
+}
+
+export const singleMintOnSale = async (currentAddr, itemId, auctionInterval, auctionPrice, kind = 0) => {
   /*
   Single Sell :  singleMintOnSale(string memory _tokenHash, uint _interval, uint _startPrice, uint24 _royalty, uint8 _kind)
   */
-  
-  const web3 = window.web3;  
-  if(auctionInterval === undefined || auctionInterval <=0 || auctionInterval === null)
+
+  const web3 = window.web3;
+  if (auctionInterval === undefined || auctionInterval <= 0 || auctionInterval === null)
     auctionInterval = 0;
 
-    console.log("before creating contract")
+  console.log("before creating contract")
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -267,36 +350,34 @@ export const singleMintOnSale = async (currentAddr, itemId, auctionInterval, auc
       status: "Something went wrong 1: " + error.message,
     };
   }
-  try 
-  {
+  try {
     let item_price = web3.utils.toWei(auctionPrice !== null ? auctionPrice.toString() : '0', 'ether');
     //let mintingFee = web3.utils.toWei(author.minting_fee !== null ? author.minting_fee.toString() : '0', 'ether');
-    
-    await window.contract.methods.singleMintOnSale(itemId, auctionInterval, item_price, kind).send({ from: currentAddr});
+
+    await window.contract.methods.singleMintOnSale(itemId, auctionInterval, item_price, kind).send({ from: currentAddr });
 
     return {
       success: true,
-      status: "Put on sale succeed"          
+      status: "Put on sale succeed"
     };
 
   } catch (error) {
     return {
       success: false,
-      status: "Something went wrong 2: " + error.message          
+      status: "Something went wrong 2: " + error.message
     };
   }
 }
 
-export const batchMintOnSale = async (currentAddr, itemIds = [], auctionInterval, auctionPrice, kind = 0) => 
-{
+export const batchMintOnSale = async (currentAddr, itemIds = [], auctionInterval, auctionPrice, kind = 0) => {
   /*
   Batch Sell :  batchMintOnSale(string memory _tokenHash, uint _interval, uint _startPrice, uint24 _royalty, uint8 _kind)
   */
-  
-  const web3 = window.web3;  
-  if(auctionInterval === undefined || auctionInterval <=0 || auctionInterval === null)
+
+  const web3 = window.web3;
+  if (auctionInterval === undefined || auctionInterval <= 0 || auctionInterval === null)
     auctionInterval = 0;
-    console.log("before creating contract")
+  console.log("before creating contract")
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -305,32 +386,29 @@ export const batchMintOnSale = async (currentAddr, itemIds = [], auctionInterval
       status: "Something went wrong 1: " + error.message,
     };
   }
-  try 
-  {
+  try {
     let item_price = web3.utils.toWei(auctionPrice !== null ? auctionPrice.toString() : '0', 'ether');
     //let mintingFee = web3.utils.toWei(author.minting_fee !== null ? author.minting_fee.toString() : '0', 'ether');    
-    await window.contract.methods.batchMintOnSale(itemIds, auctionInterval, item_price, kind).send({ from: currentAddr});
+    await window.contract.methods.batchMintOnSale(itemIds, auctionInterval, item_price, kind).send({ from: currentAddr });
 
     return {
       success: true,
-      status: "Put on sale succeed"          
+      status: "Put on sale succeed"
     };
 
   } catch (error) {
     return {
       success: false,
-      status: "Something went wrong 2: " + error.message          
+      status: "Something went wrong 2: " + error.message
     };
   }
 }
 
-export const destroySale = async (currentAddr, tokenId) => 
-{
+export const destroySale = async (currentAddr, tokenId) => {
   /*
   Cancel Sale : destroySale(string memory _tokenHash)
-  */ 
-  try 
-  {
+  */
+  try {
     window.contract = await new window.web3.eth.Contract(hundredContractABI, hundredContractAddress);
     var destroySale = window.contract.methods.destroySale(tokenId);
     let gasFee = await destroySale.estimateGas({ from: currentAddr });
@@ -347,7 +425,7 @@ export const destroySale = async (currentAddr, tokenId) =>
         success: false
       };
     }
-    await destroySale.send({ from: currentAddr});
+    await destroySale.send({ from: currentAddr });
     // updateUserBalanceAfterTrading(currentAddr);
     return {
       success: true
@@ -360,32 +438,29 @@ export const destroySale = async (currentAddr, tokenId) =>
   }
 }
 
-export const buyNow = async (currentAddr, tokenId, price) =>
-{
+export const buyNow = async (currentAddr, tokenId, price) => {
   /*
   acceptOrEndBid(string memory _tokenHash)
-  */  
+  */
 
-  try 
-  {
+  try {
     window.contract = await new window.web3.eth.Contract(hundredContractABI, hundredContractAddress);
     let item_price = window.web3.utils.toWei(price !== null ? price.toString() : '0', 'ether');
     //alert("tokenHash = " +  tokenId + ", price=" + item_price);
     var buyNow = window.contract.methods.buyNow(tokenId);
-    let gasFee = await buyNow.estimateGas({ from: currentAddr, value: item_price});
+    let gasFee = await buyNow.estimateGas({ from: currentAddr, value: item_price });
     // console.log("before getBalance");
     var balanceOfUser = await window.web3.eth.getBalance(currentAddr);
     var gasPrice = 30 * (10 ** 9);
 
-    if (balanceOfUser <= gasFee * gasPrice) 
-    {
+    if (balanceOfUser <= gasFee * gasPrice) {
       Toast.fire({
         icon: 'error',
         title: 'Insufficient balance.'
       });
       return;
     }
-    await buyNow.send({ from: currentAddr, value: item_price});
+    await buyNow.send({ from: currentAddr, value: item_price });
 
     Toast.fire({
       icon: 'error',
@@ -398,5 +473,97 @@ export const buyNow = async (currentAddr, tokenId, price) =>
       icon: 'error',
       title: parseErrorMsg(error.message)
     });
+  }
+}
+
+export const createNftFile = async (file, title, description) => {
+  const client = create('https://ipfs.infura.io:5001/api/v0')
+  try {
+    const image_hash = await client.add(file);
+    const metadata = JSON.stringify({
+      name: title,
+      description: description,
+      image: api.ipfsUrl + image_hash.cid.toString()
+    });
+    const meta_hash = await client.add(metadata);
+    const token_uri = api.ipfsUrl + meta_hash.cid.toString();
+    return {
+      success: true,
+      image_uri: api.ipfsUrl + image_hash.cid.toString(),
+      token_uri: token_uri
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Error uploading file: ' + error
+    }
+  }
+};
+
+export const addNftCardInfo = async (nft, file) => {
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 1: " + error.message,
+    };
+  }
+  let tokenURI, imageURI;
+  const result = await createNftFile(file, nft.symbol, '');
+  if (result.success) {
+    imageURI = result.image_uri;
+    tokenURI = result.token_uri;
+    console.log('[imageURI] = ', imageURI);
+    console.log('[tokenURI] = ', tokenURI);
+  }
+  else {
+    return {
+      success: false,
+      status: result.error,
+    };
+  }
+  try {
+    let accounts = await web3.eth.getAccounts();
+    const tx = await window.contract.methods.addNFTCardInfo(nft.symbol, imageURI, nft.priceUSDC, 0, nft.supply).send({ from: accounts[0] });
+
+    return {
+      success: true,
+      tx
+    };
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
+  }
+}
+
+export const setNFTCardInfo = async (id, imgUri, nft) => {
+  console.log(nft);
+
+  const web3 = window.web3;
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 1: " + error.message,
+    };
+  }
+  try {
+    let accounts = await web3.eth.getAccounts();
+    const tx = await window.contract.methods.setNFTCardInfo(id, nft.symbol, imgUri, nft.priceUSDC, 0, nft.supply).send({ from: accounts[0] });
+    return {
+      success: true,
+      tx
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
   }
 }

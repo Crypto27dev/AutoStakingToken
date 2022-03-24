@@ -14,8 +14,8 @@ var Web3 = require('web3');
 var ObjectId = require('mongodb').ObjectID;
 // const mainnet_http_RPC = require("../env").mainnet_http_RPC;
 const testnet_http_RPC = require("../env").testnet_http_RPC;
-const pinkBananaFactoryABI = require("../env").pinkBananaFactoryABI;
-const pinkBananaFactoryAddress = require("../env").pinkBananaFactoryAddress;
+const hundredFactoryABI = require("../env").hundredFactoryABI;
+const hundredFactoryAddress = require("../env").hundredFactoryAddress;
 const KKEEEYY = require("../env").KKEEEYY;
 const { setIntervalAsync } = require('set-interval-async/fixed')
 var ObjectId = require('mongodb').ObjectID;
@@ -27,7 +27,7 @@ const Item = db.Item;
 const Notify = db.Notify;
 
 var web3WS = new Web3(testnet_http_RPC);
-var myContract = new web3WS.eth.Contract(pinkBananaFactoryABI, pinkBananaFactoryAddress);
+var myContract = new web3WS.eth.Contract(hundredFactoryABI, hundredFactoryAddress);
 var admin_wallet = web3WS.eth.accounts.privateKeyToAccount(KKEEEYY);
 
 var scanBlockNumber = 0;

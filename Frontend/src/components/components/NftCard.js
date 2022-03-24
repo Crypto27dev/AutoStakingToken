@@ -10,7 +10,7 @@ const Outer = styled.div`
 `;
 
 //react functional component
-const NftCard = ({ nft, className = 'd-item col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-4', height, onImgLoad }) => {
+const NftCard = ({ nft, className = 'd-item col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-4', height, onImgLoad, onBuyNow }) => {
   return (
     <div className={className}>
       <div className="nft__item m-0">
@@ -51,7 +51,7 @@ const NftCard = ({ nft, className = 'd-item col-lg-3 col-md-6 col-sm-6 col-xs-12
         </div>
         <div className="spacer-10"></div>
         <div className="d-flex justify-content-between">
-          <button className='btn-main m-auto'>Buy Now</button>
+          <button className='btn-main m-auto' onClick={onBuyNow}>Buy Now</button>
         </div>
       </div>
     </div>

@@ -20,6 +20,7 @@ import Activity from './pages/activity';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import MyCollection from './pages/MyCollection';
+import Admin from './pages/admin';
 
 import { createGlobalStyle } from 'styled-components';
 
@@ -74,6 +75,7 @@ const app = () => (
         <Profile path="/profile" />
         <EditProfile path="/edit_profile" />
         <MyCollection path="/my_collection" />
+        <Admin path="/admin" />
       </ScrollTop>
     </PosedRouter>
     <ScrollToTopBtn />

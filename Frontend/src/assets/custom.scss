@@ -544,3 +544,19 @@ input:focus, textarea:focus {
 .colored-toast .swal2-html-container {
   color: white;
 }
+
+.modal-content {
+  background: #21273e !important;
+  border-radius: 0.8rem !important;
+  h5 {
+    font-family: "Muli", sans-serif;
+  }
+  .dropdownSelect {
+    margin-right: 0px;
+  }
+}
+
+.btn2{
+  background: transparent;
+  border: solid 2px #5947FF;
+}
