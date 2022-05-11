@@ -33,7 +33,7 @@ const Loading = styled('div')`
   gap: 15px;
 `;
 
-export const Prop = styled('h3')`f5 f4-ns mb0 white`;
+const Prop = styled('h3')`f5 f4-ns mb0 white`;
 
 const Admin = () => {
   const [openNew, setOpenNew] = useState(false);

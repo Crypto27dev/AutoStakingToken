@@ -1,7 +1,6 @@
 import React from 'react';
 import { Router, Location, Redirect } from '@reach/router';
 import ScrollToTopBtn from './menu/ScrollToTop';
-import Home from './pages/Home/HomePage';
 import Dashboard from './pages/home';
 import MintEarning from './pages/mintEarning';
 import Explore from './pages/explore';
@@ -54,10 +53,9 @@ const app = () => (
     <GlobalStyles />
     <PosedRouter>
       <ScrollTop path="/">
-        <Home exact path="/">
+        <Dashboard path="/" >
           <Redirect to="/" />
-        </Home>
-        <Dashboard path="/dashboard" />
+        </Dashboard>
         <MintEarning path="/mint" />
         <Explore path="/explore" />
         <RankingRedux path="/ranking" />

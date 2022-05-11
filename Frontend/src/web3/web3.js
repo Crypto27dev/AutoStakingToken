@@ -1,70 +1,129 @@
+import Web3Modal from 'web3modal';
 import Web3 from 'web3/dist/web3.min.js';
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { providers } from 'ethers';
 import { create } from 'ipfs-http-client';
 import config from "../config";
 import store from "../store";
-import { setChainID, setWalletAddr, setBalance } from '../store/actions';
+import { setChainID, setWalletAddr, setBalance, setWeb3 } from '../store/actions';
 import { Toast } from '../utils';
 import api from '../core/api';
 const hundredContractABI = config.hundredContractAbi;
 const hundredContractAddress = config.hundredContractAddress;
+const USDCABI = config.USDCAbi;
+const USDCAddress = config.USDCAddress;
+
+let web3Modal;
+if (typeof window !== "undefined") {
+  web3Modal = new Web3Modal({
+    show: true,
+    network: "rinkeby", // optional
+    cacheProvider: true,
+    providerOptions: {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          infuraId: config.INFURA_ID, // required
+          rpc: {
+            4: config.mainNetUrl,
+          },
+        },
+      },
+    }, // required
+    theme: "dark",
+  });
+}
+
+let provider = null;
+let web3Provider = null;
 
 export const loadWeb3 = async () => {
-  if (window.ethereum) {
-    window.web3 = new Web3(window.ethereum);
-    window.web3.eth.handleRevert = true
-  }
-  else if (window.web3) {
-    window.web3 = new Web3(Web3.givenProvider);
-    window.web3.eth.handleRevert = true
-  }
-  else {
-    window.alert(
-      "Non-Ethereum browser detected. You should consider trying MetaMask!"
-    );
-    return;
-  }
-  if (window.ethereum) {
-    window.ethereum.on('chainChanged', function (chainId) {
-      checkNetworkById(chainId);
+  try {
+    // await web3Modal.updateTheme({
+    //   background: "rgb(39, 49, 56)",
+    //   main: "rgb(199, 199, 199)",
+    //   secondary: "rgb(136, 136, 136)",
+    //   border: "rgba(195, 195, 195, 0.14)",
+    //   hover: "rgb(16, 26, 32)"
+    // });
+    web3Modal.show = true;
+    // await web3Modal.clearCachedProvider();
+    let web3 = new Web3(config.mainNetUrl);
+    store.dispatch(setWeb3(web3));
+    provider = await web3Modal.connect();
+    web3 = new Web3(provider);
+    store.dispatch(setWeb3(web3));
 
-    });
-    window.web3.eth.getChainId().then((chainId) => {
-      checkNetworkById(chainId);
-    })
-    window.ethereum.on('disconnect', function (error  /*:ProviderRpcError*/) {
-      store.dispatch(setWalletAddr(0));
-    });
-    window.ethereum.on('accountsChanged', function (accounts /*: Array<string>*/) {
-      console.log("wallet " + accounts[0] + " is connected");
+    web3Provider = new providers.Web3Provider(provider);
+    const network = await web3Provider.getNetwork();
+    console.log('[Network ID] = ', network )
+    store.dispatch(setChainID(network.chainId));
+
+    const signer = web3Provider.getSigner();
+    const account = await signer.getAddress();
+    store.dispatch(setWalletAddr(account));
+
+    await getBalanceOfAccount();
+    provider.on("accountsChanged", async function (accounts) {
       if (accounts[0] !== undefined) {
         store.dispatch(setWalletAddr(accounts[0]));
+        await getBalanceOfAccount();
+      } else {
+        store.dispatch(setWalletAddr(''));
       }
     });
+
+    provider.on('chainChanged', function (chainId) {
+      store.dispatch(setChainID(chainId));
+    });
+
+    provider.on('disconnect', function (error) {
+      store.dispatch(setWalletAddr(''));
+    });
+  } catch (error) {
+    console.log('[Load Web3 error] = ', error);
   }
-};
+}
+
+export const disconnect = async () => {
+  await web3Modal.clearCachedProvider();
+  const web3 = new Web3(config.mainNetUrl);
+  store.dispatch(setWeb3(web3));
+  store.dispatch(setChainID(''));
+  store.dispatch(setWalletAddr(''));
+  store.dispatch(setBalance({
+    usdcBalance: ''
+  }));
+}
 
 export const checkNetwork = async () => {
-  if (window.web3) {
-    const chainId = await window.web3.eth.getChainId();
-    return checkNetworkById(chainId);
+  if (web3Provider) {
+    const network = await web3Provider.getNetwork();
+    store.dispatch(setChainID(network.chainId));
+    return checkNetworkById(network.chainId);
   }
 }
 
 export const checkNetworkById = async (chainId) => {
-  if (window.web3.utils.toHex(chainId) !== window.web3.utils.toHex(config.chainId)) {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return false;
+  if (web3.utils.toHex(chainId) !== web3.utils.toHex(config.chainId)) {
     await changeNetwork();
+    return false;
+  } else {
+    return true;
   }
-  const cid = await window.web3.eth.getChainId();
-  store.dispatch(setChainID(cid));
-  return (window.web3.utils.toHex(cid) === window.web3.utils.toHex(config.chainId))
 }
 
 const changeNetwork = async () => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return;
   try {
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: window.web3.utils.toHex(config.chainId) }],
+      params: [{ chainId: web3.utils.toHex(config.chainId) }],
     });
+    await getBalanceOfAccount();
   }
   catch (switchError) {
     // This error code indicates that the chain has not been added to MetaMask.
@@ -74,7 +133,7 @@ const changeNetwork = async () => {
           method: 'wallet_addEthereumChain',
           params: [
             {
-              chainId: window.web3.utils.toHex(config.chainId),
+              chainId: web3.utils.toHex(config.chainId),
               chainName: 'Avalanche',
               rpcUrls: [config.mainNetUrl] /* ... */,
             },
@@ -94,8 +153,66 @@ const changeNetwork = async () => {
   }
 }
 
+export const connectWallet = async () => {
+  try {
+    provider = await web3Modal.connect();
+    const web3 = new Web3(provider);
+    store.dispatch(setWeb3(web3));
+    web3Provider = new providers.Web3Provider(provider);
+
+    await checkNetwork();
+    const signer = web3Provider.getSigner();
+    const account = await signer.getAddress();
+
+    if (account !== undefined) {
+      store.dispatch(setWalletAddr(account));
+    }
+
+    await getBalanceOfAccount();
+    return {
+      success: true
+    }
+  } catch (err) {
+    return {
+      success: false,
+      address: "",
+      status: "Something went wrong: " + err.message,
+    };
+  }
+};
+
+
+export const getBalanceOfAccount = async () => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
+  try {
+    const accounts = await web3.eth.getAccounts();
+    if (accounts.length === 0) return { success: false }
+    let avaxBalance = await web3.eth.getBalance(accounts[0]);
+    avaxBalance = web3.utils.fromWei(avaxBalance);
+    // const UsdcContract = new web3.eth.Contract(USDCABI, USDCAddress);
+    // let usdcBalance = await UsdcContract.methods.balanceOf(accounts[0]).call();
+    // usdcBalance = web3.utils.fromWei(usdcBalance, 'mwei');
+
+    store.dispatch(setBalance({
+      avaxBalance
+    }));
+    return {
+      success: true,
+      usdcBalance: avaxBalance
+    }
+  } catch (error) {
+    console.log('[Get Balance] = ', error);
+    return {
+      success: false,
+      result: "Something went wrong: "
+    }
+  }
+}
+
 export const isOwner = async () => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return false;
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -116,56 +233,17 @@ export const isOwner = async () => {
 }
 
 export const signString = async (data) => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return;
   var address = data;
-  var msgHash = window.web3.utils.keccak256(data);
+  var msgHash = web3.utils.keccak256(data);
   var signedString = "";
-  await window.web3.eth.sign(msgHash, address, function (err, result) {
+  await web3.eth.sign(msgHash, address, function (err, result) {
     if (err) return console.error(err)
     signedString = result;
   })
   return signedString;
 }
-
-export const connectWallet = async () => {
-  if (window.ethereum) {
-    try {
-      const addressArray = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const obj = {
-        success: true,
-        status: "Metamask successfuly connected.",
-        address: addressArray[0],
-      };
-      checkNetwork();
-      return obj;
-    } catch (err) {
-      return {
-        success: false,
-        address: "",
-        status: "Something went wrong: " + err.message,
-      };
-    }
-  }
-  else {
-    return {
-      success: false,
-      address: "",
-      status: (
-        <span>
-          <p>
-            {" "}
-            🦊{" "}
-            <a target="_blank" rel="noreferrer" href={`https://metamask.io/download.html`}>
-              You must install Metamask, a virtual BSC wallet, in your
-              browser.
-            </a>
-          </p>
-        </span>
-      ),
-    };
-  }
-};
 
 export const getValidWallet = async () => {
   if (window.ethereum) {
@@ -214,7 +292,8 @@ export const getValidWallet = async () => {
 };
 
 export const updateBalanceOfAccount = async () => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
     let accounts = await web3.eth.getAccounts();
     let accountBalance = await web3.eth.getBalance(accounts[0]);
@@ -258,7 +337,8 @@ const parseErrorMsg = (errMsg) => {
 }
 
 export const getNFTCardInfos = async () => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -283,7 +363,8 @@ export const getNFTCardInfos = async () => {
 }
 
 export const getAvaxPrice = async (usdc) => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return 0;
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -300,7 +381,8 @@ export const getAvaxPrice = async (usdc) => {
 }
 
 export const getAllNFTInfos = async () => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -326,7 +408,8 @@ export const getAllNFTInfos = async () => {
 }
 
 export const getRewardAmountByNFT = async () => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -355,7 +438,8 @@ export const singleMintOnSale = async (currentAddr, itemId, auctionInterval, auc
   Single Sell :  singleMintOnSale(string memory _tokenHash, uint _interval, uint _startPrice, uint24 _royalty, uint8 _kind)
   */
 
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   if (auctionInterval === undefined || auctionInterval <= 0 || auctionInterval === null)
     auctionInterval = 0;
 
@@ -392,7 +476,8 @@ export const batchMintOnSale = async (currentAddr, itemIds = [], auctionInterval
   Batch Sell :  batchMintOnSale(string memory _tokenHash, uint _interval, uint _startPrice, uint24 _royalty, uint8 _kind)
   */
 
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   if (auctionInterval === undefined || auctionInterval <= 0 || auctionInterval === null)
     auctionInterval = 0;
   console.log("before creating contract")
@@ -426,12 +511,14 @@ export const destroySale = async (currentAddr, tokenId) => {
   /*
   Cancel Sale : destroySale(string memory _tokenHash)
   */
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
-    window.contract = await new window.web3.eth.Contract(hundredContractABI, hundredContractAddress);
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
     var destroySale = window.contract.methods.destroySale(tokenId);
     let gasFee = await destroySale.estimateGas({ from: currentAddr });
     // console.log("before getBalance");
-    var balanceOfUser = await window.web3.eth.getBalance(currentAddr);
+    var balanceOfUser = await web3.eth.getBalance(currentAddr);
     var gasPrice = 30 * (10 ** 9);
 
     if (balanceOfUser <= gasFee * gasPrice) {
@@ -460,15 +547,16 @@ export const buyNow = async (currentAddr, tokenId, price) => {
   /*
   acceptOrEndBid(string memory _tokenHash)
   */
-
+  const web3 = store.getState().auth.web3;
+  if (!web3) return;
   try {
-    window.contract = await new window.web3.eth.Contract(hundredContractABI, hundredContractAddress);
-    let item_price = window.web3.utils.toWei(price !== null ? price.toString() : '0', 'ether');
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+    let item_price = web3.utils.toWei(price !== null ? price.toString() : '0', 'ether');
     //alert("tokenHash = " +  tokenId + ", price=" + item_price);
     var buyNow = window.contract.methods.buyNow(tokenId);
     let gasFee = await buyNow.estimateGas({ from: currentAddr, value: item_price });
     // console.log("before getBalance");
-    var balanceOfUser = await window.web3.eth.getBalance(currentAddr);
+    var balanceOfUser = await web3.eth.getBalance(currentAddr);
     var gasPrice = 30 * (10 ** 9);
 
     if (balanceOfUser <= gasFee * gasPrice) {
@@ -519,7 +607,8 @@ export const createNftFile = async (file, title, description) => {
 };
 
 export const addNftCardInfo = async (nft, file) => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -559,7 +648,8 @@ export const addNftCardInfo = async (nft, file) => {
 }
 
 export const setNFTCardInfo = async (id, imgUri, nft) => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -585,7 +675,8 @@ export const setNFTCardInfo = async (id, imgUri, nft) => {
 }
 
 export const mintNfts = async (id, count, avax) => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -597,7 +688,7 @@ export const mintNfts = async (id, count, avax) => {
   try {
     let item_price = web3.utils.toWei(avax.toString(), 'ether');
     let accounts = await web3.eth.getAccounts();
-    const tx = await window.contract.methods.mintNFTs(id, count).send({ from: accounts[0], value: item_price });
+    const tx = await window.contract.methods.mintNFTs(id, count).send({ from: accounts[0], value: item_price * count });
     return {
       success: true,
       tx
@@ -612,7 +703,8 @@ export const mintNfts = async (id, count, avax) => {
 }
 
 export const claimByNft = async (id) => {
-  const web3 = window.web3;
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -624,6 +716,33 @@ export const claimByNft = async (id) => {
   try {
     let accounts = await web3.eth.getAccounts();
     const tx = await window.contract.methods.claimByNFT(Number(id)).send({ from: accounts[0] });
+    return {
+      success: true,
+      tx
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
+  }
+}
+
+export const claimAll = async (id) => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
+  try {
+    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 1: " + error.message,
+    };
+  }
+  try {
+    let accounts = await web3.eth.getAccounts();
+    const tx = await window.contract.methods.claimAll().send({ from: accounts[0] });
     return {
       success: true,
       tx

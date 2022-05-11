@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from 'react-bootstrap'
 import Select from 'react-select';
+import styled from "styled-components";
+import ReactLoading from "react-loading";
+import Backdrop from '@mui/material/Backdrop';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from 'sweetalert2';
 import NftClaimCard from "./NftClaimCard";
 import SelectCoin from './SelectCoin';
-import { getAllNFTInfos, claimByNft } from '../../web3/web3';
-import { Toast } from "../../utils";
+import { getAllNFTInfos, claimByNft, claimAll } from '../../web3/web3';
+import { Toast, fromWei, isEmpty } from "../../utils";
 
 const default_nfts = [
   {
@@ -93,20 +97,39 @@ const customStyles = {
 const defaultSort = [{
   value: 0,
   label: 'Recently minted'
-},{
+}, {
   value: 1,
   label: 'Highest revenue'
 }];
+
+const Loading = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const Prop = styled('h3')`f5 f4-ns mb0 white`;
 
 const ClaimNft = () => {
   const [height, setHeight] = useState(0);
   const [openSell, setOpenSell] = useState(false);
   const [nftInfos, setNftInfos] = useState([]);
   const [nftDetail, setNftDetail] = useState({});
-  const [inputValue, setInputValue] = useState({});
+  const [inputValue, setInputValue] = useState({
+    item_price: '',
+    item_price_bid: ''
+  });
   const [itemCoin, setItemCoin] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [method, setMethod] = useState('buy_now');
   const [endDate, setEndDate] = useState(new Date());
+  const [error, setError] = useState({
+    item_price: false,
+    description: false,
+    item_price_bid: false
+  })
 
   const onImgLoad = ({ target: img }) => {
     let currentHeight = height;
@@ -120,13 +143,13 @@ const ClaimNft = () => {
     if (result.success) {
       const data = result.nftInfos;
       let nftArray = [];
-      for(let i = 0; i < data.tokenIDs.length; i ++) {
+      for (let i = 0; i < data.tokenIDs.length; i++) {
         const createdTime = data.createdTime[i];
         const currentROI = data.currentROI[i];
         const nftRevenue = data.nftRevenue[i];
         const tokenID = data.tokenIDs[i];
         const imgUri = data.uris[i];
-        const nft = {createdTime, currentROI, nftRevenue, tokenID, imgUri};
+        const nft = { createdTime, currentROI, nftRevenue, tokenID, imgUri };
         nftArray.push(nft);
       }
       setNftInfos(nftArray);
@@ -138,18 +161,33 @@ const ClaimNft = () => {
   }, []);
 
   const onClaim = async (nft) => {
-    const result = await claimByNft(nft.tokenID);
-    if (result.success) {
-      Toast.fire({
-        icon: 'success',
-        title: 'Created a new NFT successfully!'
-      })
-    } else {
-      Toast.fire({
-        icon: 'error',
-        title: 'Something went wrong.'
-      })
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      text: `You will receive $${fromWei(nft.nftRevenue).toFixed(5)}`,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        const result = await claimByNft(nft.tokenID);
+        setLoading(false);
+        if (result.success) {
+          Toast.fire({
+            icon: 'success',
+            title: 'Created a new NFT successfully!'
+          })
+        } else {
+          Toast.fire({
+            icon: 'error',
+            title: 'Something went wrong.'
+          })
+        }
+      }
+    });
   }
 
   const onSell = (nft) => {
@@ -175,7 +213,12 @@ const ClaimNft = () => {
   }
 
   const handleChange = (event) => {
-    setInputValue({ [event.target.name]: event.target.value })
+    setError(prevState => {
+      return { ...prevState, [event.target.name]: false }
+    });
+    setInputValue(prevState => {
+      return { ...prevState, [event.target.name]: event.target.value }
+    });
   }
 
   const handleSelectCoin = (event) => {
@@ -183,12 +226,12 @@ const ClaimNft = () => {
   }
 
   const handleSort = (event) => {
-    switch(event.value) {
+    switch (event.value) {
       case 0:
         break;
       case 1:
         setNftInfos(prevState => {
-          prevState.sort ((a, b) => {
+          prevState.sort((a, b) => {
             return a.nftRevenue - b.nftRevenue;
           });
         })
@@ -200,21 +243,75 @@ const ClaimNft = () => {
     }
   }
 
+  const validate = () => {
+    let result = true;
+    let newError = {};
+    if (method === 'buy_now') {
+      if (isEmpty(inputValue.item_price)) {
+        newError.item_price = true;
+        result = false;
+      }
+    } else {
+      if (isEmpty(inputValue.item_price_bid)) {
+        newError.item_price_bid = true;
+        result = false;
+      }
+    }
+    setError(newError);
+    return result;
+  }
+
   const handleSell = () => {
     console.log('[Value] = ', inputValue);
     console.log('[Coin] = ', itemCoin);
     console.log('[Method] = ', method);
+    if (!validate()) return;
+    setLoading(true);
+    setLoading(false);
+  }
+
+  const handleClaimAll = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      text: `You will receive $${fromWei(0).toFixed(5)}`,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        const result = await claimAll();
+        setLoading(false);
+        if (result.success) {
+          Toast.fire({
+            icon: 'success',
+            title: 'Created a new NFT successfully!'
+          })
+        } else {
+          Toast.fire({
+            icon: 'error',
+            title: 'Something went wrong.'
+          })
+        }
+      }
+    });
   }
 
   return <>
     <div className="row">
-      {/* <div className="col-md-12" align="right">
-        <Select
+      <div className="col-md-3 offset-md-6">
+        {/* <Select
           styles={customStyles}
           options={defaultSort}
           onChange={handleSort}
-        />
-      </div> */}
+        /> */}
+      </div>
+      <div className="col-md-3">
+        <button className='btn-main' onClick={handleClaimAll}>Claim All</button>
+      </div>
       <div className="mt-3"></div>
       {nftInfos && nftInfos.map((nft, index) => (
         <NftClaimCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} onClaim={onClaim} onSell={onSell} />
@@ -254,9 +351,9 @@ const ClaimNft = () => {
                     <div className="col-md-8">
                       <h5>Price</h5>
                       <input type="number" name="item_price" id="item_price" className="form-control" placeholder="enter price for one item" onChange={handleChange} autoComplete="off" />
-                      {/* {error.item_price && (
-                          <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
-                        )} */}
+                      {error.item_price && (
+                        <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
+                      )}
                     </div>
                     <div className="col-md-4">
                       <h5>&nbsp;</h5>
@@ -266,9 +363,6 @@ const ClaimNft = () => {
                     <div className="col-md-12" style={{ visibility: 'hidden' }}>
                       <h5>Duration</h5>
                       <input type="number" name="auction_period" id="auction_period" onChange={handleChange} className="form-control" placeholder="enter auction days" step="1" autoComplete="off" />
-                      {/* {error.auction_period && (
-                          <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the duration.</span>
-                        )} */}
                     </div>
                   </div>
                 </div>
@@ -278,9 +372,9 @@ const ClaimNft = () => {
                     <div className="col-md-8">
                       <h5>Start Price</h5>
                       <input type="number" name="item_price_bid" id="item_price_bid" className="form-control" placeholder="enter start price" onChange={handleChange} autoComplete="off" />
-                      {/* {error.item_price_bid && (
-                          <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
-                        )} */}
+                      {error.item_price_bid && (
+                        <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
+                      )}
                     </div>
                     <div className="col-md-4">
                       <h5>&nbsp;</h5>
@@ -307,6 +401,15 @@ const ClaimNft = () => {
         <button className="btn-main" onClick={handleSell}>Sell Now</button>
       </Modal.Footer>
     </Modal>
+    {<Backdrop
+      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={loading}
+    >
+      <Loading>
+        <ReactLoading type={'spinningBubbles'} color="#fff" />
+        <Prop>Saving...</Prop>
+      </Loading>
+    </Backdrop>}
   </>
 }
 

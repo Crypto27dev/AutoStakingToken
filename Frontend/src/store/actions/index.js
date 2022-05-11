@@ -109,6 +109,7 @@ export const filterItemsType = action('nft/FILTER_ITEMS_TYPE')();
 export const filterCollections = action('nft/FILTER_COLLECTIONS')();
 export const filterNftTitle = action('nft/FILTER_NFT_TITLE')();
 
+export const setWeb3 = action('auth/SET_WEB3')();
 export const setAuthState = action('auth/SET_AUTH_STATE')();
 export const setWalletAddr = action('auth/SET_WALLET_ADDR')();
 export const setChainID = action('auth/SET_CHAIN_ID')();

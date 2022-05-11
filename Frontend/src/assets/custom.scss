@@ -560,3 +560,7 @@ input:focus, textarea:focus {
   background: transparent;
   border: solid 2px #5947FF;
 }
+
+.web3modal-modal-lightbox {
+  z-index: 999 !important;
+}

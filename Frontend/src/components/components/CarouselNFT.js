@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import styled from "styled-components";
 import ReactLoading from "react-loading";
 import Backdrop from '@mui/material/Backdrop';
+import Swal from 'sweetalert2';
 import { settings } from './constants';
 import { numberWithCommas, Toast } from "../../utils";
 import { getNFTCardInfos, getAvaxPrice, mintNfts } from "../../web3/web3";
@@ -106,20 +107,33 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
 
   const handleMint = async (_id, nft) => {
     const count = counts[_id] === undefined ? 1 : counts[_id];
-    setLoading(true);
-    const result = await mintNfts(_id, count, nft.avax);
-    if (result.success) {
-      Toast.fire({
-        icon: 'success',
-        title: 'Created a new NFT successfully!'
-      })
-    } else {
-      Toast.fire({
-        icon: 'error',
-        title: 'Something went wrong.'
-      })
-    }
-    setLoading(false);
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      text: `You are about to mint a new NFT`,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        const result = await mintNfts(_id, count, nft.avax);
+        if (result.success) {
+          Toast.fire({
+            icon: 'success',
+            title: 'Created a new NFT successfully!'
+          })
+        } else {
+          Toast.fire({
+            icon: 'error',
+            title: 'Something went wrong.'
+          })
+        }
+        setLoading(false);
+      }
+    });
   }
 
   return (
@@ -135,7 +149,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
             {cardInfos && cardInfos.map((nft, index) => (
               <div className="nft_item block_1 p-3 text-center" key={index}>
                 <div className="nft_avatar mx-auto mb-3 d-flex justify-content-center align-items-center">
-                  <img src={nft.imgUri} className="rounded-circle img-fluid" alt="img" />
+                  <img src={'/img/nfts/dolphin.png'} className="rounded-circle img-fluid" alt="img" />
                 </div>
                 <div className="nft_title mb-3 text-center text-uppercase">{nft.symbol} NFT</div>
                 <div className="nft_amount">${numberWithCommas(nft.priceUSDC)}/-</div>
@@ -151,6 +165,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
                         ref={slickRef}
                         slidesToShow={1}
                         slidesToScroll={1}
+                        vertical={true}
                         afterChange={(value) => handleSlide(index, value)}
                       >
                         {slides.map((slide) => (
@@ -172,9 +187,9 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
                 </div>
                 <div className="nft_btn mb-2 mt-4">
                   {showOnly ? (
-                    <button className="btn btn-arrow-bg w-100 px-2" onClick={() => handleEdit(index, nft)}>Edit a {nft.symbol} <i className="icon"></i></button>
+                    <button className="btn btn-main btn-arrow-bg w-100 px-2" onClick={() => handleEdit(index, nft)}>Edit a {nft.symbol} <i className="icon"></i></button>
                   ) : (
-                    <button className="btn btn-arrow-bg w-100 px-2" onClick={() => handleMint(index, nft)}>Mint a {nft.symbol} <i className="icon"></i></button>
+                    <button className="btn btn-main btn-arrow-bg w-100 px-2" onClick={() => handleMint(index, nft)}>Mint a {nft.symbol} <i className="icon"></i></button>
                   )}
                 </div>
                 <div className="nft_left mb-2 mt-4">

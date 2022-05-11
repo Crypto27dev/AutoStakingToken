@@ -16,7 +16,7 @@ const Footer = () => {
             <Container>
                 <Row className="justify-content-center mb-5">
                     <Col xs={12} lg={9} className="text-center">
-                        <img src={footerLogo} className="footer_logo" alt="100days.com" />
+                        <img src={footerLogo} className="footer_logo" alt="'" />
                     </Col>
                 </Row>
                 <Row className="justify-content-center mt-2 mb-4">

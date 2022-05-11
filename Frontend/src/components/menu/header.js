@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Breakpoint, { BreakpointProvider, setDefaultBreakpoints } from "react-socks";
-import { navigate } from '@reach/router';
 import { Link } from '@reach/router';
-import useOnclickOutside from "react-cool-onclickoutside";
-import { useDispatch, useSelector } from 'react-redux';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import { connectWallet, signString } from "../../web3/web3";
-import { setLogin } from "../../store/actions/thunks/auth";
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import ReactLoading from 'react-loading';
+import { connectWallet, disconnect } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
-import { setAuthState, setWalletAddr } from "../../store/actions";
-import { isMobile, Toast, getAvatar, getCoinName } from "../../utils";
+import config from '../../config';
+import { isMobile } from "../../utils";
 
 setDefaultBreakpoints([
   { xs: 0 },
@@ -34,17 +29,24 @@ const NavLink = props => (
 );
 
 const Header = function () {
-  const dispatch = useDispatch();
-  const currentUser = useSelector(selectors.userWallet);
-  const userBalance = useSelector(selectors.userBalance);
-  const chainID = useSelector(selectors.authChainID);
+  const userWalletState = useSelector(selectors.userWallet);
+  const web3 = useSelector(selectors.web3State);
+  const pending = useSelector(selectors.loadingState);
+  const chainId = useSelector(selectors.authChainID);
 
   const onConnect = async () => {
-    let connection = await connectWallet();
-    if (connection.success === true) {
-      dispatch(setWalletAddr(connection.address));
-    }
+    await connectWallet();
   }
+
+  const onDisconnect = async () => {
+    await disconnect();
+  }
+
+  useEffect(() => {
+    if (web3 !== null && chainId !== '' && web3.utils.toHex(chainId) !== web3.utils.toHex(config.chainId)) {
+      toast.error('Please change the network to Avalanche.');
+    }
+  }, [web3, chainId]);
 
   const [showmenu, btn_icon] = useState(false);
 
@@ -79,21 +81,7 @@ const Header = function () {
               <img
                 src="/img/logo.png"
                 className="img-fluid d-block"
-                alt="#"
-              />
-              <img
-                src="/img/logo-2.png"
-                className="img-fluid d-3"
-                alt="#"
-              />
-              <img
-                src="/img/logo-3.png"
-                className="img-fluid d-4"
-                alt="#"
-              />
-              <img
-                src="/img/logo-light.png"
-                className="img-fluid d-none"
+                width="60"
                 alt="#"
               />
             </NavLink>
@@ -107,7 +95,7 @@ const Header = function () {
                 <div className='menu'>
                   <div className='navbar-item'>
                     <NavLink to="/dashboard" onClick={() => btn_icon(!showmenu)}>
-                      Dashboard
+                      Home
                     </NavLink>
                   </div>
                   <div className='navbar-item'>
@@ -128,7 +116,7 @@ const Header = function () {
               <div className='menu'>
                 <div className='navbar-item'>
                   <NavLink to="/dashboard">
-                    Dashboard
+                    Home
                     <span className='lines'></span>
                   </NavLink>
                 </div>
@@ -149,20 +137,38 @@ const Header = function () {
           </BreakpointProvider>
 
           <div className='mainside d-flex align-items-center'>
-            {!currentUser && (
-              <div className="log-in">
-                <button className="btn-main" onClick={() => onConnect()}>Connect Wallet</button>
+            {web3 !== null && chainId !== '' && web3.utils.toHex(chainId) !== web3.utils.toHex(config.chainId) ? (
+              <div className='connect-wal'>
+                <button className="btn-main text-error" onClick={onConnect}>Switch Network</button>
               </div>
-            )}
-            {currentUser && (
-              <div className="logged-in">
-                <div className="d-name">
-                  {currentUser && (
-                    <div className="text-white">{currentUser && (currentUser.slice(0, 6) + "..." + currentUser.slice(currentUser.length - 4, currentUser.length))}</div>
+            ) : (chainId === '' || userWalletState === '' || userWalletState === 0 ? (
+              <div className='connect-wal'>
+                <button className='btn-main' onClick={onConnect}>Connect</button>
+              </div>
+            ) : (
+              <>
+                {
+                  pending ? (
+                    <div className='connect-wal'>
+                      <div className="flex gap-1 align-items-center" >
+                        <ReactLoading type={'spin'} width="25px" height="25px" color="#fff" />
+                        <span className="text-gray">Pending...</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex gap-3">
+                      <div className="flex flex-column">
+                        <div className="connect-wal flex-column">
+                          <div className="flex">
+                            <span className="text-white">{userWalletState && (userWalletState.slice(0, 4) + "..." + userWalletState.slice(38))}</span>
+                          </div>
+                          <button className="btn-disconnect fs-12" onClick={onDisconnect}>Disconnect</button>
+                        </div>
+                      </div>
+                    </div>
                   )}
-                </div>
-              </div>
-            )}
+              </>
+            ))}
           </div>
         </div>
 

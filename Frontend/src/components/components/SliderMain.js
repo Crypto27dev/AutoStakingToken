@@ -23,35 +23,35 @@ const fadeIn = keyframes`
   }
 `;
 
-const slidermain= () => (
- <div className="container">
+const slidermain = () => (
+  <div className="container">
     <div className="row align-items-center">
-          <div className="col-md-6">
-              <div className="spacer-single"></div>
-              <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
-              <h6 className=""><span className="text-uppercase color">100 Days Market</span></h6>
-              </Reveal>
-              <div className="spacer-10"></div>
-              <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={600} triggerOnce>
-              <h1 className="">Create, sell or collect digital items.</h1>
-              </Reveal>
-              <Reveal className='onStep' keyframes={fadeInUp} delay={600} duration={600} triggerOnce>
-              <p className=" lead">
-              Unit of data stored on a digital ledger, called a blockchain, that certifies a digital asset to be unique and therefore not interchangeable
-              </p>
-              </Reveal>
-              <div className="spacer-10"></div>
-              <Reveal className='onStep' keyframes={fadeInUp} delay={800} duration={900} triggerOnce>
-              <span onClick={()=> window.open("/#", "_self")} className="btn-main">Explore</span>
-              <div className="mb-sm-30"></div>
-              </Reveal>
-          </div>
-          <div className="col-md-6 xs-hide">
-            <Reveal className='onStep' keyframes={fadeIn} delay={900} duration={1500} triggerOnce>
-              <img src="./img/background/home_dash.png" className="lazy img-fluid" alt=""/>
-            </Reveal>
-          </div>
+      <div className="col-md-6">
+        <div className="spacer-single"></div>
+        <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
+          <h6 className=""><span className="text-uppercase color">100 Days Market</span></h6>
+        </Reveal>
+        <div className="spacer-10"></div>
+        <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={600} triggerOnce>
+          <h1 className="">Create, sell or collect digital items.</h1>
+        </Reveal>
+        <Reveal className='onStep' keyframes={fadeInUp} delay={600} duration={600} triggerOnce>
+          <p className=" lead">
+            Unit of data stored on a digital ledger, called a blockchain, that certifies a digital asset to be unique and therefore not interchangeable
+          </p>
+        </Reveal>
+        <div className="spacer-10"></div>
+        <Reveal className='onStep' keyframes={fadeInUp} delay={800} duration={900} triggerOnce>
+          <span onClick={() => window.open("/#", "_self")} className="btn-main">Explore</span>
+          <div className="mb-sm-30"></div>
+        </Reveal>
+      </div>
+      <div className="col-md-6 xs-hide">
+        <Reveal className='onStep' keyframes={fadeIn} delay={900} duration={1500} triggerOnce>
+          <img src="./img/background/home_dash.png" className="lazy img-fluid" alt="" />
+        </Reveal>
       </div>
     </div>
+  </div>
 );
 export default slidermain;

@@ -6,22 +6,6 @@ import { createGlobalStyle } from 'styled-components';
 import api from '../../core/api';
 
 const GlobalStyles = createGlobalStyle`
-  header#myHeader.navbar .search #quick_search{
-    color: #fff;
-    background: rgba(255, 255, 255, .1);
-  }
-  header#myHeader.navbar.white .btn, .navbar.white a, .navbar.sticky.white a{
-    color: #fff;
-  }
-  header#myHeader .dropdown-toggle::after{
-    color: rgba(255, 255, 255, .5);;
-  }
-  header#myHeader .logo .d-block{
-    display: none !important;
-  }
-  header#myHeader .logo .d-none{
-    display: block !important;
-  }
   .nav-image {
     background-size: cover;
     background-position: center;

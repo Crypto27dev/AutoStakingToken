@@ -10,6 +10,7 @@ import '../node_modules/bootstrap/dist/js/bootstrap.js';
 import './assets/style.scss';
 import './assets/style_grey.scss';
 import './assets/custom.scss';
+import './assets/home.scss';
 import App from './components/app';
 import * as serviceWorker from './serviceWorker';
 import { loadWeb3, connectWallet, getValidWallet, updateBalanceOfAccount } from "./web3/web3";
