@@ -1,4 +1,5 @@
-import React, { memo, useEffect, useState, useRef } from "react";
+import React, { memo, useCallback, useEffect, useState, useRef } from "react";
+import { useSelector } from 'react-redux';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -9,6 +10,7 @@ import Swal from 'sweetalert2';
 import { settings } from './constants';
 import { numberWithCommas, Toast } from "../../utils";
 import { getNFTCardInfos, getAvaxPrice, mintNfts } from "../../web3/web3";
+import * as selectors from '../../store/selectors';
 
 const default_nfts = [
   {
@@ -76,28 +78,30 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
   const [cardInfos, setCardInfos] = useState([]);
   const [counts, setCounts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const web3 = useSelector(selectors.web3State);
 
-  const getAvaxAmount = async (_usdc) => {
-    return await getAvaxPrice(_usdc);
-  }
-
-  const getCardInfos = async () => {
+  const getCardInfos = useCallback(async () => {
+    if (!web3) {
+      return;
+    }
     const result = await getNFTCardInfos();
+    console.log('[CardInfo] = ', result)
     if (result.success) {
       let cardInfoArr = [];
       for (let i = 0; i < result.cardInfos.length; i++) {
         let card = result.cardInfos[i];
-        const avax = await getAvaxAmount(card.priceUSDC);
+        const avax = await getAvaxPrice(card.priceUSDC);
+        // console.log('[Card USDC] = ', card.priceUSDC, '[Avax] = ', avax);
         card = { ...card, avax };
         cardInfoArr.push(card);
       }
       setCardInfos(cardInfoArr);
     }
-  }
+  }, [web3]);
 
   useEffect(() => {
     getCardInfos();
-  }, [reload]);
+  }, [getCardInfos]);
 
   const handleSlide = async (index, currentSlide) => {
     let countArr = counts;
@@ -148,14 +152,14 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
           <Slider {...settings} className="nft-carousel">
             {cardInfos && cardInfos.map((nft, index) => (
               <div className="nft_item block_1 p-3 text-center" key={index}>
-                <div className="nft_avatar mx-auto mb-3 d-flex justify-content-center align-items-center">
-                  <img src={'/img/nfts/dolphin.png'} className="rounded-circle img-fluid" alt="img" />
+                <div className="nft_avatar d-flex justify-content-center align-items-center">
+                  <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
                 </div>
-                <div className="nft_title mb-3 text-center text-uppercase">{nft.symbol} NFT</div>
-                <div className="nft_amount">${numberWithCommas(nft.priceUSDC)}/-</div>
+                <div className="nft_title text-center text-uppercase">{nft.symbol}</div>
+                <div className="nft_amount">${numberWithCommas(nft.priceUSDC)}</div>
                 {!showOnly && (
                   <>
-                    <p className="text_info mt-2">You will receive {nft.symbol}</p>
+                    {/* <p className="text_info mt-2">You will receive {nft.symbol}</p> */}
                     <div className="nft_counter mb-3 mt-3">
                       <Slider
                         centerMode={true}
@@ -187,9 +191,9 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
                 </div>
                 <div className="nft_btn mb-2 mt-4">
                   {showOnly ? (
-                    <button className="btn btn-main btn-arrow-bg w-100 px-2" onClick={() => handleEdit(index, nft)}>Edit a {nft.symbol} <i className="icon"></i></button>
+                    <button className="btn-main btn-arrow-bg" onClick={() => handleEdit(index, nft)}>Edit a {nft.symbol}</button>
                   ) : (
-                    <button className="btn btn-main btn-arrow-bg w-100 px-2" onClick={() => handleMint(index, nft)}>Mint a {nft.symbol} <i className="icon"></i></button>
+                    <button className="btn-main btn-arrow-bg" onClick={() => handleMint(index, nft)}>Mint a {nft.symbol}</button>
                   )}
                 </div>
                 <div className="nft_left mb-2 mt-4">

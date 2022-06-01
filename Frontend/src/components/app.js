@@ -49,7 +49,7 @@ const PosedRouter = ({ children }) => (
 );
 
 const app = () => (
-  <div className="wraper">
+  <div className="wraper" style={{ background: 'url(./img/background/page-bg.png)', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
     <GlobalStyles />
     <PosedRouter>
       <ScrollTop path="/">

@@ -20,9 +20,7 @@ const CustomInput = styled.input`
 const GlobalStyles = createGlobalStyle`
   .filter-container {
     padding: 20px;
-    border-right: dashed;
-    border-width: 1px;
-    border-color: #5947ff;
+    background: rgb(0, 0, 0, 0.3);
   }
   .MuiChip-root {
     color: white;

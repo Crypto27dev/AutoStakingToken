@@ -71,7 +71,7 @@ const footer = () => (
                         <div className="de-flex">
                             <div className="de-flex-col">
                                 <span onClick={() => window.open("", "_self")}>
-                                    <img alt="" className="f-logo d-1" src="./img/logo.png" width="60" />
+                                    <img alt="" className="f-logo d-1" src="./img/logo.png" width="130" />
                                     <span className="text-white copy">&copy; Copyright 2022</span>
                                 </span>
                             </div>

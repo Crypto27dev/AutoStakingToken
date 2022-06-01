@@ -48,16 +48,14 @@ $general: #727272;
 $black_soft: #333;
 $black_col: #2e333c;
 $black_more: #0f0f0f;
-$color: #5A45FF;
-$color_more: #403f83;
+$color: #CFFD33;
+$color_more: #CFFD33;
 .col-white{
   color: $white;
 }
 
 /*font*/
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@200;300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
 
 /*general*/
 html {scroll-behavior: auto;}
@@ -113,7 +111,7 @@ section{
   display: block;
   overflow: hidden;
   width: 100%;
-  background: #020521;
+  background: #082032;
   .wraperitem{
     width: 100%;
     height: 100%;
@@ -657,22 +655,24 @@ p.lead {
     display: block;
     width: max-content;
     text-align: center;
-    color: #fff !important;
-    background: linear-gradient(90deg, #7A1BFF -3.88%, #5947FF 100%);
-    border-radius: 6px;
+    color: black;
+    // background: linear-gradient(90deg, #7A1BFF -3.88%, #5947FF 100%);
+    background: $color;
+    border-radius: 20px;
     letter-spacing: normal;
     outline: 0;
-    font-weight: 800;
     text-decoration: none;
     text-transform: uppercase ;
     padding: 8px 40px;
+    font-family: 'Inter';
+    font-weight: 600;
     font-size: 14px;
     border: none;
     cursor: pointer;
     box-shadow: 2px 2px 20px 0px rgba(131, 100, 226, 0);
     transition: all 0.3s ease;
     &:hover{
-      box-shadow: 2px 2px 20px 0px rgba(131, 100, 226, 0.5);
+      box-shadow: 2px 2px 20px 0px rgba(226, 140, 100, 0.5);
       transition: all 0.3s ease;
     }
     &.inline{
@@ -689,6 +689,12 @@ p.lead {
     @media only screen and (max-width: 641px) {
       padding: 10px 15px;
     }
+}
+
+.btn-more {
+  background: rgba(207, 253, 51, 0.05);
+  border: 1px solid $color;
+  color: $color;
 }
 a{
   text-decoration: none;
@@ -793,12 +799,15 @@ a{
     height: auto;
     display: flex;
     align-items: center;
-    background: #020521;
+    background: transparent;
     border-bottom: solid 1px rgba(255,255,255,0);
     z-index: 999;
     transition: all 0.6s ease;
+    padding: 5px;
     &.white{
       a{
+        font-family: 'Inter';
+        font-weight: 500;
         color: white;
       }
       .btn{
@@ -1017,7 +1026,7 @@ a{
         }
         .logo{
           img{
-            width: 70%;
+            width: 120px;
           }
         }
       }
@@ -1602,9 +1611,9 @@ footer{
   &.footer-light {
       // background: #ffffff !important;
       // border-top: solid 1px #eeeeee;
-      color: #595d69;
+      color: white;
       a {
-        color: #595d69;
+        color: white;
         font-weight: 400;
         text-decoration: none !important;
     }
@@ -1703,44 +1712,50 @@ footer{
 }
 
 #scroll-to-top {
-    cursor: pointer;
-    width: max-content;
-    height: max-content;
-    position: fixed;
-    right: 10px;
-    z-index: 999;
-    &.init{
-      bottom: -60px;
-      transition: all 1s ease;
-    }
-    &.show{
-      bottom: 20px;
-      transition: all 0.5s ease;
-    }
-    div{
-      font-size: .8rem;
-      width: 80px;
-      height: 110px;
-      text-align: center;
-      line-height: 40px;
-      border-radius: 40px;
-      // background: $color;
+  cursor: pointer;
+  width: max-content;
+  height: max-content;
+  position: fixed;
+  right: 15px;
+  z-index: 999;
+  &.init{
+    bottom: 20px;
+    transition: all 1s ease;
+  }
+  &.show{
+    bottom: 30px;
+    transition: all 0.5s ease;
+  }
+  div{
+    font-size: .8rem;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 40px;
+    background: rgb(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover{
+      transform: scale(1.1);
       transition: all 0.3s ease;
-      &:hover{
-        transform: scale(1.1);
-        transition: all 0.3s ease;
-      }
-      i{
-        font-style: normal;
-        &:before{
-        font-family: "FontAwesome";
-        font-size: 18px;
-        content: "\f106";
-        color: #fff !important;
-        position: relative;
-        }
+    }
+    img {
+      border-radius: 50%;
+    }
+    i{
+      font-style: normal;
+      &:before{
+      font-family: "FontAwesome";
+      font-size: 18px;
+      content: "\f106";
+      color: #fff !important;
+      position: relative;
       }
     }
+  }
 }
 
 /** portofolio **/
@@ -2401,17 +2416,22 @@ i.font60 {
     padding-top: 50px;
 }
 .feature-box.f-boxed {
+    position: relative;
     overflow: none;
-    padding: 50px;
+    padding: 30px;
     padding-top: 20px;
     margin: 15px;
-    background: linear-gradient(307.05deg, #1A2E69 0%, #32216A 100%);
-    border-radius: 6px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
+    background: #23251A;
+    // background: linear-gradient(307.05deg, #1A2E69 0%, #32216A 100%);
+    border-radius: 20px;
     transition: .7s;
+    z-index: 1;
     &:hover{
-      // background: #403f83;
+      background: $color;
+      h2, p {
+        color: #23251A;
+        transition: .7s;
+      }
       transition: .7s;
     }
 }

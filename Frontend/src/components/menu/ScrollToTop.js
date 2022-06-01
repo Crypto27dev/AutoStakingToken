@@ -1,23 +1,4 @@
 import React, { Component } from 'react';
-import { useLottie } from "lottie-react";
-import { ReactComponent as MySVG } from "../../assets/images/scroll-to.svg";
-import rocketAnim from "../../assets/rocket-anim.json";
-
-const RocketAnim = () => {
-  const options = {
-    animationData: rocketAnim,
-    loop: true,
-    autoplay: true
-  };
-
-  const { View } = useLottie(options);
-
-  return (
-    <>
-      {View}
-    </>
-  );
-}
 
 export default class ScrollToTop extends Component {
 
@@ -59,7 +40,8 @@ export default class ScrollToTop extends Component {
       <div id='scroll-to-top' className='init'>
         {is_visible && (
           <div onClick={() => this.scrollToTop()}>
-            <RocketAnim />
+            {/* <ScrollAnim /> */}
+            <i className="fa-solid fa-arrow-up text-white"></i>
           </div>
         )}
       </div>

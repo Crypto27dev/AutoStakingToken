@@ -10,32 +10,16 @@ import '../node_modules/bootstrap/dist/js/bootstrap.js';
 import './assets/style.scss';
 import './assets/style_grey.scss';
 import './assets/custom.scss';
-import './assets/home.scss';
+// import './assets/home.scss';
 import App from './components/app';
 import * as serviceWorker from './serviceWorker';
-import { loadWeb3, connectWallet, getValidWallet, updateBalanceOfAccount } from "./web3/web3";
+import { loadWeb3 } from "./web3/web3";
 
 //redux store
 import { Provider } from 'react-redux'
 import store from './store';
-import { setAuthState, setWalletAddr } from './store/actions';
 
 loadWeb3();
-
-const checkValidLogin = async () => {
-	try {
-		let connection = await connectWallet();
-		if (connection.success) {
-			await updateBalanceOfAccount();
-			store.dispatch(setWalletAddr(connection.address));
-		}
-		
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-checkValidLogin();
 
 ReactDOM.render(
 	<Provider store={store}>

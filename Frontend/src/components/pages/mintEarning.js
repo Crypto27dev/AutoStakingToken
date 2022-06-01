@@ -23,15 +23,11 @@ const fadeInUp = keyframes`
 const mintEarning = () => (
   <div>
     <Header />
-    <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${'./img/background/create.png'})` }}>
+    <section className='jumbotron breadcumb mint-banner' style={{ backgroundImage: `url(${'./img/home/banner2.png'})` }}>
       <div className='mainbreadcumb'>
         <div className='container'>
           <div className='row m-10-hor'>
-            <div className='col-12'>
-              <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
-                <h1 className='text-center'>Mint & Earning</h1>
-              </Reveal>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -45,7 +41,7 @@ const mintEarning = () => (
       <div className='row'>
         <div className='col-lg-12'>
           <div className='text-center'>
-            <h2>Mint NFT's</h2>
+            <h1>Mint NFTs</h1>
             <div className="small-border"></div>
           </div>
         </div>

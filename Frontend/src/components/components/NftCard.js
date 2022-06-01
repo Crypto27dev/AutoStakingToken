@@ -31,22 +31,22 @@ const NftCard = ({ nft, className = 'd-item col-lg-3 col-md-6 col-sm-6 col-xs-12
         <div className='d-flex justify-content-between'>
           <div>
             <span>Purchase on</span>
-            <div>10 Feb 2022</div>
+            <div className='text-white'>10 Feb 2022</div>
           </div>
           <div align="right">
             <span>Days</span>
-            <div>15/530</div>
+            <div className='text-white'>15/530</div>
           </div>
         </div>
         <div className="spacer-10"></div>
         <div className='d-flex justify-content-between'>
           <div>
             <span>Current ROI</span>
-            <div>1%</div>
+            <div className='text-white'>1%</div>
           </div>
           <div align="right">
             <span>Total Revenue</span>
-            <div>$100</div>
+            <div className='text-white'>$100</div>
           </div>
         </div>
         <div className="spacer-10"></div>

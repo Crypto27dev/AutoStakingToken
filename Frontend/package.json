@@ -24,6 +24,7 @@
     "ethers": "^5.6.5",
     "font-awesome": "^4.7.0",
     "ipfs-http-client": "^56.0.1",
+    "jquery": "^3.6.0",
     "jwt-decode": "^3.1.2",
     "lottie-react": "^2.2.1",
     "moment": "^2.29.1",

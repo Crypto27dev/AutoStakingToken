@@ -1,4 +1,12 @@
-$color: #5A45FF;
+@import "./variable";
+@import url("slick-carousel/slick/slick.css");
+@import url("slick-carousel/slick/slick-theme.css");
+@import url("react-toastify/dist/ReactToastify.css");
+@import url("aos/dist/aos.css");
+@import url("./fonts/font-style.css");
+@import url('https://fonts.googleapis.com/css?family=Space+Grotesk:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inter:wght@200;300;400;500&display=swap');
+$color: #CFFD33;
 
 .relative {
   position: relative;
@@ -6,6 +14,36 @@ $color: #5A45FF;
 
 .text-error {
   color: rgb(226, 121, 121);
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Space Grotesk';
+  letter-spacing: 1px;
+}
+
+@for $i from 10 through 40 {
+  .fs-sm-#{$i} {
+    @media only screen and (max-width: 768px) {
+      font-size: #{$i}px !important;
+    }
+  }
+
+  .fs-#{$i} {
+    font-size: #{$i}px;
+  }
 }
 
 .nft-carousel {
@@ -43,33 +81,40 @@ input::-webkit-inner-spin-button {
 .explore-container {
   position: relative;
   padding: 30px 10px;
+  margin-top: 75px;
+  border-radius: 15px;
 }
 
 .feature-new_checkbox {
   position: relative;
   padding: 150px 0;
+
   .ellipse {
     width: 350px;
     height: 350px;
     background-color: #FFFFFF0D;
     border-radius: 50%;
     position: absolute;
+
     &.box-1 {
       left: -190px;
       top: 15%;
     }
+
     &.box-2 {
       left: 30px;
       top: 50%;
       width: 280px;
       height: 280px;
     }
+
     &.box-3 {
       right: 30px;
       top: 10%;
       width: 200px;
       height: 200px;
     }
+
     &.box-4 {
       right: -80px;
       top: 25%;
@@ -79,12 +124,23 @@ input::-webkit-inner-spin-button {
   }
 }
 
-.news-new_checkbox, .seller-new_checkbox, .category-new_checkbox {
+.mint-banner {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 60px;
+}
+
+.news-new_checkbox,
+.seller-new_checkbox,
+.category-new_checkbox {
   max-width: 100%;
   position: relative;
-  &.seller-new_checkbox {
-    background: linear-gradient(180deg, rgba(26, 48, 110, 0.7) 0%, rgba(50, 33, 106, 0.14) 100%);
-  }
+
+  // &.seller-new_checkbox {
+  // background: linear-gradient(180deg, rgba(26, 48, 110, 0.7) 0%, rgba(50, 33, 106, 0.14) 100%);
+  // }
+
   &.category-new_checkbox {
     background-repeat: no-repeat;
     background-position: center;
@@ -92,7 +148,9 @@ input::-webkit-inner-spin-button {
   }
 }
 
-.news-content, .seller-content, .category-content {
+.news-content,
+.seller-content,
+.category-content {
   background-repeat: no-repeat;
   background-position: bottom;
   background-size: cover;
@@ -100,6 +158,7 @@ input::-webkit-inner-spin-button {
   width: 100%;
   height: 100%;
   bottom: 0;
+
   &.seller-content {
     background-position: center;
   }
@@ -116,10 +175,12 @@ input::-webkit-inner-spin-button {
 
 .author_list {
   padding: 0;
+
   .author_list_pp {
     position: relative;
     margin-left: 0;
   }
+
   li {
     display: flex;
     align-items: center;
@@ -134,9 +195,11 @@ input::-webkit-inner-spin-button {
   border: none;
   border-radius: 10px;
   margin: 15px;
+
   .categor-icon {
     padding: 15px;
   }
+
   span {
     font-size: 20px;
     text-transform: uppercase;
@@ -148,6 +211,7 @@ footer.footer-light {
   .footer-new_checkbox {
     background: linear-gradient(360deg, rgba(26, 46, 105, 0.35) 0%, rgba(74, 90, 135, 0) 100%);
     color: white;
+
     .widget {
       a {
         font-weight: 100;
@@ -155,26 +219,30 @@ footer.footer-light {
       }
     }
   }
+
   .subfooter {
     margin: 0;
     border: none;
     padding: 10px 0;
+
     i {
-      background-color: #5947FF !important;
+      background-color: $color  !important;
     }
   }
 }
 
 .items_filter {
   margin-bottom: 5px;
+
   input {
     margin: 0;
     color: white;
     background-color: #151B34;
-    border: 1px solid #5947FF;
+    border: 1px solid $color;
     border-radius: 10px;
     padding: 10px;
   }
+
   .dropdownSelect {
     margin-right: 0px;
   }
@@ -216,15 +284,18 @@ footer.footer-light {
   border-radius: 15px;
   border: 1px solid #5947FF;
   z-index: 0;
+
   .nft__item_preview {
     transition: 0.7s;
   }
+
   &:hover {
     .nft__item_preview {
       transform: scale(1.1);
       transition: 0.7s;
     }
   }
+
   span {
     color: #878fa9;
   }
@@ -237,12 +308,13 @@ footer.footer-light {
   border: none;
 }
 
-input, textarea {
+input,
+textarea {
   margin: 0 !important;
   width: 100%;
   color: white !important;
   background-color: #151B34 !important;
-  border: 1px solid #5947FF !important;
+  border: 1px solid $color  !important;
   border-radius: 10px !important;
   padding: 10px !important;
 }
@@ -271,7 +343,7 @@ input, textarea {
 .form-control:focus {
   background-color: transparent !important;
   box-shadow: none !important;
-  border-color: $color !important;
+  border-color: $color  !important;
 }
 
 .text-grey {
@@ -288,18 +360,18 @@ input, textarea {
     align-items: center;
     max-width: 500px;
     padding: 3rem 1rem 1rem;
-  
+
     &__text {
       width: 100%;
     }
-  
+
     &__collapse {
       width: 100%;
       display: block;
       position: relative;
       overflow: hidden;
       transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  
+
       &--gradient {
         &:after {
           pointer-events: none;
@@ -316,14 +388,14 @@ input, textarea {
           // background: linear-gradient(transparent 50%, white);
         }
       }
-  
+
       &--active {
         &:after {
           opacity: 0;
         }
       }
     }
-  
+
     &__content {
       padding: 1rem 1rem;
       position: relative;
@@ -334,7 +406,7 @@ input, textarea {
       border-top: none;
       border-radius: 0 0 15px 15px;
     }
-  
+
     &__toggle {
       width: 100%;
       margin-top: 1rem;
@@ -346,17 +418,18 @@ input, textarea {
       background-color: #FFFFFF66;
       border-radius: 15px;
       transition: background-color 100ms, border-radius 100ms;
+
       &--active {
         background-color: #FFFFFF66;
         border-radius: 15px 15px 0px 0px;
         border-bottom: none;
       }
     }
-  
+
     &__toggle-text {
       font-size: inherit;
     }
-  
+
     &__button {
       display: block;
       width: 20rem;
@@ -364,7 +437,7 @@ input, textarea {
       margin: 0 auto;
       padding: 1rem;
     }
-  
+
     &__image {
       width: 100%;
       max-width: 100%;
@@ -372,27 +445,30 @@ input, textarea {
       display: block;
     }
   }
-  
+
   .icon {
     width: 1em;
     height: 1em;
     transition: transform 300ms cubic-bezier(0, 1, 0, 1);
     will-change: transform;
+
     &--expanded {
       transform: rotateZ(-179.99deg);
     }
   }
-  
+
   .rotate90 {
     transform: rotateZ(90deg);
   }
 }
 
-input, textarea {
+input,
+textarea {
   color: white !important;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   color: white !important;
 }
 
@@ -404,13 +480,16 @@ input:focus, textarea:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+
   .dropzone-icon {
     visibility: hidden;
   }
+
   &:hover {
     img {
       opacity: .5;
     }
+
     .dropzone-icon {
       visibility: visible;
     }
@@ -420,6 +499,7 @@ input:focus, textarea:focus {
 .dropzone-icon {
   position: absolute;
 }
+
 .dropzone-icon svg {
   font-size: 2.5rem;
   color: #cccccc;
@@ -434,6 +514,27 @@ input:focus, textarea:focus {
 
 #btn_copy {
   position: relative;
+}
+
+.item_no {
+  font-size: 50px;
+  margin-bottom: 0px;
+  text-align: center;
+
+  @media only screen and (max-width: 768px) {
+    font-size: 40px;
+  }
+}
+
+.item_title {
+  font-family: 'Roboto';
+  font-size: 25px;
+  color: #FF4C29;
+  text-align: center;
+
+  @media only screen and (max-width: 768px) {
+    font-size: 20px;
+  }
 }
 
 /* The new_checkbox */
@@ -472,12 +573,12 @@ input:focus, textarea:focus {
 }
 
 /* On mouse-over, add a grey background color */
-.new_checkbox:hover input ~ .checkmark {
+.new_checkbox:hover input~.checkmark {
   background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
-.new_checkbox input:checked ~ .checkmark {
+.new_checkbox input:checked~.checkmark {
   background-color: #7323ff;
 }
 
@@ -489,7 +590,7 @@ input:focus, textarea:focus {
 }
 
 /* Show the checkmark when checked */
-.new_checkbox input:checked ~ .checkmark:after {
+.new_checkbox input:checked~.checkmark:after {
   display: block;
 }
 
@@ -511,6 +612,7 @@ input:focus, textarea:focus {
 .swal2-toast-shown .swal2-container.swal2-top {
   width: 400px !important;
 }
+
 .colored-toast.swal2-icon-success {
   background-color: #a5dc86 !important;
 }
@@ -548,19 +650,377 @@ input:focus, textarea:focus {
 .modal-content {
   background: #21273e !important;
   border-radius: 0.8rem !important;
+
   h5 {
     font-family: "Muli", sans-serif;
   }
+
   .dropdownSelect {
     margin-right: 0px;
   }
 }
 
-.btn2{
+.btn2 {
   background: transparent;
   border: solid 2px #5947FF;
 }
 
 .web3modal-modal-lightbox {
   z-index: 999 !important;
+}
+
+.btn-bg {
+  background: $color;
+}
+
+.btn-bg-hover {
+  background: $color;
+}
+
+.arrow-right {
+  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDMyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBkPSJNMSAzLjVDMC43MjM4NTggMy41IDAuNSAzLjcyMzg2IDAuNSA0QzAuNSA0LjI3NjE0IDAuNzIzODU4IDQuNSAxIDQuNVYzLjVaTTMxLjM1MzYgNC4zNTM1NUMzMS41NDg4IDQuMTU4MjkgMzEuNTQ4OCAzLjg0MTcxIDMxLjM1MzYgMy42NDY0NUwyOC4xNzE2IDAuNDY0NDY2QzI3Ljk3NjMgMC4yNjkyMDQgMjcuNjU5NyAwLjI2OTIwNCAyNy40NjQ1IDAuNDY0NDY2QzI3LjI2OTIgMC42NTk3MjggMjcuMjY5MiAwLjk3NjMxMSAyNy40NjQ1IDEuMTcxNTdMMzAuMjkyOSA0TDI3LjQ2NDUgNi44Mjg0M0MyNy4yNjkyIDcuMDIzNjkgMjcuMjY5MiA3LjM0MDI3IDI3LjQ2NDUgNy41MzU1M0MyNy42NTk3IDcuNzMwOCAyNy45NzYzIDcuNzMwOCAyOC4xNzE2IDcuNTM1NTNMMzEuMzUzNiA0LjM1MzU1Wk0xIDQuNUgzMVYzLjVIMVY0LjVaIiBmaWxsPSJ3aGl0ZSIvPg0KPC9zdmc+DQo=") no-repeat center center;
+}
+
+.slider-arrow {
+  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzQiIGhlaWdodD0iMzkiIHZpZXdCb3g9IjAgMCA3NCAzOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik03NCAxOS40NzM3TDE0LjMzMzIgMTkuNDczN0MxNC4yNDU1IDE2Ljg2MjEgMTMuMjM3NCAxNC4wNTU0IDExLjM0MTYgMTAuNzE3OEMxMC4wNDg2IDguNDIwNDggMS42MjE3OSAwLjA3NjQ2NzUgLTMuNDI4MWUtMDYgMC4wNzY0Njc0QzI0LjEwNzggLTAuODc3MTQgMjMuMzQwOCA3LjM4MDE4IDI2Ljc3MDYgOC42MTU1NEMzNC41MjkgMTEuNDIyMiA0MS45MTQ3IDcuNTMxOTIgNTAuMTExNCA4LjIzNjI5QzU4LjMwOCA4Ljk0MDY2IDY4LjM3ODUgMTMuMzgzNiA3NCAxOS40NzM3WiIgZmlsbD0iI0E3OTRGRiIvPg0KPHBhdGggZD0iTTIuMjE3MWUtMDYgMzguODY3NUMxLjYxMDYgMzguODY3NSA5Ljg2MDgxIDMwLjQxNzkgMTEuMzUwOSAyOC4yMTYxQzEzLjQ2NTUgMjUuMDgxNCAxNC40NjI1IDIyLjM2OTcgMTQuMzQyIDE5LjQ3MzZMNzQgMTkuNDczNkM2OC4zNzkzIDI1LjU1ODYgNTguMjk5NCAyOS45NzMzIDUwLjEwMzkgMzAuNzEwOEM0MS45MDg1IDMxLjQ0ODQgMzQuNTIzOCAyNy41MjE5IDI2Ljc2NjcgMzAuMzA5NUMyMy4zMDQ0IDMxLjU2NzcgMjQuMDcxNCAzOS44NDM3IDIuMjE3MWUtMDYgMzguODY3NVoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl8xXzE5KSIvPg0KPGRlZnM+DQo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMV8xOSIgeDE9Ijc0IiB5MT0iMjkuMjEwNSIgeDI9Ii00LjI1NjExZS0wNyIgeTI9IjI5LjIxMDUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4NCjxzdG9wIHN0b3AtY29sb3I9IiNFQTkwRkYiLz4NCjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzVCNThGOSIvPg0KPC9saW5lYXJHcmFkaWVudD4NCjwvZGVmcz4NCjwvc3ZnPg0K") no-repeat center center;
+}
+
+// @extend .slider-arrow;
+.btn-arrow {
+  background: transparent;
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+
+  .icon {
+    display: inline-block;
+    width: 35px;
+    height: 10px;
+    @include transition(all 0.3s ease);
+    @extend .arrow-right;
+    margin-left: 5px;
+  }
+
+  &:hover {
+    .icon {
+      @include transform(translateX(10px));
+    }
+
+    background: none !important;
+  }
+
+  &:focus {
+    background: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.btn-arrow-bg {
+  border: none;
+  border-radius: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  @extend .btn-bg;
+
+  .icon {
+    display: inline-block;
+    width: 35px;
+    height: 10px;
+    @include transition(all 0.3s ease);
+    @extend .arrow-right;
+    margin-left: 5px;
+  }
+
+  &:hover {
+    @extend .btn-bg-hover;
+
+    .icon {
+      @include transform(translateX(10px));
+    }
+  }
+
+  &:focus {
+    @extend .btn-bg-hover;
+    box-shadow: none !important;
+  }
+}
+
+.mintnft_block {
+  .slick-prev {
+    height: 39px;
+    width: 74px;
+    top: auto;
+    bottom: -70px;
+    right: 52% !important;
+    left: auto;
+
+    &:before {
+      height: 39px;
+      width: 74px;
+      display: inline-block;
+      color: transparent;
+      font-size: 42px;
+      transform: rotate(180deg);
+      @extend .slider-arrow;
+    }
+  }
+
+  .slick-next {
+    height: 39px;
+    width: 74px;
+    top: auto;
+    bottom: -70px;
+    left: 52% !important;
+    right: auto;
+
+    &:before {
+      height: 39px;
+      width: 74px;
+      display: inline-block;
+      color: transparent;
+      font-size: 42px;
+      @extend .slider-arrow;
+    }
+  }
+
+  .nft_item {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    @include border-radius(10px);
+    margin-top: 20px;
+
+    &.block_1 {
+      background-size: cover !important;
+    }
+
+    &.block_2 {
+      background-size: cover !important;
+    }
+
+    &.block_3 {
+      background-size: cover !important;
+    }
+
+    &.block_4 {
+      background-size: cover !important;
+    }
+
+    .nft_avatar {
+      margin: 20px;
+
+      img {
+        border-radius: 10px;
+      }
+    }
+
+    .nft_title {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 400;
+
+      @include media-breakpoint-down(xl) {
+        font-size: calc(18px + 0.25vw);
+      }
+    }
+
+    .nft_amount {
+      color: white;
+      font-size: 3rem;
+      font-weight: 600;
+      line-height: 1.2;
+
+      @include media-breakpoint-down(xl) {
+        font-size: calc(28px + 0.70vw);
+      }
+    }
+
+    .text_info {
+      color: #878fa9;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .nft_total {
+      .nft_total_title {
+        color: #878fa9;
+        font-size: 1.5rem;
+        font-weight: 400;
+
+        @include media-breakpoint-down(xl) {
+          font-size: calc(18px + 0.25vw);
+        }
+      }
+
+      .nft_total_value {
+        color: #878fa9;
+        font-size: 1.5rem;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+
+        @include media-breakpoint-down(xl) {
+          font-size: calc(18px + 0.25vw);
+        }
+      }
+    }
+
+    .nft_left {
+      color: #878fa9;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .nft_counter {
+      .counter_num {
+        font-weight: 500;
+        font-size: 5rem;
+      }
+
+      .slick-list {
+        padding: 0 !important;
+      }
+
+      .slick-slide {
+        .counter_num {
+          @include transition(all 0.3s ease);
+          transform: scale(0.9);
+        }
+
+        &.slick-current {
+          .counter_num {
+            @include transition(all 0.3s ease);
+            transform: scale(1.3);
+            color: white;
+          }
+        }
+      }
+
+      .slick-prev {
+        height: 39px;
+        width: 74px;
+        top: auto;
+        bottom: 0px;
+        left: 0% !important;
+        right: auto !important;
+        z-index: 9;
+
+        &:before {
+          font-family: "FontAwesome";
+          font-weight: 900;
+          content: "\f068";
+          background: transparent;
+          color: $color;
+          height: 39px;
+          width: 74px;
+          display: inline-block;
+          font-size: 42px;
+          @extend .slider-arrow;
+        }
+      }
+
+      .slick-next {
+        height: 39px;
+        width: 74px;
+        top: auto;
+        bottom: 0px;
+        right: 0% !important;
+        left: auto !important;
+        z-index: 9;
+
+        &:before {
+          font-family: "FontAwesome";
+          font-weight: 900;
+          content: "\f067";
+          background: transparent;
+          color: $color;
+          height: 39px;
+          width: 74px;
+          display: inline-block;
+          font-size: 42px;
+          @extend .slider-arrow;
+        }
+      }
+    }
+  }
+}
+
+.banner-video {
+  width: 100%;
+
+  video {
+    width: 100%;
+  }
+}
+
+.faqs_section {
+  .faqs_block {
+    padding: 3px 3px 0 3px;
+
+    .faqs_inner {
+      position: relative;
+    }
+  }
+
+  p {
+    color: $common-text;
+  }
+
+  .accordion {
+    z-index: 0;
+    position: relative;
+  }
+
+  .accordion-item {
+    background-color: transparent;
+
+    &+.accordion-item {
+      margin-top: 25px;
+    }
+  }
+
+  .accordion-body {
+    color: #AEAFB1;
+    font-family: 'Inner', Arial, Helvetica, sans-serif;
+  }
+
+  .accordion-button {
+    color: white;
+    font-family: 'Space Grotesk', Arial, Helvetica, sans-serif;
+    background-color: transparent;
+    // border: 1px solid #35374f;
+    // border: 1px solid #fff;
+    border: none !important;
+    @include border-radius(4px !important);
+
+    &:hover {
+      border-color: #5c6096;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .accordion-item {
+    border: 1px solid #404143;
+    border-radius: 10px !important;
+  }
+
+  .accordion-button::after {
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L5.37333 8L10.6667 0H0Z' fill='%23CFFD33'/%3E%3C/svg%3E");    
+    width: 2rem;
+    height: 2rem;
+    background-color: #2C2D2F;
+    background-size: 10px;
+    background-position: center;
+    border-radius: 50%;
+  }
+
+  .accordion-button[aria-expanded="true"]::after {
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m11 0l-5.4 8-5.3-8z' fill='white'/%3E%3C/svg%3E");
+  }
+
+  .faq_more_btn {
+    position: relative;
+    z-index: 111;
+  }
 }

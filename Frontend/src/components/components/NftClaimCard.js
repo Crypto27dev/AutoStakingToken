@@ -35,22 +35,22 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
         <div className='d-flex justify-content-between'>
           <div>
             <span>Purchase on</span>
-            <div>{getUTCDate(nft.createdTime)}</div>
+            <div className='text-white'>{getUTCDate(nft.createdTime)}</div>
           </div>
           <div align="right">
             <span>Days</span>
-            <div>15/530</div>
+            <div className='text-white'>15/530</div>
           </div>
         </div>
         <div className="spacer-10"></div>
         <div className='d-flex justify-content-between'>
           <div>
             <span>Current ROI</span>
-            <div>{nft.currentROI}%</div>
+            <div className='text-white'>{nft.currentROI}%</div>
           </div>
           <div align="right">
             <span>Total Revenue</span>
-            <div>${fromWei(nft.nftRevenue).toFixed(5)}</div>
+            <div className='text-white'>${fromWei(nft.nftRevenue).toFixed(5)}</div>
           </div>
         </div>
         <div className="spacer-10"></div>

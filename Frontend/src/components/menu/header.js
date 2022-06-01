@@ -4,6 +4,7 @@ import { Link } from '@reach/router';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ReactLoading from 'react-loading';
+import LogoAnim from './Logo';
 import { connectWallet, disconnect } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
 import config from '../../config';
@@ -78,12 +79,7 @@ const Header = function () {
         <div className='logo px-0'>
           <div className='navbar-title navbar-item'>
             <NavLink to="/">
-              <img
-                src="/img/logo.png"
-                className="img-fluid d-block"
-                width="60"
-                alt="#"
-              />
+              <LogoAnim />
             </NavLink>
           </div>
         </div>

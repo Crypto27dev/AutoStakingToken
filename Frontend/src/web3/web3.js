@@ -24,9 +24,10 @@ if (typeof window !== "undefined") {
         package: WalletConnectProvider,
         options: {
           infuraId: config.INFURA_ID, // required
-          rpc: {
-            4: config.mainNetUrl,
-          },
+          network: "rinkeby",
+          // rpc: {
+          //   4: config.mainNetUrl,
+          // },
         },
       },
     }, // required
@@ -52,11 +53,12 @@ export const loadWeb3 = async () => {
     store.dispatch(setWeb3(web3));
     provider = await web3Modal.connect();
     web3 = new Web3(provider);
-    store.dispatch(setWeb3(web3));
-
     web3Provider = new providers.Web3Provider(provider);
     const network = await web3Provider.getNetwork();
-    console.log('[Network ID] = ', network )
+    console.log('[Network ID] = ', network)
+    if (web3.utils.toHex(network.chainId) === web3.utils.toHex(config.chainId)) {
+      store.dispatch(setWeb3(web3));
+    }
     store.dispatch(setChainID(network.chainId));
 
     const signer = web3Provider.getSigner();
@@ -73,8 +75,15 @@ export const loadWeb3 = async () => {
       }
     });
 
-    provider.on('chainChanged', function (chainId) {
+    provider.on('chainChanged', async function (chainId) {
       store.dispatch(setChainID(chainId));
+      console.log('[Chain Changed] = ', chainId);
+      if (web3.utils.toHex(chainId) === web3.utils.toHex(config.chainId)) {
+        provider = await web3Modal.connect();
+        web3 = new Web3(provider);
+        web3Provider = new providers.Web3Provider(provider);
+        store.dispatch(setWeb3(web3));
+      }
     });
 
     provider.on('disconnect', function (error) {
@@ -339,6 +348,7 @@ const parseErrorMsg = (errMsg) => {
 export const getNFTCardInfos = async () => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
+  console.log('[getNFTCardInfos] = ', web3);
   try {
     window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
   } catch (error) {
@@ -393,6 +403,7 @@ export const getAllNFTInfos = async () => {
   }
   try {
     let accounts = await web3.eth.getAccounts();
+    if (accounts.length === 0) return { success: false }
     const nftInfos = await window.contract.methods.getAllNFTInfos().call({ from: accounts[0] });
     return {
       success: true,
@@ -754,4 +765,8 @@ export const claimAll = async (id) => {
       status: "Something went wrong 2: " + error.message
     };
   }
+}
+
+export const createSale = async(id, interval, price, kind) => {
+  
 }

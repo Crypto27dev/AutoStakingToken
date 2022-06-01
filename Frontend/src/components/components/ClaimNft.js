@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap'
 import Select from 'react-select';
 import styled from "styled-components";
@@ -9,8 +10,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
 import NftClaimCard from "./NftClaimCard";
 import SelectCoin from './SelectCoin';
-import { getAllNFTInfos, claimByNft, claimAll } from '../../web3/web3';
+import { getAllNFTInfos, claimByNft, claimAll, createSale } from '../../web3/web3';
 import { Toast, fromWei, isEmpty } from "../../utils";
+import * as selectors from '../../store/selectors';
 
 const default_nfts = [
   {
@@ -129,7 +131,9 @@ const ClaimNft = () => {
     item_price: false,
     description: false,
     item_price_bid: false
-  })
+  });
+  const wallet = useSelector(selectors.userWallet);
+  const web3 = useSelector(selectors.web3State);
 
   const onImgLoad = ({ target: img }) => {
     let currentHeight = height;
@@ -138,7 +142,11 @@ const ClaimNft = () => {
     }
   }
 
-  const getNFTInfos = async () => {
+  const getNFTInfos = useCallback(async () => {
+    console.log('[Wallet] = ', wallet);
+    if (!web3) {
+      return;
+    }
     const result = await getAllNFTInfos();
     if (result.success) {
       const data = result.nftInfos;
@@ -154,11 +162,11 @@ const ClaimNft = () => {
       }
       setNftInfos(nftArray);
     }
-  }
+  }, [web3, wallet]);
 
   useEffect(() => {
     getNFTInfos();
-  }, []);
+  }, [getNFTInfos]);
 
   const onClaim = async (nft) => {
     Swal.fire({
@@ -261,12 +269,13 @@ const ClaimNft = () => {
     return result;
   }
 
-  const handleSell = () => {
+  const handleSell = async () => {
     console.log('[Value] = ', inputValue);
     console.log('[Coin] = ', itemCoin);
     console.log('[Method] = ', method);
     if (!validate()) return;
     setLoading(true);
+    // await createSale()
     setLoading(false);
   }
 

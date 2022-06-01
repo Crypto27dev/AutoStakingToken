@@ -1,0 +1,165 @@
+import React from "react";
+import { createGlobalStyle } from 'styled-components';
+import { isMobile } from '../../../utils';
+
+const GlobalStyles = createGlobalStyle`
+  .timeline {
+		width: 100%;
+		height: 2px;
+		transform: translateY(44px);
+		background: radial-gradient(104.03% 166409988.5% at 100% 100%, rgba(207, 253, 51, 0) 0%, #CFFD33 52.68%, rgba(207, 253, 51, 0) 100%);
+    @media only screen and (max-width: 768px) {
+			display: none;
+		}
+	}
+	.roadmap-time {
+		position: relative;
+		font-family: 'Space Grotesk';
+		font-size: 20px;
+		color: white;
+		margin-left: -10px;
+    @media only screen and (max-width: 768px) {
+			padding-left: 30px;
+			&::before {
+				content: '';
+				background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 0L18.6603 5V15L10 20L1.33975 15V5L10 0Z' fill='white'/%3E%3Cpath d='M10 5L14.3301 7.5V12.5L10 15L5.66987 12.5V7.5L10 5Z' fill='%23101012'/%3E%3C/svg%3E");
+				background-position: center;
+				background-repeat: no-repeat;
+				position: absolute;
+				width: 30px;
+				height: 100%;
+				color: white;
+				bottom: 0px;
+				left: -3px;
+			}
+		}
+    @media only screen and (min-width: 769px) {
+			&::after {
+				content: '';
+				background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 0L18.6603 5V15L10 20L1.33975 15V5L10 0Z' fill='white'/%3E%3Cpath d='M10 5L14.3301 7.5V12.5L10 15L5.66987 12.5V7.5L10 5Z' fill='%23101012'/%3E%3C/svg%3E");
+				background-position: center;
+				background-repeat: no-repeat;
+				position: absolute;
+				width: 30px;
+				height: 30px;
+				color: white;
+				bottom: -30px;
+				left: 0;
+			}
+		}
+	}
+	.roadmap-data {
+		color: white;
+		margin-left: 0;
+		margin-top: 40px;
+		font-family: 'Inter';
+    font-size: 18px;
+    line-height: 28px;
+    @media only screen and (max-width: 768px) {
+			margin-top: 10px;
+		}
+	}
+	.roadmap-timeline {
+		position: relative;
+		padding-left: 40px;
+		@media only screen and (max-width: 768px) {
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 40px;
+				height: 100%;
+				width: 4px;
+				background: linear-gradient(rgba(207,253,51,0) 0%,#CFFD33 20%,#CFFD33 80%,rgba(207,253,51,0) 100%);
+			}
+		}
+	}
+`;
+
+const RoadMap = () => {
+	return (
+		<div className="container">
+			<GlobalStyles />
+			<div className="row">
+				<div className="col-md-12">
+					<h1 className="fw-700">THE <span className='color'>ROAD MAP</span></h1>
+				</div>
+				<div className="col-md-12 mt-5">
+					<div className="roadmap-timeline">
+						<div className="timeline"></div>
+						{!isMobile() && (
+							<div className="row">
+								<div className="col-md-3">
+									<span className="roadmap-time">Q2 2022</span>
+								</div>
+								<div className="col-md-3">
+									<span className="roadmap-time">Q3 2022</span>
+								</div>
+								<div className="col-md-3">
+									<span className="roadmap-time">Q4 2022</span>
+								</div>
+								<div className="col-md-3">
+									<span className="roadmap-time">Q1 2023</span>
+								</div>
+							</div>
+						)}
+						<div className="row">
+							<div className="col-md-3">
+								{isMobile() && (
+									<span className="roadmap-time">Q2 2022</span>
+								)}
+								<ul className="roadmap-data">
+									<li>Ideology Development of Concept</li>
+									<li>Preparing Complete Structure</li>
+									<li>Developing DEFI</li>
+									<li>Developing Website</li>
+									<li>Preparing NFTs</li>
+									<li>Audit Smart Contract</li>
+									<li>Promotion</li>
+								</ul>
+							</div>
+							<div className="col-md-3">
+								{isMobile() && (
+									<span className="roadmap-time">Q3 2022</span>
+								)}
+								<ul className="roadmap-data">
+									<li>NFTs Launchpad</li>
+									<li>Launch DEFI</li>
+									<li>Building Casino games concept</li>
+									<li>Earn Crypto Casinos</li>
+									<li>Audit Smart Contract</li>
+									<li>Official launch of Crypto Casino</li>
+								</ul>
+							</div>
+							<div className="col-md-3">
+								{isMobile() && (
+									<span className="roadmap-time">Q4 2022</span>
+								)}
+								<ul className="roadmap-data">
+									<li>Ideology Metaverse Gaming</li>
+									<li>Creating Metaverse 2nd phase of NFTs</li>
+									<li>Building Game of Metaverse</li>
+									<li>Official Launch</li>
+								</ul>
+							</div>
+							<div className="col-md-3">
+								{isMobile() && (
+									<span className="roadmap-time">Q1 2023</span>
+								)}
+								<ul className="roadmap-data">
+									<li>Centralized Exchange</li>
+									<li>Trading Competition</li>
+									<li>Airdrop Competition</li>
+									<li>Burning Tokens</li>
+									<li>Organizing An event</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}
+
+export default RoadMap;

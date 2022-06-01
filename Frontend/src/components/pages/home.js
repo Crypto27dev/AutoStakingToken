@@ -1,56 +1,53 @@
 import React from 'react';
 import Header from '../menu/header';
-import SliderMain from '../components/SliderMain';
-import FeatureBox from '../components/FeatureBox';
-import Statistics from '../components/Statistics';
-import CarouselNewRedux from '../components/CarouselNewRedux';
-import AuthorListRedux from '../components/AuthorListRedux';
+import SliderMain from '../components/Home/SliderMain';
+import FeatureBox from '../components/Home/FeatureBox';
+import Statistics from '../components/Home/Statistics';
+import OurStory from '../components/Home/OurStory';
+import CarouselNewRedux from '../components/Home/CarouselNewRedux';
+import Faq from '../components/Home/Faq';
 import Footer from '../components/footer';
 import api from '../../core/api';
+import RoadMap from '../components/Home/RoadMap';
 
 const home = () => (
-  <div>
+  <div className="home">
     <Header />
-    <section className="jumbotron breadcumb no-bg" style={{ background: `#1F213DB2` }}>
+    <section className="jumbotron p-0 relative">
       <SliderMain />
     </section>
 
-    <section className='feature-container'>
+    <section className='py-5'>
       <Statistics />
     </section>
 
-    <section className='feature-container' style={{ background: `url(${api.rootUrl}/img/background/collection.png)`, backgroundSize: 'cover' }}>
+    <section className='py-5'>
+      <OurStory />
+    </section>
+
+    <section className='py-5'>
       <FeatureBox />
     </section>
 
-    <section className='news-new_checkbox'>
+    <section className='py-5'>
       <div className='row'>
         <div className='col-lg-12'>
           <div className='text-center'>
-            <h2>New Items</h2>
-            <div className="small-border"></div>
+            <h1 className="fw-700">RECENT NFTs</h1>
           </div>
         </div>
       </div>
-      <div className="news-content" style={{ backgroundImage: `url(${api.rootUrl}/img/background/pattern_1.png)` }}></div>
       <div className='container'>
         <CarouselNewRedux />
       </div>
     </section>
 
-    <section className='seller-new_checkbox'>
-      <div className='row'>
-        <div className='col-lg-12'>
-          <div className='text-center'>
-            <h2>Top Sellers</h2>
-            <div className="small-border"></div>
-          </div>
-        </div>
-      </div>
-      <div className="seller-content" style={{ backgroundImage: `url(${api.rootUrl}/img/background/pattern_3.png)` }}></div>
-      <div className='container'>
-        <AuthorListRedux />
-      </div>
+    <section className="py-5">
+      <RoadMap />
+    </section>
+
+    <section className='faqs_section py-5'>
+      <Faq />
     </section>
     <Footer />
   </div>

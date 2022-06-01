@@ -42,7 +42,7 @@ const Explore = () => {
     <div>
       <GlobalStyles />
       <Header />
-      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${api.rootUrl}/img/background/explore.png)` }}>
+      {/* <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${api.rootUrl}/img/background/explore.png)` }}>
         <div className='collection-breadcumb'>
           <div className='container'>
             <div className='row d-flex flex-row align-items-center justify-content-center gap-3'>
@@ -51,14 +51,14 @@ const Explore = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
-    <div className="explore-container">
-      <ColumnExplorer />
+      <div className="explore-container">
+        <ColumnExplorer />
+      </div>
+
+      <Footer />
     </div>
-    
-    <Footer />
-  </div>
 
   );
 }
