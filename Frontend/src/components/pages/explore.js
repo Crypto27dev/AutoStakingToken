@@ -10,7 +10,6 @@ const GlobalStyles = createGlobalStyle`
     background-size: cover;
     background-position: center;
     padding: 40px 0;
-    margin-top: 92px;
     @media only screen and (max-width: 768px) {
       margin-top: 0px;
     }
@@ -42,16 +41,15 @@ const Explore = () => {
     <div>
       <GlobalStyles />
       <Header />
-      {/* <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${api.rootUrl}/img/background/explore.png)` }}>
-        <div className='collection-breadcumb'>
+      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${api.rootUrl}/img/background/explore_banner.png)` }}>
+        <div className='mainbreadcumb'>
           <div className='container'>
-            <div className='row d-flex flex-row align-items-center justify-content-center gap-3'>
-              <h1 className='text-center' style={{ fontSize: "80px" }}>Explore </h1>
-              <h1 className='text-center text-first-uppercase' style={{ fontSize: "40px" }}>All NFTs</h1>
+            <div className='d-flex flex-row align-items-center justify-content-center'>
+              <h1 className='banner-title text-center'>OPEN MARKET FOR NFTS</h1>
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       <div className="explore-container">
         <ColumnExplorer />

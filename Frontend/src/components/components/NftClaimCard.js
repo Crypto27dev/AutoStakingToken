@@ -1,37 +1,19 @@
 import React, { memo } from 'react';
-import styled from "styled-components";
 import { fromWei, getUTCDate } from '../../utils';
-import api from '../../core/api';
 
-const Outer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 8px;
-`;
-
-//react functional component
-const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4', height, onImgLoad, onClaim, onSell }) => {
+const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4', onClaim, onSell }) => {
 
   return (
     <div className={className}>
       <div className="nft__item m-0">
-        <div className="nft__item_wrap" style={{ height: `${height}px` }}>
-          <Outer>
-            <span>
-              <img onLoad={onImgLoad} src={'/img/nfts/dolphin.png'/*nft.imgUri*/} className="lazy nft__item_preview" alt="" />
-            </span>
-          </Outer>
+        <div className="nft__item_wrap">
+          <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
+            <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
+          </video>
         </div>
-        <div className="nft__item_info">
-          <span>
-            <h4>{nft.name}</h4>
-          </span>
+        <div className="nft__item_info mt-2">
+          <span className='fs-20 f-space text-white'>Dolphin NFT{nft.symbol}</span>
         </div>
-        <div className="spacer-10"></div>
-        <hr />
         <div className='d-flex justify-content-between'>
           <div>
             <span>Purchase on</span>
@@ -42,7 +24,7 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
             <div className='text-white'>15/530</div>
           </div>
         </div>
-        <div className="spacer-10"></div>
+        <div className="single-line"></div>
         <div className='d-flex justify-content-between'>
           <div>
             <span>Current ROI</span>

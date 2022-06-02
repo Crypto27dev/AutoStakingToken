@@ -23,17 +23,17 @@ const fadeInUp = keyframes`
 const mintEarning = () => (
   <div>
     <Header />
-    <section className='jumbotron breadcumb mint-banner' style={{ backgroundImage: `url(${'./img/home/banner2.png'})` }}>
+    <section className='jumbotron breadcumb mint-banner' style={{ backgroundImage: `url('./img/background/mint_banner.png')` }}>
       <div className='mainbreadcumb'>
         <div className='container'>
           <div className='row m-10-hor'>
-            
+            <h1 className="banner-title">MINT & EARNING</h1>
           </div>
         </div>
       </div>
     </section>
 
-    <section className='container'>
+    <section className='py-5'>
       <EarningInfo />
     </section>
 
@@ -41,20 +41,18 @@ const mintEarning = () => (
       <div className='row'>
         <div className='col-lg-12'>
           <div className='text-center'>
-            <h1>Mint NFTs</h1>
-            <div className="small-border"></div>
+            <h1 className='fw-700'><span className='color'>MINT</span> NFTs</h1>
           </div>
         </div>
       </div>
       <CarouselNFT />
     </section>
 
-    <section className='container'>
+    <section>
       <div className='row'>
         <div className='col-lg-12'>
           <div className='text-center'>
-            <h2>My Earnings</h2>
-            <div className="small-border"></div>
+            <h1 className='fw-700'><span className='color'>MY</span> EARNINGS</h1>
           </div>
         </div>
       </div>

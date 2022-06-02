@@ -12,56 +12,6 @@ import { numberWithCommas, Toast } from "../../utils";
 import { getNFTCardInfos, getAvaxPrice, mintNfts } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
 
-const default_nfts = [
-  {
-    "symbol": "Dolphin",
-    "imgUri": "/img/nfts/dolphin.png",
-    "priceUSDC": 500,
-    "priceAVAX": 5,
-    "supply": 1000,
-    "soldCount": 5
-  },
-  {
-    "symbol": "Dog",
-    "imgUri": "/img/nfts/dog.png",
-    "priceUSDC": 2500,
-    "priceAVAX": 5,
-    "supply": 1000,
-    "soldCount": 5
-  },
-  {
-    "symbol": "Phoenix",
-    "imgUri": "/img/nfts/dolphin.png",
-    "priceUSDC": 5000,
-    "priceAVAX": 5,
-    "supply": 1000,
-    "soldCount": 5
-  },
-  {
-    "symbol": "Astro",
-    "imgUri": "/img/nfts/astro.png",
-    "priceUSDC": 10000,
-    "priceAVAX": 5,
-    "supply": 2000,
-    "soldCount": 5
-  },
-  {
-    "symbol": "Dolphin",
-    "imgUri": "/img/nfts/dog.png",
-    "priceUSDC": 15000,
-    "priceAVAX": 10,
-    "supply": 1000,
-    "soldCount": 15
-  }, {
-    "symbol": "Dog",
-    "imgUri": "/img/nfts/dolphin.png",
-    "priceUSDC": 100000,
-    "priceAVAX": 100,
-    "supply": 1000,
-    "soldCount": 15
-  },
-];
-
 const Loading = styled('div')`
   display: flex;
   justify-content: center;
@@ -151,53 +101,60 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
           )}
           <Slider {...settings} className="nft-carousel">
             {cardInfos && cardInfos.map((nft, index) => (
-              <div className="nft_item block_1 p-3 text-center" key={index}>
+              <div className="nft_item block_1 text-center" key={index}>
                 <div className="nft_avatar d-flex justify-content-center align-items-center">
-                  <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
+                  <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
+                    <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
+                  </video>
                 </div>
-                <div className="nft_title text-center text-uppercase">{nft.symbol}</div>
-                <div className="nft_amount">${numberWithCommas(nft.priceUSDC)}</div>
-                {!showOnly && (
-                  <>
-                    {/* <p className="text_info mt-2">You will receive {nft.symbol}</p> */}
-                    <div className="nft_counter mb-3 mt-3">
-                      <Slider
-                        centerMode={true}
-                        swipe={false}
-                        focusOnSelect={false}
-                        infinite={false}
-                        ref={slickRef}
-                        slidesToShow={1}
-                        slidesToScroll={1}
-                        vertical={true}
-                        afterChange={(value) => handleSlide(index, value)}
-                      >
-                        {slides.map((slide) => (
-                          <div key={slide} className="counter_num">
-                            {slide}
-                          </div>
-                        ))}
-                      </Slider>
-                    </div>
-                  </>
-                )}
-                <div className="nft_total mb-2 mt-2 d-flex justify-content-between align-items-center">
-                  <div className="nft_total_title">
-                    Total
+                <div className="px-4 mt-2">
+                  <div className="d-flex flex-row justify-content-between">
+                    <span className="fs-20 f-space text-white">{nft.symbol}</span>
+                    <span className="fs-20 f-space color">${numberWithCommas(nft.priceUSDC)}</span>
                   </div>
-                  <div className="nft_total_value text-white">
-                    {Number(nft.avax).toFixed(5)} AVAX
-                  </div>
-                </div>
-                <div className="nft_btn mb-2 mt-4">
-                  {showOnly ? (
-                    <button className="btn-main btn-arrow-bg" onClick={() => handleEdit(index, nft)}>Edit a {nft.symbol}</button>
-                  ) : (
-                    <button className="btn-main btn-arrow-bg" onClick={() => handleMint(index, nft)}>Mint a {nft.symbol}</button>
+                  <div className="single-line"></div>
+                  {!showOnly && (
+                    <>
+                      <div className="nft_counter mb-1">
+                        <Slider
+                          centerMode={true}
+                          swipe={false}
+                          focusOnSelect={false}
+                          infinite={false}
+                          ref={slickRef}
+                          slidesToShow={1}
+                          slidesToScroll={1}
+                          vertical={true}
+                          afterChange={(value) => handleSlide(index, value)}
+                        >
+                          {slides.map((slide) => (
+                            <div key={slide} className="counter_num">
+                              {slide}
+                            </div>
+                          ))}
+                        </Slider>
+                      </div>
+                    </>
                   )}
-                </div>
-                <div className="nft_left mb-2 mt-4">
-                  {nft.supply - nft.soldCount} {nft.symbol} left
+                  <div className="nft_total d-flex justify-content-between align-items-center">
+                    <div className="nft_total_title">
+                      Total
+                    </div>
+                    <div className="nft_total_value text-white">
+                      {Number(nft.avax).toFixed(5)} AVAX
+                    </div>
+                  </div>
+                  <div className="single-line"></div>
+                  <div className="nft_btn mb-2 mt-4">
+                    {showOnly ? (
+                      <button className="btn-main btn-arrow-bg" onClick={() => handleEdit(index, nft)}>Edit a {nft.symbol}</button>
+                    ) : (
+                      <button className="btn-main btn-arrow-bg" onClick={() => handleMint(index, nft)}>Mint a {nft.symbol}</button>
+                    )}
+                  </div>
+                  <div className="nft_left my-3">
+                    {nft.supply - nft.soldCount} {nft.symbol} left
+                  </div>
                 </div>
               </div>
             ))}

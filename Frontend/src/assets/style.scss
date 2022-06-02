@@ -148,7 +148,7 @@ section{
   background: $black_more;
 }
 .color{
-  color: $color;
+  color: $color !important;
 }
 .btn{
   position: relative;
@@ -834,7 +834,7 @@ a{
       outline: none;
       transition: all 0.3s ease;
       &:hover{
-        color: #5A45FF;
+        color: $color;
         transition: all 0.3s ease;
       }
       &.active{
@@ -1036,10 +1036,10 @@ a{
       top: 0;
       width: 100%;
       // background: #1b1b1b;
-      border-bottom: solid 1px #403f83;
+      // border-bottom: solid 1px #0f0f11;
       transition: all 0.6s ease;
         &.white{
-          background: #020521;
+          background: #222711;
           .btn{
             color: white;
           }
@@ -1385,6 +1385,7 @@ a{
     h1{
       margin-bottom: 0;
       color: $white;
+      -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
     }
     p{
       color: $white;
@@ -2755,7 +2756,7 @@ i.font60 {
     display: flex;
     flex-direction: column;
     position: relative;
-    padding: 20px;
+    padding: 10px;
     margin: 10px;
     border: solid 1px #ddd;
     border-radius: 15px;
@@ -2775,8 +2776,7 @@ i.font60 {
 .nft__item_info{
   cursor: pointer;
   line-height: 28px;
-  margin-bottom: -22px;
-  justify-content: center;
+  text-align: center;
 }
 .nft__item h4 {
     font-weight: 800;
@@ -2911,9 +2911,11 @@ i.font60 {
     text-align: center;
     display: flex;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
     justify-content: center;
+    video {
+      width: 100%;
+      border-radius: 10px;
+    }
 }
 .nft__item_wrap span {
     display: block;

@@ -1,10 +1,7 @@
 import React from 'react';
-import { Col, Container, Row } from "react-bootstrap";
 import Reveal from 'react-awesome-reveal';
 import { keyframes } from "@emotion/react";
-import meIcon1 from "../../assets/images/me-icon-1.svg";
-import meIcon2 from "../../assets/images/me-icon-2.svg";
-import meIcon3 from "../../assets/images/me-icon-3.svg";
+import { createGlobalStyle } from 'styled-components';
 
 const fadeInUp = keyframes`
   0% {
@@ -19,44 +16,89 @@ const fadeInUp = keyframes`
   }
 `;
 
+const GlobalStyles = createGlobalStyle`
+  .statistics_container {
+    position: relative;
+    text-align: center;
+    margin-top: -120px;
+    @media only screen and (max-width: 992px) {
+      margin-top: 5px;
+    }
+  }
+  .earn_item {
+    background-size: contain;
+    padding-left: 25px;
+    padding-top: 35px;
+    padding-bottom: 20px;
+    width: 300px;
+    aspect-ratio: 1;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    filter: drop-shadow(0px 10px 50px #000000);
+    @media only screen and (max-width: 1199px) {
+      width: 250px;
+    }
+    @media only screen and (max-width: 992px) {
+      width: 200px;
+      margin-bottom: 15px;
+      h5 {
+        font-size: 16px;
+      }
+    }
+    img {
+      width: 75px;
+      @media only screen and (max-width: 992px) {
+        width: 55px;
+      }
+    }
+  }
+  .bg-icon {
+    position: absolute;
+    right: -90px;
+    bottom: -400px;
+    z-index: 0;
+  }
+`;
+
 const EarningInfo = () => (
-  <div className='myearnings'>
-    <div className="me_top_block w-100">
-      <div className="container">
-        <div className="d-flex justify-content-center">
-          <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={600} triggerOnce>
-            <div className="d-flex align-items-center p-4 me_block mb-3 block_2">
-              <div className="w-100 ms-3">
-                <h3 className="item_no">511</h3>
-                <div className="d-flex justify-content-center">
-                  <div className="item_title">Total NFTs</div>
-                </div>
-              </div>
+  <div className='relative'>
+    <GlobalStyles />
+    <div className="container statistics_container">
+      <div className='row justify-content-evenly'>
+        <div className='col-md-4 p-sm-2 p-md-0'>
+          <div className='earn_item' style={{ background: 'url(./img/background/mint_item1.png)', backgroundSize: 'contain' }}>
+            <img src="./img/icons/mint_icon1.png" width="75px" alt=""></img>
+            <div>
+              <h5 className='fs-14'>Total Earning in PeaceGiga</h5>
+              <h4>$155,555.15</h4>
             </div>
-          </Reveal>
-          <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={600} triggerOnce>
-            <div className="d-flex align-items-center p-4 me_block mb-3 block_1">
-              <div className="w-100 ms-3">
-                <h3 className="item_no">$21,511</h3>
-                <div className="d-flex justify-content-center">
-                  <div className="item_title">Total Earning in 80 Days</div>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div className='col-md-4 p-sm-2 p-md-0'>
+          <div className='earn_item' style={{ background: 'url(./img/background/mint_item2.png)', backgroundSize: 'contain' }}>
+            <img src="./img/icons/mint_icon2.png" width="75px" alt=""></img>
+            <div>
+              <h5 className='fs-14'>Total NFTs</h5>
+              <h4>1555</h4>
             </div>
-          </Reveal>
-          <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={600} triggerOnce>
-            <div className="d-flex align-items-center p-4 me_block mb-3 block_3">
-              <div className="w-100 ms-3">
-                <h3 className="item_no">$1231</h3>
-                <div className="d-flex justify-content-center">
-                  <div className="item_title">Daily Earning</div>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div className='col-md-4 p-sm-2 p-md-0'>
+          <div className='earn_item' style={{ background: 'url(./img/background/mint_item3.png)', backgroundSize: 'contain' }}>
+            <img src="./img/icons/mint_icon3.png" width="75px" alt=""></img>
+            <div>
+              <h5 className='fs-14'>Daily Earning</h5>
+              <h4>$1200</h4>
             </div>
-          </Reveal>
+          </div>
         </div>
       </div>
     </div>
+    <img className="bg-icon" src="./img/icons/bg-icon.png" alt=""></img>
   </div>
 );
 export default EarningInfo;

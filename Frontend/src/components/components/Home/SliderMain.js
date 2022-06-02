@@ -42,15 +42,14 @@ const GlobalStyles = createGlobalStyle`
       margin: auto;
     }
   }
-  .banner-title {
-    font-weight: 700;
-    font-size: 72px;
-  }
   .banner-subtitle {
     font-family: 'Space Grotesk';
     font-weight: 500;
     font-size: 36px;
     color: white;
+    @media only screen and (max-width: 992px) {
+      font-size: 20px;
+    }
   }
   .banner-video-item {
     width: 400px;

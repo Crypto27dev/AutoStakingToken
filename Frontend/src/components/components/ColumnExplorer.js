@@ -1,26 +1,108 @@
 import React, { memo, useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
-import styled from "styled-components";
-import ToggleButton from '@mui/material/ToggleButton';
+import PropTypes from 'prop-types';
+import Select from 'react-select';
 import { Modal } from 'react-bootstrap'
+import Slider from '@mui/material/Slider';
+import Tooltip from '@mui/material/Tooltip';
+import CollapseItem from '../components/Collapse';
 import NftCard from './NftCard';
 import api from '../../core/api';
 import axios from "axios";
 import { isEmpty } from '../../utils';
 
-const CustomInput = styled.input`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  padding: 9px;
-  width: 100%;
-`;
+
+const defaultValue = [{
+  value: 1,
+  label: 'Recently Created'
+}, {
+  value: 2,
+  label: 'ROI: Low to High'
+}, {
+  value: 3,
+  label: 'ROI: High to Low'
+}, {
+  value: 4,
+  label: 'Price: Low to High'
+}, {
+  value: 5,
+  label: 'Price: High to Low'
+}];
+
+const customStyles = {
+  container: (base, state) => ({
+    ...base,
+    width: '100%'
+  }),
+  option: (base, state) => ({
+    ...base,
+    color: "white",
+    background: "#151612",
+    borderColor: '#5A45FF',
+    borderRadius: state.isFocused ? "0" : 0,
+    "&:hover": {
+      background: "#273110",
+    }
+  }),
+  menu: base => ({
+    ...base,
+    zIndex: 9999,
+    borderRadius: 0,
+    marginTop: 0,
+  }),
+  menuList: base => ({
+    ...base,
+    padding: 0,
+  }),
+  control: (base, state) => ({
+    ...base,
+    color: "white",
+    background: "#1C1E11",
+    border: '1px solid #5f5f60 ',
+    borderRadius: '10px',
+    boxShadow: 'none',
+    zIndex: 0,
+    padding: '4px',
+    "&:hover": {
+      borderColor: '#9d9d9e',
+    },
+  }),
+  singleValue: (base, select) => ({
+    ...base,
+    color: 'white'
+  }),
+  placeholder: (base) => ({
+    ...base,
+    color: '#ffffff'
+  })
+};
+
+function ValueLabelComponent(props) {
+  const { children, value } = props;
+
+  return (
+    <Tooltip enterTouchDelay={0} placement="bottom" title={value}>
+      {children}
+    </Tooltip>
+  );
+}
+
+ValueLabelComponent.propTypes = {
+  children: PropTypes.element.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function valuetext(value) {
+  return `${value}`;
+}
 
 const GlobalStyles = createGlobalStyle`
   .filter-container {
     padding: 20px;
-    background: rgb(0, 0, 0, 0.3);
+    background: #1C1E11;
+    border: 1px solid #3B3C3E;
+    border-radius: 20px;
+    height: fit-content;
   }
   .MuiChip-root {
     color: white;
@@ -49,9 +131,20 @@ const GlobalStyles = createGlobalStyle`
       color: #FF0;
     }
   }
-  .btn2{
-    background: transparent;
-    border: solid 2px #5947FF;
+  .MuiSlider-thumb {
+    background-color: #CFFD33 !important;
+    &:hover {
+      box-shadow: 0px 0px 0px 8px rgb(206 252 51 / 10%) !important;
+    }
+  }
+  .MuiSlider-rail {
+    color: #494B3E;
+  }
+  .MuiSlider-track {
+    color: #CFFD33;
+  }
+  .select-sort {
+    width: 160px;
   }
 `;
 
@@ -94,114 +187,16 @@ const default_nfts = [
   },
 ];
 
-// const defaultValue = [{
-//   value: 0,
-//   label: 'Avalanche (AVAX)'
-// }, {
-//   value: 1,
-//   label: 'Polygon (MATIC)'
-// }, {
-//   value: 2,
-//   label: 'Binance Smart Chain (BNB)'
-// }];
-
-// const customStyles = {
-//   option: (base, state) => ({
-//     ...base,
-//     color: "white",
-//     background: "#151B34",
-//     borderRadius: state.isFocused ? "0" : 0,
-//     "&:hover": {
-//       background: "#080f2a",
-//     }
-//   }),
-//   menu: base => ({
-//     ...base,
-//     zIndex: 9999,
-//     borderRadius: 0,
-//     marginTop: 0,
-//   }),
-//   menuList: base => ({
-//     ...base,
-//     padding: 0,
-//   }),
-//   control: (base, state) => ({
-//     ...base,
-//     color: 'white',
-//     background: "#151B34",
-//     border: '1px solid #5947FF',
-//     borderRadius: '10px',
-//     boxShadow: 'none',
-//     zIndex: 0,
-//     padding: '8px',
-//     "&:hover": {
-//       borderColor: '#5947FF',
-//     },
-//   }),
-//   singleValue: (base, select) => ({
-//     ...base,
-//     color: 'white'
-//   })
-// };
-
-// const navLinks = [{ value: 0, text: "All items" },
-// { value: 1, text: "Art" },
-// { value: 2, text: "Game" },
-// { value: 3, text: "Photography" },
-// { value: 4, text: "Music" },
-// { value: 5, text: "Video" }];
-// const dateOptions = [{ value: 0, text: "Recently added" }, { value: 1, text: "Long added" }];
-// const priceOptions = [{ value: 0, text: "Highest price" }, { value: 1, text: "The lowest price" }];
-// const creatorOptions = [{ value: 0, text: "All" }, { value: 1, text: "Verified only" }];
-// const likesOptions = [{ value: 0, text: "Most liked" }, { value: 1, text: "Least liked" }];
-// const sortingOptions = [];
-// if (navLinks && navLinks.length > 0) navLinks.map((x) => sortingOptions.push(x));
-
-//react functional component
-const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = false, authorId = null, collectionId = null }) => {
+const ColumnExplorer = ({ showLoadMore = true }) => {
 
   const limit = 12;
-  const [category, setCategory] = useState(0);
-  const [buyNow, setBuyNow] = useState(false);
-  const [auction, setAuction] = useState(false);
-  const [newItem, setNewItem] = useState(false);
-  const [offer, setOffer] = useState(false);
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [chain, setChain] = useState({ avax: true, matic: true, bsc: true });
-  const [search, setSearch] = useState('');
   const [refresh, setRefresh] = useState(false);
   const [height, setHeight] = useState(0);
-  const [collections, setCollections] = useState([]);
   const [openBuy, setOpenBuy] = useState(false);
   const [page, setPage] = useState(0);
-
-  const onImgLoad = ({ target: img }) => {
-    let currentHeight = height;
-    if (currentHeight < img.offsetHeight) {
-      setHeight(img.offsetHeight);
-    }
-  }
-
-  const toggleNow = () => {
-    setBuyNow(value => !value);
-  };
-
-  const toggleAuction = () => {
-    setAuction(value => !value);
-  };
-
-  const toggleNew = () => {
-    setNewItem(value => !value);
-  };
-
-  const toggleOffer = () => {
-    setOffer(value => !value);
-  };
-
-  // const handlePrice = (option) => {
-  //   const { value } = option;
-  // }
 
   const handleMin = (event) => {
     setMinPrice(event.target.value);
@@ -224,59 +219,9 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
     setRefresh(prev => !prev);
   }
 
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
+  const handleSort = (event) => {
+    this.setState({ category: event.value });
   }
-
-  const getCollectionList = async () => {
-    var param = { start: page, limit: limit, category: category };
-    param.type = [];
-    param.range = [];
-    param.chain = [];
-    if (buyNow) param.type.push(0);
-    if (auction) param.type.push(1);
-    if (offer) param.type.push(2);
-    if (isEmpty(minPrice))
-      param.range.push(-1);
-    else
-      param.range.push(Number(minPrice));
-    if (isEmpty(maxPrice))
-      param.range.push(-1);
-    else
-      param.range.push(Number(maxPrice));
-    if (!isEmpty(search)) {
-      param.search = search;
-    }
-    if (chain.avax) param.chain.push(0);
-    if (chain.matic) param.chain.push(1);
-    if (chain.bsc) param.chain.push(2);
-    // param.likes = likes.value;
-    // param.creator = creator.value;
-
-    if (collectionId) param.collection_id = collectionId;
-
-    const result = await axios.post(`${api.baseUrl}/collection/get_collection_list`, param);
-    var list = [];
-    for (var i = 0; i < result.data.list.length; i++) {
-      var item = result.data.list[i].item_info;
-      item.users = [{ _id: result.data.list[i].owner_info._id, avatar: result.data.list[i].owner_info.avatar }];
-      list.push(item);
-    }
-    if (page === 0) {
-      setCollections(list);
-    } else {
-      setCollections(prevState => [...prevState, ...list]);
-    }
-  }
-
-  useEffect(() => {
-    getCollectionList();
-  }, [page, refresh])
-
-  useEffect(() => {
-    setPage(0);
-    setRefresh(prev => !prev);
-  }, [category, buyNow, auction, newItem, offer, search])
 
   const onLoadMore = () => {
     setPage(prevState => prevState + 1);
@@ -290,101 +235,155 @@ const ColumnExplorer = ({ showLoadMore = true, showCategory = true, shuffle = fa
 
   }
 
+  const minDistance = 10;
+  const [value2, setValue2] = React.useState([20, 37]);
+
+  const handleChange2 = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (newValue[1] - newValue[0] < minDistance) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 100 - minDistance);
+        setValue2([clamped, clamped + minDistance]);
+      } else {
+        const clamped = Math.max(newValue[1], minDistance);
+        setValue2([clamped - minDistance, clamped]);
+      }
+    } else {
+      setValue2(newValue);
+    }
+  };
+
   return (
-    <div className="row explorer">
-      <GlobalStyles />
-      <div className="col-lg-3 col-md-4 col-xs-12 filter-container">
-        <h3><i className="fa fa-search"></i> Filter</h3>
-        <div className='row'>
-          <div className="spacer-20"></div>
-
-          <div className="col-md-12">Status</div>
-          <div className="spacer-10"></div>
-          <div className='col-md-6 col-sm-12'>
-            <ToggleButton selected={buyNow} value="now" onClick={toggleNow}>Buy Now</ToggleButton>
+    <div className='container'>
+      <div className="row explorer">
+        <GlobalStyles />
+        <div className="col-lg-3 col-md-4 col-xs-12 filter-container">
+          <div className='d-flex flex-row justify-content-between align-items-center'>
+            <h3><i className="fa fa-filter"></i> Filter</h3>
+            <span className='color text-decoration-underline'>Reset</span>
           </div>
-          <div className='col-md-6 col-sm-12'>
-            <ToggleButton selected={auction} value="auction" onClick={toggleAuction}>On Auction</ToggleButton>
-          </div>
+          <div className='single-w-line'></div>
+          <CollapseItem title="Price Range" open={true}>
+            <div className="tab-2 onStep fadeIn">
+              <div className='row'>
+                <div className="col-md-6 items_filter">
+                  <input className="form-control" type='number' placeholder="Min..." onChange={handleMin} autoComplete="off"></input>
+                </div>
+                <div className="col-md-6 items_filter">
+                  <input className="form-control" type='number' placeholder="Max..." onChange={handleMax} autoComplete="off"></input>
+                </div>
 
-          <div className="spacer-20"></div>
+                <div className="spacer-10"></div>
 
-          <div className='col-md-12'>Price</div>
-          {/* <div className='col-md-12'>
-            <Select
-              styles={customStyles}
-              options={defaultValue}
-              onChange={handlePrice}
-            />
-          </div> */}
-          <div className="spacer-10"></div>
-
-          <div className="col-md-6 items_filter">
-            <input className="form-control" type='number' placeholder="Min..." onChange={handleMin} autoComplete="off"></input>
-          </div>
-          <div className="col-md-6 items_filter">
-            <input className="form-control" type='number' placeholder="Max..." onChange={handleMax} autoComplete="off"></input>
-          </div>
-
-          <div className="spacer-10"></div>
-
-          <div className="col-md-12">
-            <button className='btn-main' disabled={(!isEmpty(maxPrice) && !isEmpty(minPrice) && maxPrice < minPrice) ? true : false} onClick={handleApply}>Apply</button>
-          </div>
-
-          <div className="spacer-20"></div>
-
-          <div className='col-md-12'>Chain</div>
-          <div className='col-md-12 d-flex flex-column'>
-            <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/avax.png"} alt="" width="30px"></img> Avalanche
-              <input type="checkbox" name="avax" defaultChecked onChange={handleCheck} disabled />
-              <span className="checkmark"></span>
-            </label>
-            <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/matic.png"} alt="" width="30px"></img> Polygon
-              <input type="checkbox" name="matic" onChange={handleCheck} disabled />
-              <span className="checkmark"></span>
-            </label>
-            <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/bnb.png"} alt="" width="30px"></img> Binance Smart Chain
-              <input type="checkbox" name="bsc" onChange={handleCheck} disabled />
-              <span className="checkmark"></span>
-            </label>
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-9 col-md-8 col-xs-12">
-        <div className='row'>
-          <div className="mt-3"></div>
-          {default_nfts && default_nfts.map((nft, index) => (
-            <NftCard nft={nft} key={index} onImgLoad={onImgLoad} height={height} onBuyNow={onBuyNow} />
-          ))}
-          {showLoadMore &&
-            <div className='col-lg-12'>
-              <div className="spacer-single"></div>
-              <span onClick={onLoadMore} className="btn-main btn2 m-auto">Load More</span>
+                <div className="col-md-12">
+                  <button className='btn-main ml-auto' disabled={(!isEmpty(maxPrice) && !isEmpty(minPrice) && maxPrice < minPrice) ? true : false} onClick={handleApply}>Apply</button>
+                </div>
+              </div>
             </div>
-          }
+          </CollapseItem>
+
+          <CollapseItem title="ROI Range" open={true}>
+            <div className="tab-2 onStep fadeIn">
+              <div className='row'>
+                <div className="col-md-12">
+                  <Slider
+                    getAriaLabel={() => 'Minimum distance shift'}
+                    value={value2}
+                    onChange={handleChange2}
+                    valueLabelDisplay="auto"
+                    components={{
+                      ValueLabel: ValueLabelComponent,
+                    }}
+                    getAriaValueText={valuetext}
+                    disableSwap
+                  />
+                </div>
+                <div className='d-flex flex-row justify-content-between'>
+                  <span className='fs-14 f-inter'>Min: <span className='fs-16 text-white'>{value2[0]}%</span></span>
+                  <span className='fs-14 f-inter'>Max: <span className='fs-16 text-white'>{value2[1]}%</span></span>
+                </div>
+                <div className="spacer-10"></div>
+                <div className="col-md-12">
+                  <button className='btn-main' disabled={(!isEmpty(maxPrice) && !isEmpty(minPrice) && maxPrice < minPrice) ? true : false} onClick={handleApply}>Apply</button>
+                </div>
+              </div>
+            </div>
+          </CollapseItem>
+
+          <CollapseItem title="Chain" open={true}>
+            <div className="tab-2 onStep fadeIn">
+              <div className='row'>
+                <div className='col-md-12 d-flex flex-column'>
+                  <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/bnb.png"} alt="" width="30px"></img> Binance Smart Chain
+                    <input type="checkbox" name="bsc" onChange={handleCheck} disabled defaultChecked />
+                    <span className="checkmark"></span>
+                  </label>
+                  <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/avax.png"} alt="" width="30px"></img> Avalanche
+                    <input type="checkbox" name="avax" onChange={handleCheck} disabled />
+                    <span className="checkmark"></span>
+                  </label>
+                  <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/matic.png"} alt="" width="30px"></img> Polygon
+                    <input type="checkbox" name="matic" onChange={handleCheck} disabled />
+                    <span className="checkmark"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </CollapseItem>
         </div>
+        <div className="col-lg-9 col-md-8 col-xs-12">
+          <div className='row'>
+            <div className="col-md-12 d-flex flex-row justify-content-between align-items-end">
+              <span className='fs-16 f-space text-white'>150 result</span>
+              <div className='select-sort'>
+                <Select
+                  styles={customStyles}
+                  options={defaultValue}
+                  onChange={handleSort}
+                  isSearchable={false}
+                  placeholder={'Sort By'}
+                />
+              </div>
+            </div>
+            <div className='col-md-12'>
+              <div className='single-w-line'></div>
+              <div className='spacer-10'></div>
+            </div>
+            {default_nfts && default_nfts.map((nft, index) => (
+              <NftCard nft={nft} key={index} onBuyNow={onBuyNow} />
+            ))}
+            {showLoadMore &&
+              <div className='col-lg-12'>
+                <div className="spacer-single"></div>
+                <span onClick={onLoadMore} className="btn-main btn2 m-auto">Load More</span>
+              </div>
+            }
+          </div>
+        </div>
+        <Modal
+          show={openBuy}
+          size="md"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          backdrop={false}
+          onHide={() => setOpenBuy(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Place a Bid
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          </Modal.Body>
+          <Modal.Footer>
+            <button className="btn-main" onClick={handleBuy}>Buy Now</button>
+            <button className="btn-main" onClick={() => setOpenBuy(false)}>Cancel</button>
+          </Modal.Footer>
+        </Modal>
       </div>
-      <Modal
-        show={openBuy}
-        size="md"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-        backdrop={false}
-        onHide={() => setOpenBuy(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Place a Bid
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        </Modal.Body>
-        <Modal.Footer>
-          <button className="btn-main" onClick={handleBuy}>Buy Now</button>
-          <button className="btn-main" onClick={() => setOpenBuy(false)}>Cancel</button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };

@@ -5,7 +5,7 @@
 @import url("aos/dist/aos.css");
 @import url("./fonts/font-style.css");
 @import url('https://fonts.googleapis.com/css?family=Space+Grotesk:wght@200;300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Inter:wght@200;300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inter:wght@200;300;400;500;600;700&display=swap');
 $color: #CFFD33;
 
 .relative {
@@ -22,6 +22,14 @@ $color: #CFFD33;
 
 .text-right {
   text-align: right;
+}
+
+.f-space {
+  font-family: 'Space Grotesk', Arial, Helvetica, sans-serif;
+}
+
+.f-inter {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
 h1,
@@ -81,7 +89,7 @@ input::-webkit-inner-spin-button {
 .explore-container {
   position: relative;
   padding: 30px 10px;
-  margin-top: 75px;
+  margin-top: 30px;
   border-radius: 15px;
 }
 
@@ -125,10 +133,12 @@ input::-webkit-inner-spin-button {
 }
 
 .mint-banner {
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  margin-top: 60px;
+  @media only screen and (max-width: 768px) {
+    padding: 0px;
+  }
 }
 
 .news-new_checkbox,
@@ -237,10 +247,10 @@ footer.footer-light {
   input {
     margin: 0;
     color: white;
-    background-color: #151B34;
-    border: 1px solid $color;
-    border-radius: 10px;
-    padding: 10px;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 30px;
+    padding: 6px 10px;
   }
 
   .dropdownSelect {
@@ -279,17 +289,30 @@ footer.footer-light {
 }
 
 .nft__item {
-  background: #161830;
+  background: #1c1d18;
   box-shadow: 5px 5px 15px #151B34;
   border-radius: 15px;
-  border: 1px solid #5947FF;
+  border: 1px solid rgba(207, 253, 51, 0.1);
   z-index: 0;
 
+  button {
+    background-color: transparent;
+    border: 1px solid #CFFD33;
+    color: white;
+    transition: 0.7s;
+  }
   .nft__item_preview {
     transition: 0.7s;
   }
 
   &:hover {
+    border: 1px solid #CFFD33;
+    button {
+      background-color: #CFFD33;
+      border: 1px solid #CFFD33;
+      color: black;
+      transition: 0.7s;
+    }
     .nft__item_preview {
       transform: scale(1.1);
       transition: 0.7s;
@@ -297,7 +320,9 @@ footer.footer-light {
   }
 
   span {
-    color: #878fa9;
+    font-family: 'Inter';
+    font-size: 14px;
+    color: #AEAFB1;
   }
 }
 
@@ -313,10 +338,6 @@ textarea {
   margin: 0 !important;
   width: 100%;
   color: white !important;
-  background-color: #151B34 !important;
-  border: 1px solid $color  !important;
-  border-radius: 10px !important;
-  padding: 10px !important;
 }
 
 .logged-in .d-name h4 {
@@ -400,34 +421,48 @@ textarea {
       padding: 1rem 1rem;
       position: relative;
       transition: 300ms;
-      background: #36427F80;
+      background: #2B2D20;
       color: white;
-      border: 1px solid #5947FF;
-      border-top: none;
-      border-radius: 0 0 15px 15px;
+      border: none;
+      border-radius: 0 0 10px 10px;
     }
 
     &__toggle {
       width: 100%;
       margin-top: 1rem;
-      border: 1px solid #5947FF;
-      padding: 1rem;
+      border: none;
+      padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #FFFFFF66;
-      border-radius: 15px;
+      background-color: #2B2D20;
+      border-radius: 10px;
       transition: background-color 100ms, border-radius 100ms;
+      position: relative;
+      z-index: 1;
 
       &--active {
-        background-color: #FFFFFF66;
+        background-color: #2B2D20;
         border-radius: 15px 15px 0px 0px;
         border-bottom: none;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(270deg, rgba(64, 65, 67, 0) 0%, #5d5d5d 50%, rgba(64, 65, 67, 0) 100%);
       }
     }
 
     &__toggle-text {
-      font-size: inherit;
+      font-family: 'Space Grotesk';
+      font-size: 18px;
+      font-weight: 400;
     }
 
     &__button {
@@ -541,10 +576,10 @@ textarea:focus {
 .new_checkbox {
   display: block;
   position: relative;
-  padding-left: 35px;
+  padding-right: 35px;
   margin-bottom: 12px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   color: white;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -565,21 +600,24 @@ textarea:focus {
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
-  top: 5px;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
+  top: 0;
+  right: 0;
+  height: 30px;
+  width: 30px;
+  background: rgba(207, 253, 51, 0.1);
+  border: 1px solid #6D6E70;
+  border-radius: 50%;
 }
 
 /* On mouse-over, add a grey background color */
 .new_checkbox:hover input~.checkmark {
-  background-color: #ccc;
+  background-color: rgb(207, 253, 51, 0.5);
 }
 
 /* When the checkbox is checked, add a blue background */
 .new_checkbox input:checked~.checkmark {
-  background-color: #7323ff;
+  background-color: #CFFD33;
+  border-radius: 50%;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -600,7 +638,7 @@ textarea:focus {
   top: 6px;
   width: 7px;
   height: 12px;
-  border: solid white;
+  border: solid #222;
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -662,7 +700,12 @@ textarea:focus {
 
 .btn2 {
   background: transparent;
-  border: solid 2px #5947FF;
+  border: solid 1px #CFFD33;
+  color: white;
+  &:hover {
+    background: #CFFD33;
+    color: black;
+  }
 }
 
 .web3modal-modal-lightbox {
@@ -745,6 +788,22 @@ textarea:focus {
   }
 }
 
+.single-line {
+  width: 100%;
+  height: 1px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background: linear-gradient(90deg, rgba(207, 253, 51, 0) 0%, #CFFD33 50.52%, rgba(207, 253, 51, 0) 100%);
+}
+
+.single-w-line {
+  width: 100%;
+  height: 1px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background: linear-gradient(270deg, rgba(64, 65, 67, 0) 0%, #5d5d5d 50%, rgba(64, 65, 67, 0) 100%);
+}
+
 .mintnft_block {
   .slick-prev {
     height: 39px;
@@ -784,10 +843,17 @@ textarea:focus {
   }
 
   .nft_item {
-    background-color: rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    @include border-radius(10px);
+    border: 1px solid transparent;
+    background-image: linear-gradient(#23251A, #23251A), linear-gradient(180deg, rgba(207, 253, 51, 0) 0%, #CFFD33 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    border-radius: 20px;
+    padding: 0px;
     margin-top: 20px;
+    
+    .nft_avatar {
+      padding: 10px;
+    }
 
     &.block_1 {
       background-size: cover !important;
@@ -806,9 +872,14 @@ textarea:focus {
     }
 
     .nft_avatar {
-      margin: 20px;
-
+      // margin: 20px;
       img {
+        width: 100%;
+        border-radius: 10px;
+      }
+
+      video {
+        width: 100%;
         border-radius: 10px;
       }
     }
@@ -842,29 +913,29 @@ textarea:focus {
 
     .nft_total {
       .nft_total_title {
-        color: #878fa9;
-        font-size: 1.5rem;
-        font-weight: 400;
+        font-family: 'Inter';
+        color: #AEAFB1;
+        font-size: 1rem;
 
         @include media-breakpoint-down(xl) {
-          font-size: calc(18px + 0.25vw);
+          font-size: calc(12px + 0.25vw);
         }
       }
 
       .nft_total_value {
-        color: #878fa9;
-        font-size: 1.5rem;
-        font-family: "Montserrat", sans-serif;
-        font-weight: 600;
+        color: white;
+        font-size: 1rem;
+        font-family: "Inter", sans-serif;
 
         @include media-breakpoint-down(xl) {
-          font-size: calc(18px + 0.25vw);
+          font-size: calc(12px + 0.25vw);
         }
       }
     }
 
     .nft_left {
-      color: #878fa9;
+      color: white;
+      font-family: 'Inter';
       font-size: 1rem;
       font-weight: 400;
     }
@@ -943,9 +1014,23 @@ textarea:focus {
   }
 }
 
+.banner-title {
+  font-weight: 700;
+  font-size: 72px;
+  @media only screen and (max-width: 1199px) {
+    font-size: 58px;
+  }
+  @media only screen and (max-width: 992px) {
+    font-size: 40px;
+  }
+}
+
 .banner-video {
   width: 100%;
-
+  @media only screen and (max-width: 768px) {
+    width: 200%;
+    margin-left: -50%;
+  }
   video {
     width: 100%;
   }
