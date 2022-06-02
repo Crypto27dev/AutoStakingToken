@@ -19,13 +19,13 @@ const fadeInUp = keyframes`
 
 const GlobalStyles = createGlobalStyle`
   .stat_1 {
-    margin-top: 140px !important;
+    margin-top: 140px;
   }
   .stat_2 {
-    margin-top: 70px !important;
+    margin-top: 70px;
   }
   .stat_3 {
-    margin-top: 0px !important;
+    margin-top: 0px;
   }
   .stat_1 img:before {
     content: url('img/home/work_1_2.png');

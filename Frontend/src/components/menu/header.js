@@ -4,6 +4,7 @@ import { Link } from '@reach/router';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ReactLoading from 'react-loading';
+import Popover from '@mui/material/Popover';
 import LogoAnim from './Logo';
 import { connectWallet, disconnect } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
@@ -35,6 +36,18 @@ const Header = function () {
   const pending = useSelector(selectors.loadingState);
   const chainId = useSelector(selectors.authChainID);
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   const onConnect = async () => {
     await connectWallet();
   }
@@ -49,14 +62,11 @@ const Header = function () {
     }
   }, [web3, chainId]);
 
-  const [showmenu, btn_icon] = useState(false);
-
   useEffect(() => {
     const header = document.getElementById("myHeader");
     const totop = document.getElementById("scroll-to-top");
     const sticky = header.offsetTop;
     const scrollCallBack = window.addEventListener("scroll", () => {
-      btn_icon(false);
       if (!isMobile()) {
         if (window.pageYOffset > sticky) {
           header.classList.add("sticky");
@@ -87,25 +97,36 @@ const Header = function () {
         <div className="d-flex gap-3">
           <BreakpointProvider>
             <Breakpoint l down>
-              {showmenu &&
-                <div className='menu'>
-                  <div className='navbar-item'>
-                    <NavLink to="/dashboard" onClick={() => btn_icon(!showmenu)}>
-                      Home
-                    </NavLink>
-                  </div>
-                  <div className='navbar-item'>
-                    <NavLink to="/mint" onClick={() => btn_icon(!showmenu)}>
-                      Mint & Earning
-                    </NavLink>
-                  </div>
-                  <div className='navbar-item'>
-                    <NavLink to="/explore" onClick={() => btn_icon(!showmenu)}>
-                      Open Market
-                    </NavLink>
-                  </div>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                disableScrollLock={true}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}>
+                <div className='navbar-item'>
+                  <NavLink to="/dashboard" onClick={handleClose}>
+                    Home
+                  </NavLink>
                 </div>
-              }
+                <div className='navbar-item'>
+                  <NavLink to="/mint" onClick={handleClose}>
+                    Mint & Earning
+                  </NavLink>
+                </div>
+                <div className='navbar-item'>
+                  <NavLink to="/explore" onClick={handleClose}>
+                    Open Market
+                  </NavLink>
+                </div>
+              </Popover>
             </Breakpoint>
 
             <Breakpoint xl>
@@ -168,7 +189,7 @@ const Header = function () {
           </div>
         </div>
 
-        <button className="nav-icon" onClick={() => btn_icon(!showmenu)}>
+        <button className="nav-icon" onClick={handleClick}>
           <div className="menu-line white"></div>
           <div className="menu-line1 white"></div>
           <div className="menu-line2 white"></div>

@@ -7,7 +7,6 @@ import OurStory from '../components/Home/OurStory';
 import CarouselNewRedux from '../components/Home/CarouselNewRedux';
 import Faq from '../components/Home/Faq';
 import Footer from '../components/footer';
-import api from '../../core/api';
 import RoadMap from '../components/Home/RoadMap';
 
 const home = () => (
@@ -30,16 +29,7 @@ const home = () => (
     </section>
 
     <section className='py-5'>
-      <div className='row'>
-        <div className='col-lg-12'>
-          <div className='text-center'>
-            <h1 className="fw-700">RECENT NFTs</h1>
-          </div>
-        </div>
-      </div>
-      <div className='container'>
-        <CarouselNewRedux />
-      </div>
+      <CarouselNewRedux />
     </section>
 
     <section className="py-5">

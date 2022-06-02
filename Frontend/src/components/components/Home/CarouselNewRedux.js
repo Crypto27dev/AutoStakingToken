@@ -6,7 +6,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Clock from "../Clock";
 import { navigate } from '@reach/router';
-import { carouselNew } from '../constants';
 import * as selectors from '../../../store/selectors';
 import { fetchNewNftList } from "../../../store/actions/thunks";
 import { getAvatar, getCoinName } from "../../../utils";
@@ -18,6 +17,56 @@ const Outer = styled.div`
   align-content: center;
   align-items: center;
 `;
+
+const carouselNew = {
+  infinite: false,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  initialSlide: 0,
+  responsive: [
+    {
+      breakpoint: 1900,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        infinite: true
+      }
+    },
+    {
+      breakpoint: 1600,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        infinite: true
+      }
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        infinite: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        initialSlide: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true
+      }
+    }
+  ]
+}
 
 const CarouselNewRedux = () => {
 
@@ -37,51 +86,60 @@ const CarouselNewRedux = () => {
   }, [dispatch]);
 
   return (
-    <div className='nft'>
-      <Slider {...carouselNew}>
-        {nfts && nfts.map((nft, index) => (
-          <div className='itm' index={index + 1} key={index}>
-            <div className="d-item">
-              <div className="nft__item">
-                {nft.deadline &&
-                  <div className="de_countdown">
-                    <Clock deadline={nft.deadline} />
-                  </div>
-                }
-                <div className="author_list_pp" onClick={() => navigate(`/Author/${nft.owner._id}`)}>
-                  <span>
-                    <img className="lazy" src={getAvatar(nft.owner)} alt="" />
-                    <i className="fa fa-check"></i>
-                  </span>
-                </div>
-                <div className="nft__item_wrap" style={{ height: `${height}px` }}>
-                  <Outer>
+    <div className="container">
+      <div className='row'>
+        <div className='col-lg-12'>
+          <div className='text-center'>
+            <h1 className="fw-700">RECENT <span className="color">NFTs</span></h1>
+          </div>
+        </div>
+      </div>
+      <div className='nft'>
+        <Slider {...carouselNew}>
+          {nfts && nfts.map((nft, index) => (
+            <div className='itm' index={index + 1} key={index}>
+              <div className="d-item">
+                <div className="nft__item">
+                  {nft.deadline &&
+                    <div className="de_countdown">
+                      <Clock deadline={nft.deadline} />
+                    </div>
+                  }
+                  <div className="author_list_pp" onClick={() => navigate(`/Author/${nft.owner._id}`)}>
                     <span>
-                      <img onLoad={onImgLoad} src={api.imgUrl + '/' + nft.logoURL} className="lazy nft__item_preview" alt="" />
+                      <img className="lazy" src={getAvatar(nft.owner)} alt="" />
+                      <i className="fa fa-check"></i>
                     </span>
-                  </Outer>
-                </div>
-                <div className="nft__item_info" onClick={() => navigate(`/ItemDetail/${nft._id}`)}>
-                  <span>
-                    <h4>{nft.name}</h4>
-                  </span>
-                  <div className="nft__item_price">
-                    <img src={api.rootUrl + `/img/icons/${getCoinName(nft.chain).toLowerCase()}.png`} alt="" />&nbsp;&nbsp;
-                    {nft.isSale < 2 ? nft.price : nft.auctionPrice} {getCoinName(nft.chain)}
-                    {/* <span>{nft.bid}/{nft.max_bid}</span> */}
                   </div>
-                  {/* <div className="nft__item_action">
+                  <div className="nft__item_wrap" style={{ height: `${height}px` }}>
+                    <Outer>
+                      <span>
+                        <img onLoad={onImgLoad} src={api.imgUrl + '/' + nft.logoURL} className="lazy nft__item_preview" alt="" />
+                      </span>
+                    </Outer>
+                  </div>
+                  <div className="nft__item_info" onClick={() => navigate(`/ItemDetail/${nft._id}`)}>
+                    <span>
+                      <h4>{nft.name}</h4>
+                    </span>
+                    <div className="nft__item_price">
+                      <img src={api.rootUrl + `/img/icons/${getCoinName(nft.chain).toLowerCase()}.png`} alt="" />&nbsp;&nbsp;
+                      {nft.isSale < 2 ? nft.price : nft.auctionPrice} {getCoinName(nft.chain)}
+                      {/* <span>{nft.bid}/{nft.max_bid}</span> */}
+                    </div>
+                    {/* <div className="nft__item_action">
                                         <span onClick={() => window.open(nft.bid_link, "_self")}>Place a bid</span>
                                     </div> */}
-                  <div className="nft__item_like">
-                    <i className="fa fa-heart"></i><span>{nft.likes}</span>
+                    <div className="nft__item_like">
+                      <i className="fa fa-heart"></i><span>{nft.likes}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </Slider>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 }

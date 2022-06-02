@@ -1062,7 +1062,12 @@ a{
 }
 /* disable click active */
 .navbar-item {  
-    pointer-events: auto;
+  pointer-events: auto;
+  padding: 10px 20px;
+  a {
+    text-decoration: auto;
+    color: black;
+  }
 }
 .navbar-item a.active {
     /*pointer-events: none;*/
@@ -1624,7 +1629,7 @@ footer{
         float: left;
         border-radius: 5px 0 0 5px;
         background: rgba(255, 255, 255, .7);
-        border: solid 1px #333333;
+        border: solid 1px $color;
         border-right-color: rgb(51, 51, 51);
         border-right-style: solid;
         border-right-width: 1px;
@@ -1632,15 +1637,15 @@ footer{
         padding: 6px 12px;
         box-shadow: 2px 2px 20px 0px rgba(20, 20, 20, 0.05);
       }
-      #btn-subscribe i {
+      #btn-subscribe svg {
         text-align: center;
         font-size: 28px;
         float: left;
         width: 20%;
+        height: 38px;
         background: $color;
         color: #ffffff;
         display: table-cell;
-        padding: 5px 0 5px 0;
         border-radius: 0 5px 5px 0;
         -moz-border-radius: 0 5px 5px 0;
         -webkit-border-radius: 0 5px 5px 0;
@@ -2421,7 +2426,6 @@ i.font60 {
     overflow: none;
     padding: 30px;
     padding-top: 20px;
-    margin: 15px;
     background: #23251A;
     // background: linear-gradient(307.05deg, #1A2E69 0%, #32216A 100%);
     border-radius: 20px;
@@ -2434,6 +2438,9 @@ i.font60 {
         transition: .7s;
       }
       transition: .7s;
+    }
+    @media only screen and (max-width: 768px) {
+      margin: 15px;
     }
 }
 .text {

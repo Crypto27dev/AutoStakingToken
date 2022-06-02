@@ -49,11 +49,20 @@ const GlobalStyles = createGlobalStyle`
     color: white;
     @media only screen and (max-width: 992px) {
       font-size: 20px;
+      text-align: center;
     }
   }
   .banner-video-item {
     width: 400px;
     border-radius: 20px;
+  }
+  .btn-banners {
+    .btn-main {
+      width: 160px;
+    }
+    @media only screen and (max-width: 992px) {
+      justify-content: center;
+    }
   }
 `;
 
@@ -78,9 +87,9 @@ const slidermain = () => (
           </Reveal>
           <div className="spacer-10"></div>
           <Reveal className='onStep' keyframes={fadeInUp} delay={800} duration={900} triggerOnce>
-            <div className="d-flex flex-row gap-2">
-              <span onClick={() => window.open("/#", "_self")} className="btn-main">Explore</span>
-              <span onClick={() => window.open("/#", "_self")} className="btn-main btn-more">Mint</span>
+            <div className="d-flex flex-row gap-2 btn-banners">
+              <span onClick={() => window.open("/#", "_self")} className="btn-main btn-mint">MINT</span>
+              <span onClick={() => window.open("/#", "_self")} className="btn-main btn-more">EXPLORE</span>
             </div>
           </Reveal>
         </div>

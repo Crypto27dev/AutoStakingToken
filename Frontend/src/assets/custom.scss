@@ -720,13 +720,13 @@ textarea:focus {
   background: $color;
 }
 
-.arrow-right {
-  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDMyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBkPSJNMSAzLjVDMC43MjM4NTggMy41IDAuNSAzLjcyMzg2IDAuNSA0QzAuNSA0LjI3NjE0IDAuNzIzODU4IDQuNSAxIDQuNVYzLjVaTTMxLjM1MzYgNC4zNTM1NUMzMS41NDg4IDQuMTU4MjkgMzEuNTQ4OCAzLjg0MTcxIDMxLjM1MzYgMy42NDY0NUwyOC4xNzE2IDAuNDY0NDY2QzI3Ljk3NjMgMC4yNjkyMDQgMjcuNjU5NyAwLjI2OTIwNCAyNy40NjQ1IDAuNDY0NDY2QzI3LjI2OTIgMC42NTk3MjggMjcuMjY5MiAwLjk3NjMxMSAyNy40NjQ1IDEuMTcxNTdMMzAuMjkyOSA0TDI3LjQ2NDUgNi44Mjg0M0MyNy4yNjkyIDcuMDIzNjkgMjcuMjY5MiA3LjM0MDI3IDI3LjQ2NDUgNy41MzU1M0MyNy42NTk3IDcuNzMwOCAyNy45NzYzIDcuNzMwOCAyOC4xNzE2IDcuNTM1NTNMMzEuMzUzNiA0LjM1MzU1Wk0xIDQuNUgzMVYzLjVIMVY0LjVaIiBmaWxsPSJ3aGl0ZSIvPg0KPC9zdmc+DQo=") no-repeat center center;
-}
+// .arrow-right {
+//   background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDMyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBkPSJNMSAzLjVDMC43MjM4NTggMy41IDAuNSAzLjcyMzg2IDAuNSA0QzAuNSA0LjI3NjE0IDAuNzIzODU4IDQuNSAxIDQuNVYzLjVaTTMxLjM1MzYgNC4zNTM1NUMzMS41NDg4IDQuMTU4MjkgMzEuNTQ4OCAzLjg0MTcxIDMxLjM1MzYgMy42NDY0NUwyOC4xNzE2IDAuNDY0NDY2QzI3Ljk3NjMgMC4yNjkyMDQgMjcuNjU5NyAwLjI2OTIwNCAyNy40NjQ1IDAuNDY0NDY2QzI3LjI2OTIgMC42NTk3MjggMjcuMjY5MiAwLjk3NjMxMSAyNy40NjQ1IDEuMTcxNTdMMzAuMjkyOSA0TDI3LjQ2NDUgNi44Mjg0M0MyNy4yNjkyIDcuMDIzNjkgMjcuMjY5MiA3LjM0MDI3IDI3LjQ2NDUgNy41MzU1M0MyNy42NTk3IDcuNzMwOCAyNy45NzYzIDcuNzMwOCAyOC4xNzE2IDcuNTM1NTNMMzEuMzUzNiA0LjM1MzU1Wk0xIDQuNUgzMVYzLjVIMVY0LjVaIiBmaWxsPSJ3aGl0ZSIvPg0KPC9zdmc+DQo=") no-repeat center center;
+// }
 
-.slider-arrow {
-  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzQiIGhlaWdodD0iMzkiIHZpZXdCb3g9IjAgMCA3NCAzOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik03NCAxOS40NzM3TDE0LjMzMzIgMTkuNDczN0MxNC4yNDU1IDE2Ljg2MjEgMTMuMjM3NCAxNC4wNTU0IDExLjM0MTYgMTAuNzE3OEMxMC4wNDg2IDguNDIwNDggMS42MjE3OSAwLjA3NjQ2NzUgLTMuNDI4MWUtMDYgMC4wNzY0Njc0QzI0LjEwNzggLTAuODc3MTQgMjMuMzQwOCA3LjM4MDE4IDI2Ljc3MDYgOC42MTU1NEMzNC41MjkgMTEuNDIyMiA0MS45MTQ3IDcuNTMxOTIgNTAuMTExNCA4LjIzNjI5QzU4LjMwOCA4Ljk0MDY2IDY4LjM3ODUgMTMuMzgzNiA3NCAxOS40NzM3WiIgZmlsbD0iI0E3OTRGRiIvPg0KPHBhdGggZD0iTTIuMjE3MWUtMDYgMzguODY3NUMxLjYxMDYgMzguODY3NSA5Ljg2MDgxIDMwLjQxNzkgMTEuMzUwOSAyOC4yMTYxQzEzLjQ2NTUgMjUuMDgxNCAxNC40NjI1IDIyLjM2OTcgMTQuMzQyIDE5LjQ3MzZMNzQgMTkuNDczNkM2OC4zNzkzIDI1LjU1ODYgNTguMjk5NCAyOS45NzMzIDUwLjEwMzkgMzAuNzEwOEM0MS45MDg1IDMxLjQ0ODQgMzQuNTIzOCAyNy41MjE5IDI2Ljc2NjcgMzAuMzA5NUMyMy4zMDQ0IDMxLjU2NzcgMjQuMDcxNCAzOS44NDM3IDIuMjE3MWUtMDYgMzguODY3NVoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl8xXzE5KSIvPg0KPGRlZnM+DQo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMV8xOSIgeDE9Ijc0IiB5MT0iMjkuMjEwNSIgeDI9Ii00LjI1NjExZS0wNyIgeTI9IjI5LjIxMDUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4NCjxzdG9wIHN0b3AtY29sb3I9IiNFQTkwRkYiLz4NCjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzVCNThGOSIvPg0KPC9saW5lYXJHcmFkaWVudD4NCjwvZGVmcz4NCjwvc3ZnPg0K") no-repeat center center;
-}
+// .slider-arrow {
+//   background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzQiIGhlaWdodD0iMzkiIHZpZXdCb3g9IjAgMCA3NCAzOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik03NCAxOS40NzM3TDE0LjMzMzIgMTkuNDczN0MxNC4yNDU1IDE2Ljg2MjEgMTMuMjM3NCAxNC4wNTU0IDExLjM0MTYgMTAuNzE3OEMxMC4wNDg2IDguNDIwNDggMS42MjE3OSAwLjA3NjQ2NzUgLTMuNDI4MWUtMDYgMC4wNzY0Njc0QzI0LjEwNzggLTAuODc3MTQgMjMuMzQwOCA3LjM4MDE4IDI2Ljc3MDYgOC42MTU1NEMzNC41MjkgMTEuNDIyMiA0MS45MTQ3IDcuNTMxOTIgNTAuMTExNCA4LjIzNjI5QzU4LjMwOCA4Ljk0MDY2IDY4LjM3ODUgMTMuMzgzNiA3NCAxOS40NzM3WiIgZmlsbD0iI0E3OTRGRiIvPg0KPHBhdGggZD0iTTIuMjE3MWUtMDYgMzguODY3NUMxLjYxMDYgMzguODY3NSA5Ljg2MDgxIDMwLjQxNzkgMTEuMzUwOSAyOC4yMTYxQzEzLjQ2NTUgMjUuMDgxNCAxNC40NjI1IDIyLjM2OTcgMTQuMzQyIDE5LjQ3MzZMNzQgMTkuNDczNkM2OC4zNzkzIDI1LjU1ODYgNTguMjk5NCAyOS45NzMzIDUwLjEwMzkgMzAuNzEwOEM0MS45MDg1IDMxLjQ0ODQgMzQuNTIzOCAyNy41MjE5IDI2Ljc2NjcgMzAuMzA5NUMyMy4zMDQ0IDMxLjU2NzcgMjQuMDcxNCAzOS44NDM3IDIuMjE3MWUtMDYgMzguODY3NVoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl8xXzE5KSIvPg0KPGRlZnM+DQo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMV8xOSIgeDE9Ijc0IiB5MT0iMjkuMjEwNSIgeDI9Ii00LjI1NjExZS0wNyIgeTI9IjI5LjIxMDUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4NCjxzdG9wIHN0b3AtY29sb3I9IiNFQTkwRkYiLz4NCjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzVCNThGOSIvPg0KPC9saW5lYXJHcmFkaWVudD4NCjwvZGVmcz4NCjwvc3ZnPg0K") no-repeat center center;
+// }
 
 // @extend .slider-arrow;
 .btn-arrow {
@@ -740,7 +740,6 @@ textarea:focus {
     width: 35px;
     height: 10px;
     @include transition(all 0.3s ease);
-    @extend .arrow-right;
     margin-left: 5px;
   }
 
@@ -770,7 +769,6 @@ textarea:focus {
     width: 35px;
     height: 10px;
     @include transition(all 0.3s ease);
-    @extend .arrow-right;
     margin-left: 5px;
   }
 
@@ -806,39 +804,21 @@ textarea:focus {
 
 .mintnft_block {
   .slick-prev {
-    height: 39px;
-    width: 74px;
-    top: auto;
-    bottom: -70px;
-    right: 52% !important;
-    left: auto;
-
+    @media only screen and (max-width: 600px) {
+      left: 0px;
+      z-index: 9;
+    }
     &:before {
-      height: 39px;
-      width: 74px;
-      display: inline-block;
-      color: transparent;
-      font-size: 42px;
-      transform: rotate(180deg);
-      @extend .slider-arrow;
+      font-size: 35px;
     }
   }
 
   .slick-next {
-    height: 39px;
-    width: 74px;
-    top: auto;
-    bottom: -70px;
-    left: 52% !important;
-    right: auto;
-
+    @media only screen and (max-width: 600px) {
+      right: 16px;
+    }
     &:before {
-      height: 39px;
-      width: 74px;
-      display: inline-block;
-      color: transparent;
-      font-size: 42px;
-      @extend .slider-arrow;
+      font-size: 35px;
     }
   }
 
@@ -984,7 +964,6 @@ textarea:focus {
           width: 74px;
           display: inline-block;
           font-size: 42px;
-          @extend .slider-arrow;
         }
       }
 
@@ -1007,7 +986,6 @@ textarea:focus {
           width: 74px;
           display: inline-block;
           font-size: 42px;
-          @extend .slider-arrow;
         }
       }
     }
@@ -1022,6 +1000,7 @@ textarea:focus {
   }
   @media only screen and (max-width: 992px) {
     font-size: 40px;
+    text-align: center;
   }
 }
 
@@ -1108,4 +1087,8 @@ textarea:focus {
     position: relative;
     z-index: 111;
   }
+}
+
+.MuiPaper-root {
+  border-radius: 10px !important;
 }

@@ -1,5 +1,7 @@
 import React from "react";
 import { createGlobalStyle } from 'styled-components';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { isMobile } from '../../../utils';
 
 const GlobalStyles = createGlobalStyle`
@@ -74,6 +76,23 @@ const GlobalStyles = createGlobalStyle`
 			}
 		}
 	}
+  .roadmap-prev, .roadmap-next {
+    color: white;
+    background: rgba(207, 253, 51, 0.1);
+    border: 1px solid #6D6E70;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+    &.roadmap-next {
+      background: #CFFD33;
+      color: black;
+    }
+  }
 `;
 
 const RoadMap = () => {
@@ -82,7 +101,13 @@ const RoadMap = () => {
 			<GlobalStyles />
 			<div className="row">
 				<div className="col-md-12">
-					<h1 className="fw-700">THE <span className='color'>ROAD MAP</span></h1>
+					<div className="d-flex flex-row justify-content-between">
+					  <h1 className="fw-700">THE <span className='color'>ROAD MAP</span></h1>
+            <div className="d-flex flex-row align-items-center">
+              <span className="roadmap-prev"><ArrowBackIcon /></span>
+              <span className="roadmap-next"><ArrowForwardIcon /></span>
+            </div>
+          </div>
 				</div>
 				<div className="col-md-12 mt-5">
 					<div className="roadmap-timeline">

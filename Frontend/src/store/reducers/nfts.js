@@ -50,9 +50,6 @@ const states = (state = defaultState, action) => {
     case getType(actions.getNftList.failure):
       return { ...state, nftList: entityLoadingFailed(state.nftList) };
 
-    case getType(actions.clearNfts):
-      return { ...state, nftBreakdown: initEntityState(null) };
-
     default:
       return state;
   }

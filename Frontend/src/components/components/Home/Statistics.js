@@ -31,7 +31,7 @@ const GlobalStyles = createGlobalStyle`
     padding-top: 35px;
     padding-bottom: 20px;
     width: 300px;
-    aspect-ratio: 1.17;
+    aspect-ratio: 1;
     text-align: left;
     margin-left: auto;
     margin-right: auto;

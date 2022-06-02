@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from '@reach/router';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const footer = () => (
     <footer className="footer-light">
@@ -53,7 +54,7 @@ const footer = () => (
                                 <div className="col text-center">
                                     <input className="form-control" id="txt_subscribe" name="txt_subscribe" placeholder="enter your email" type="text" autoComplete="off"/>
                                     <Link to="" id="btn-subscribe">
-                                        <i className="arrow_right bg-color-secondary"></i>
+                                        <ArrowForwardIcon />
                                     </Link>
                                     <div className="clearfix"></div>
                                 </div>
