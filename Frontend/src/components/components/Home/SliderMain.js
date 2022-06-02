@@ -58,7 +58,7 @@ const GlobalStyles = createGlobalStyle`
   }
   .btn-banners {
     .btn-main {
-      width: 160px;
+      width: 140px;
     }
     @media only screen and (max-width: 992px) {
       justify-content: center;

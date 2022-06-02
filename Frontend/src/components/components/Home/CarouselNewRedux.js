@@ -1,36 +1,34 @@
-import React, { memo, useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import React, { memo, useCallback, useEffect, useState, useRef } from "react";
+import { useSelector } from 'react-redux';
 import Slider from "react-slick";
-import styled from "styled-components";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Clock from "../Clock";
-import { navigate } from '@reach/router';
+import styled from "styled-components";
+import ReactLoading from "react-loading";
+import { numberWithCommas } from "../../../utils";
+import { getNFTCardInfos, getAvaxPrice } from "../../../web3/web3";
 import * as selectors from '../../../store/selectors';
-import { fetchNewNftList } from "../../../store/actions/thunks";
-import { getAvatar, getCoinName } from "../../../utils";
-import api from "../../../core/api";
 
-const Outer = styled.div`
+const Loading = styled('div')`
   display: flex;
   justify-content: center;
-  align-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 15px;
 `;
 
-const carouselNew = {
+const settings = {
   infinite: false,
   speed: 500,
-  slidesToShow: 3,
+  slidesToShow: 4,
   slidesToScroll: 1,
   initialSlide: 0,
   responsive: [
     {
       breakpoint: 1900,
       settings: {
-        slidesToShow: 4,
+        slidesToShow: 5,
         slidesToScroll: 1,
-        infinite: true
       }
     },
     {
@@ -38,21 +36,26 @@ const carouselNew = {
       settings: {
         slidesToShow: 4,
         slidesToScroll: 1,
-        infinite: true
+      }
+    },
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
       }
     },
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 3,
+        slidesToShow: 2,
         slidesToScroll: 1,
-        infinite: true
       }
     },
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1,
         initialSlide: 2
       }
@@ -62,28 +65,37 @@ const carouselNew = {
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
-        dots: true
       }
     }
   ]
-}
+};
 
 const CarouselNewRedux = () => {
+  const [cardInfos, setCardInfos] = useState([]);
+  const web3 = useSelector(selectors.web3State);
 
-  const dispatch = useDispatch();
-  const nftsState = useSelector(selectors.nftNewListState);
-  const nfts = nftsState.data ? nftsState.data : [];
-  const [height, setHeight] = useState(0);
-
-  const onImgLoad = ({ target: img }) => {
-    let currentHeight = height;
-    if (currentHeight < img.offsetHeight) {
-      setHeight(img.offsetHeight);
+  const getCardInfos = useCallback(async () => {
+    if (!web3) {
+      return;
     }
-  }
+    const result = await getNFTCardInfos();
+    console.log('[CardInfo] = ', result)
+    if (result.success) {
+      let cardInfoArr = [];
+      for (let i = 0; i < result.cardInfos.length; i++) {
+        let card = result.cardInfos[i];
+        const avax = await getAvaxPrice(card.priceUSDC);
+        // console.log('[Card USDC] = ', card.priceUSDC, '[Avax] = ', avax);
+        card = { ...card, avax };
+        cardInfoArr.push(card);
+      }
+      setCardInfos(cardInfoArr);
+    }
+  }, [web3]);
+
   useEffect(() => {
-    dispatch(fetchNewNftList());
-  }, [dispatch]);
+    getCardInfos();
+  }, [getCardInfos]);
 
   return (
     <div className="container">
@@ -94,51 +106,45 @@ const CarouselNewRedux = () => {
           </div>
         </div>
       </div>
-      <div className='nft'>
-        <Slider {...carouselNew}>
-          {nfts && nfts.map((nft, index) => (
-            <div className='itm' index={index + 1} key={index}>
-              <div className="d-item">
-                <div className="nft__item">
-                  {nft.deadline &&
-                    <div className="de_countdown">
-                      <Clock deadline={nft.deadline} />
-                    </div>
-                  }
-                  <div className="author_list_pp" onClick={() => navigate(`/Author/${nft.owner._id}`)}>
-                    <span>
-                      <img className="lazy" src={getAvatar(nft.owner)} alt="" />
-                      <i className="fa fa-check"></i>
-                    </span>
+      <div className='mintnft_block'>
+        <div className="align-items-stretch">
+          {cardInfos.length === 0 && (
+            <Loading>
+              <ReactLoading type={'spinningBubbles'} color="#fff" />
+            </Loading>
+          )}
+          {cardInfos.length > 0 && (
+            <Slider {...settings} className="nft-carousel">
+              {cardInfos && cardInfos.map((nft, index) => (
+                <div className="nft_item recent_nft block_1 text-center" key={index}>
+                  <div className="nft_avatar d-flex justify-content-center align-items-center">
+                    <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
+                      <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
+                    </video>
                   </div>
-                  <div className="nft__item_wrap" style={{ height: `${height}px` }}>
-                    <Outer>
-                      <span>
-                        <img onLoad={onImgLoad} src={api.imgUrl + '/' + nft.logoURL} className="lazy nft__item_preview" alt="" />
-                      </span>
-                    </Outer>
-                  </div>
-                  <div className="nft__item_info" onClick={() => navigate(`/ItemDetail/${nft._id}`)}>
-                    <span>
-                      <h4>{nft.name}</h4>
-                    </span>
-                    <div className="nft__item_price">
-                      <img src={api.rootUrl + `/img/icons/${getCoinName(nft.chain).toLowerCase()}.png`} alt="" />&nbsp;&nbsp;
-                      {nft.isSale < 2 ? nft.price : nft.auctionPrice} {getCoinName(nft.chain)}
-                      {/* <span>{nft.bid}/{nft.max_bid}</span> */}
+                  <div className="px-4 mt-2">
+                    <div className="d-flex flex-row justify-content-between">
+                      <span className="fs-20 f-space text-white">{nft.symbol}</span>
+                      <span className="fs-20 f-space color">${numberWithCommas(nft.priceUSDC)}</span>
                     </div>
-                    {/* <div className="nft__item_action">
-                                        <span onClick={() => window.open(nft.bid_link, "_self")}>Place a bid</span>
-                                    </div> */}
-                    <div className="nft__item_like">
-                      <i className="fa fa-heart"></i><span>{nft.likes}</span>
+                    <div className="single-line"></div>
+                    <div className="nft_total d-flex justify-content-between align-items-center">
+                      <div className="nft_total_title">
+                        Total
+                      </div>
+                      <div className="nft_total_value text-white">
+                        {Number(nft.avax).toFixed(5)} AVAX
+                      </div>
                     </div>
+                    <div className="single-line"></div>
+                    <button className="btn-main btn-arrow-bg">VIEW</button>
+                    <div className="spacer-10"></div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </Slider>
+              ))}
+            </Slider>
+          )}
+        </div>
       </div>
     </div>
   );

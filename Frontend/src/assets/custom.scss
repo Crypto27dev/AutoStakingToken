@@ -824,12 +824,17 @@ textarea:focus {
 
   .nft_item {
     border: 1px solid transparent;
-    background-image: linear-gradient(#23251A, #23251A), linear-gradient(180deg, rgba(207, 253, 51, 0) 0%, #CFFD33 100%);
+    background-image: linear-gradient(#23251A, #23251A), linear-gradient(180deg, rgba(207, 253, 51, 0) 0%, $color 100%);
     background-origin: border-box;
     background-clip: content-box, border-box;
     border-radius: 20px;
     padding: 0px;
     margin-top: 20px;
+
+    &.recent_nft {
+      border: 1px solid $color;
+      background-image: none;
+    }
     
     .nft_avatar {
       padding: 10px;
