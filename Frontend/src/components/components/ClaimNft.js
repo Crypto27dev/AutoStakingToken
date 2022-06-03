@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap'
 import Select from 'react-select';
 import styled from "styled-components";
 import ReactLoading from "react-loading";
+import Reveal from 'react-awesome-reveal';
 import Backdrop from '@mui/material/Backdrop';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,7 +12,7 @@ import Swal from 'sweetalert2';
 import NftClaimCard from "./NftClaimCard";
 import SelectCoin from './SelectCoin';
 import { getAllNFTInfos, claimByNft, claimAll, createSale } from '../../web3/web3';
-import { Toast, fromWei, isEmpty } from "../../utils";
+import { Toast, fromWei, isEmpty, fadeInUp } from "../../utils";
 import * as selectors from '../../store/selectors';
 
 const Logo = styled.img`
@@ -277,6 +278,13 @@ const ClaimNft = () => {
     <div className="relative">
       <Logo src="./img/icons/bg-icon.png" alt=""></Logo>
       <div className='container'>
+        <div className='row'>
+          <div className='col-lg-12'>
+            <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
+              <h1 className='fw-700 text-center'><span className='color'>MY</span> EARNINGS</h1>
+            </Reveal>
+          </div>
+        </div>
         <div className="row">
           <div className="col-md-3 offset-md-6">
             {/* <Select

@@ -1,30 +1,8 @@
 import React from 'react';
 import Reveal from 'react-awesome-reveal';
-import { keyframes } from "@emotion/react";
 import { createGlobalStyle } from 'styled-components';
 import { navigate } from '@reach/router';
-
-const fadeInUp = keyframes`
-  0% {
-    opacity: 0;
-    -webkit-transform: translateY(40px);
-    transform: translateY(40px);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-  }
-`;
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
+import { fadeInUp, fadeIn } from '../../../utils';
 
 const GlobalStyles = createGlobalStyle`
   .banner-container {

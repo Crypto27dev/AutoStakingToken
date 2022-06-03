@@ -48,7 +48,7 @@ export const loadWeb3 = async () => {
     //   hover: "rgb(16, 26, 32)"
     // });
     web3Modal.show = true;
-    // await web3Modal.clearCachedProvider();
+    await web3Modal.clearCachedProvider();
     let web3 = new Web3(config.mainNetUrl);
     store.dispatch(setWeb3(web3));
     provider = await web3Modal.connect();

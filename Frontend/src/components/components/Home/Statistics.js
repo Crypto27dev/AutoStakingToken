@@ -1,20 +1,7 @@
 import React from 'react';
 import Reveal from 'react-awesome-reveal';
-import { keyframes } from "@emotion/react";
 import { createGlobalStyle } from 'styled-components';
-
-const fadeInUp = keyframes`
-  0% {
-    opacity: 0;
-    -webkit-transform: translateY(40px);
-    transform: translateY(40px);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-  }
-`;
+import { fadeInUp } from '../../../utils';
 
 const GlobalStyles = createGlobalStyle`
   .statistics_container {
@@ -62,8 +49,8 @@ const Statistics = () => (
   <>
     <GlobalStyles />
     <div className="container statistics_container">
-      <div className='row justify-content-evenly'>
-        <div className='col-md-4 p-sm-2 p-md-0'>
+      <div className='d-flex flex-md-column flex-lg-row justify-content-center gap-5'>
+        <div className='p-sm-2 p-md-0'>
           <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={800} triggerOnce>
             <div className="stat_item" style={{ background: 'url(./img/home/treasury_bg.png)', backgroundSize: 'contain' }}>
               <img src="./img/home/treasury.png" alt=""></img>
@@ -74,7 +61,7 @@ const Statistics = () => (
             </div>
           </Reveal>
         </div>
-        <div className='col-md-4 p-sm-2 p-md-0'>
+        <div className='p-sm-2 p-md-0'>
           <Reveal className='onStep' keyframes={fadeInUp} delay={600} duration={1200} triggerOnce>
             <div className='stat_item' style={{ background: 'url(./img/home/invest_bg.png)', backgroundSize: 'contain' }}>
               <img src="./img/home/invest.png" alt=""></img>
@@ -85,7 +72,7 @@ const Statistics = () => (
             </div>
           </Reveal>
         </div>
-        <div className='col-md-4 p-sm-2 p-md-0'>
+        <div className='p-sm-2 p-md-0'>
           <Reveal className='onStep' keyframes={fadeInUp} delay={900} duration={1600} triggerOnce>
             <div className='stat_item' style={{ background: 'url(./img/home/holder_bg.png)', backgroundSize: 'contain' }}>
               <img src="./img/home/holder.png" alt=""></img>

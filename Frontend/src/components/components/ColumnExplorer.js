@@ -8,9 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CollapseItem from '../components/Collapse';
 import NftCard from './NftCard';
 import api from '../../core/api';
-import axios from "axios";
 import { isEmpty } from '../../utils';
-
 
 const defaultValue = [{
   value: 1,

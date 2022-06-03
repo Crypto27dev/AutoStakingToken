@@ -5,9 +5,10 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from "styled-components";
 import ReactLoading from "react-loading";
+import Reveal from 'react-awesome-reveal';
 import Backdrop from '@mui/material/Backdrop';
 import Swal from 'sweetalert2';
-import { numberWithCommas, Toast } from "../../utils";
+import { numberWithCommas, Toast, fadeInUp } from "../../utils";
 import { getNFTCardInfos, getAvaxPrice, mintNfts } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
 
@@ -143,7 +144,14 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
   }
 
   return (
-    <div className="dashboard_wrapper">
+    <div className="container">
+      <div className='row'>
+        <div className='col-lg-12'>
+          <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
+            <h1 className='fw-700 text-center'><span className='color'>MINT</span> NFTs</h1>
+          </Reveal>
+        </div>
+      </div>
       <div className='mintnft_block'>
         <div className="align-items-stretch">
           {cardInfos.length === 0 && (

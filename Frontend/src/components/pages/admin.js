@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Reveal from 'react-awesome-reveal';
 import styled from "styled-components";
-import { keyframes } from "@emotion/react";
 import { Modal } from 'react-bootstrap'
 import ReactLoading from "react-loading";
 import Backdrop from '@mui/material/Backdrop';
@@ -10,20 +9,7 @@ import Footer from '../components/footer';
 import CarouselNFT from '../components/CarouselNFT';
 import ImageUpload from '../components/NavImageUpload';
 import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork } from '../../web3/web3';
-import { Toast, isEmpty } from '../../utils';
-
-const fadeInUp = keyframes`
-  0% {
-    opacity: 0;
-    -webkit-transform: translateY(40px);
-    transform: translateY(40px);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-  }
-`;
+import { Toast, isEmpty, fadeInUp } from '../../utils';
 
 const Loading = styled('div')`
   display: flex;
