@@ -839,6 +839,11 @@ a{
       }
       &.active{
         transition: all 0.3s ease;
+        color: $color;
+        // .lines{
+        //   width: 90%;
+        //   transition: .7s;
+        // }
         // &:before{
         //   content: '';
         //   width: 100%;
@@ -1043,9 +1048,9 @@ a{
           .btn{
             color: white;
           }
-          a{
-            color: white;
-          }
+          // a{
+          //   color: white;
+          // }
         }
       }
       .search{
@@ -3529,7 +3534,7 @@ img.img-rounded{
     margin-bottom: 20px;
     border: none;
     border: solid 1px #cccccc;
-    background: none;
+    background-color: transparent !important;
     border-radius: 6px;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;

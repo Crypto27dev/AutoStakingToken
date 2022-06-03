@@ -164,9 +164,10 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
               {cardInfos && cardInfos.map((nft, index) => (
                 <div className="nft_item block_1 text-center" key={index}>
                   <div className="nft_avatar d-flex justify-content-center align-items-center">
-                    <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
+                    <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
+                    {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
                       <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
-                    </video>
+                    </video> */}
                   </div>
                   <div className="px-4 mt-2">
                     <div className="d-flex flex-row justify-content-between">

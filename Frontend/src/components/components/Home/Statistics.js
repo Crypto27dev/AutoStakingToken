@@ -49,7 +49,7 @@ const Statistics = () => (
   <>
     <GlobalStyles />
     <div className="container statistics_container">
-      <div className='d-flex flex-md-column flex-lg-row justify-content-center gap-5'>
+      <div className='d-flex flex-column flex-md-row justify-content-center gap-5'>
         <div className='p-sm-2 p-md-0'>
           <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={800} triggerOnce>
             <div className="stat_item" style={{ background: 'url(./img/home/treasury_bg.png)', backgroundSize: 'contain' }}>

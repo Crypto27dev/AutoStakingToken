@@ -115,25 +115,23 @@ const RoadMap = () => {
         </div>
         <div className="col-md-12 mt-5">
           <div className="roadmap-timeline">
-            <Reveal className='onStep' keyframes={fadeInUp} delay={500} duration={600} triggerOnce>
-              <div className="timeline"></div>
-              {!isMobile() && (
-                <div className="row">
-                  <div className="col-md-3">
-                    <span className="roadmap-time">Q2 2022</span>
-                  </div>
-                  <div className="col-md-3">
-                    <span className="roadmap-time">Q3 2022</span>
-                  </div>
-                  <div className="col-md-3">
-                    <span className="roadmap-time">Q4 2022</span>
-                  </div>
-                  <div className="col-md-3">
-                    <span className="roadmap-time">Q1 2023</span>
-                  </div>
+            <div className="timeline"></div>
+            {!isMobile() && (
+              <div className="row">
+                <div className="col-md-3">
+                  <span className="roadmap-time">Q2 2022</span>
                 </div>
-              )}
-            </Reveal>
+                <div className="col-md-3">
+                  <span className="roadmap-time">Q3 2022</span>
+                </div>
+                <div className="col-md-3">
+                  <span className="roadmap-time">Q4 2022</span>
+                </div>
+                <div className="col-md-3">
+                  <span className="roadmap-time">Q1 2023</span>
+                </div>
+              </div>
+            )}
             <div className="row">
               <div className="col-md-3">
                 {isMobile() && (

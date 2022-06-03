@@ -7,6 +7,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 const Inner = styled.div`
   .MuiSvgIcon-root {
     font-size: 4rem;
+    fill: white;
   }
 `;
 
@@ -85,7 +86,7 @@ class ImageUpload extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            border: "1px dashed",
+            border: "1px dashed white",
             ...(radius ? {
               borderRadius: radius,
             } : {

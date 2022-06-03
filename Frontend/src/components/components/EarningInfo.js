@@ -54,7 +54,7 @@ const EarningInfo = () => (
   <div className='relative'>
     <GlobalStyles />
     <div className="container statistics_container">
-      <div className='d-flex flex-md-column flex-lg-row justify-content-center gap-5'>
+      <div className='d-flex flex-column flex-md-row justify-content-center gap-5'>
         <div className='p-sm-2 p-md-0'>
           <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={800} triggerOnce>
             <div className='earn_item' style={{ background: 'url(./img/background/mint_item1.png)', backgroundSize: 'contain' }}>

@@ -285,22 +285,22 @@ const ClaimNft = () => {
             </Reveal>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-3 offset-md-6">
-            {/* <Select
+        {nftInfos && nftInfos.map((nft, index) => (
+          <div className="row">
+            <div className="col-md-3 offset-md-6">
+              {/* <Select
           styles={customStyles}
           options={defaultSort}
           onChange={handleSort}
         /> */}
-          </div>
-          <div className="col-md-3">
-            <button className='btn-main' onClick={handleClaimAll}>Claim All</button>
-          </div>
-          <div className="mt-3"></div>
-          {nftInfos && nftInfos.map((nft, index) => (
+            </div>
+            <div className="col-md-3">
+              <button className='btn-main' onClick={handleClaimAll}>Claim All</button>
+            </div>
+            <div className="mt-3"></div>
             <NftClaimCard nft={nft} key={index} onClaim={onClaim} onSell={onSell} />
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       <Modal

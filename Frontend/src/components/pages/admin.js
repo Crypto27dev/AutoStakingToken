@@ -178,13 +178,13 @@ const Admin = () => {
   return (
     <div>
       <Header />
-      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${'./img/background/create.png'})` }}>
+      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${'./img/background/mint_banner.png'})` }}>
         <div className='mainbreadcumb'>
           <div className='container'>
             <div className='row m-10-hor'>
               <div className='col-12'>
                 <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
-                  <h1 className='text-center'>Admin</h1>
+                  <h1 className='banner-title text-center'>ADMIN</h1>
                 </Reveal>
               </div>
             </div>
@@ -194,12 +194,6 @@ const Admin = () => {
 
       <section className='container p-0 mt-5'>
         <div className='row'>
-          <div className='col-lg-12'>
-            <div className='text-center'>
-              <h2>Minted NFT's</h2>
-              <div className="small-border"></div>
-            </div>
-          </div>
           <div className='col-lg-12' align="right">
             <button className="btn-main btn2" onClick={handleModalNew}>Create a new NFT</button>
           </div>
@@ -223,8 +217,8 @@ const Admin = () => {
           <div className="row">
             <div className='col-md-12'>
               <div className="d-flex flex-column align-items-center justify-content-center text-center mb-3">
-                <ImageUpload addFile={addNftImages} file={nftImage} width="150px" height="150px" radius="50%" />
-                <span className='mt-2 mb-1'>New NFT image</span>
+                <ImageUpload addFile={addNftImages} file={nftImage} width="150px" height="150px" radius="12px" />
+                <span className='mt-2 mb-1 text-white'>New NFT image</span>
                 {error.image && (
                   <span className='text-error mb-2'><i className="fa fa-warning" /> Please select a NFT image.</span>
                 )}
@@ -278,8 +272,8 @@ const Admin = () => {
           <div className="row">
             <div className='col-md-12'>
               <div className="d-flex flex-column align-items-center justify-content-center text-center mb-3">
-                <ImageUpload addFile={addNftImages} file={nftImage} width="150px" height="150px" radius="50%" />
-                <span className='mt-2 mb-1'>New NFT image</span>
+                <ImageUpload addFile={addNftImages} file={nftImage} width="150px" height="150px" radius="12px" />
+                <span className='mt-2 mb-1 text-white'>New NFT image</span>
                 {error.image && (
                   <span className='text-error mb-2'><i className="fa fa-warning" /> Please select a NFT image.</span>
                 )}

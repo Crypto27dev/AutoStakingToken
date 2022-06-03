@@ -7,9 +7,10 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
     <div className={className}>
       <div className="nft__item m-0">
         <div className="nft__item_wrap">
-          <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
+          <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
+          {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
             <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
-          </video>
+          </video> */}
         </div>
         <div className="spacer-10"></div>
         <div className="d-flex flex-row justify-content-between">
