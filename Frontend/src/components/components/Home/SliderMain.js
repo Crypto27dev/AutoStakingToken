@@ -2,6 +2,7 @@ import React from 'react';
 import Reveal from 'react-awesome-reveal';
 import { keyframes } from "@emotion/react";
 import { createGlobalStyle } from 'styled-components';
+import { navigate } from '@reach/router';
 
 const fadeInUp = keyframes`
   0% {
@@ -88,8 +89,8 @@ const slidermain = () => (
           <div className="spacer-10"></div>
           <Reveal className='onStep' keyframes={fadeInUp} delay={800} duration={900} triggerOnce>
             <div className="d-flex flex-row gap-2 btn-banners">
-              <span onClick={() => window.open("/#", "_self")} className="btn-main btn-mint">MINT</span>
-              <span onClick={() => window.open("/#", "_self")} className="btn-main btn-more">EXPLORE</span>
+              <span onClick={() => navigate('mint')} className="btn-main btn-mint">MINT</span>
+              <span onClick={() => navigate('explore')} className="btn-main btn-more">EXPLORE</span>
             </div>
           </Reveal>
         </div>

@@ -1,8 +1,23 @@
 import React from "react";
 import { createGlobalStyle } from 'styled-components';
+import Reveal from 'react-awesome-reveal';
+import { keyframes } from "@emotion/react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { isMobile } from '../../../utils';
+
+const fadeInUp = keyframes`
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(40px);
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+`;
 
 const GlobalStyles = createGlobalStyle`
   .timeline {
@@ -96,95 +111,115 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const RoadMap = () => {
-	return (
-		<div className="container">
-			<GlobalStyles />
-			<div className="row">
-				<div className="col-md-12">
-					<div className="d-flex flex-row justify-content-between">
-					  <h1 className="fw-700">THE <span className='color'>ROAD MAP</span></h1>
+  return (
+    <div className="container">
+      <GlobalStyles />
+      <div className="row">
+        <div className="col-md-12">
+          <div className="d-flex flex-row justify-content-between">
+            <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
+              <h1 className="fw-700">THE <span className='color'>ROAD MAP</span></h1>
+            </Reveal>
             <div className="d-flex flex-row align-items-center">
               <span className="roadmap-prev"><ArrowBackIcon /></span>
               <span className="roadmap-next"><ArrowForwardIcon /></span>
             </div>
           </div>
-				</div>
-				<div className="col-md-12 mt-5">
-					<div className="roadmap-timeline">
-						<div className="timeline"></div>
-						{!isMobile() && (
-							<div className="row">
-								<div className="col-md-3">
-									<span className="roadmap-time">Q2 2022</span>
-								</div>
-								<div className="col-md-3">
-									<span className="roadmap-time">Q3 2022</span>
-								</div>
-								<div className="col-md-3">
-									<span className="roadmap-time">Q4 2022</span>
-								</div>
-								<div className="col-md-3">
-									<span className="roadmap-time">Q1 2023</span>
-								</div>
-							</div>
-						)}
-						<div className="row">
-							<div className="col-md-3">
-								{isMobile() && (
-									<span className="roadmap-time">Q2 2022</span>
-								)}
-								<ul className="roadmap-data">
-									<li>Ideology Development of Concept</li>
-									<li>Preparing Complete Structure</li>
-									<li>Developing DEFI</li>
-									<li>Developing Website</li>
-									<li>Preparing NFTs</li>
-									<li>Audit Smart Contract</li>
-									<li>Promotion</li>
-								</ul>
-							</div>
-							<div className="col-md-3">
-								{isMobile() && (
-									<span className="roadmap-time">Q3 2022</span>
-								)}
-								<ul className="roadmap-data">
-									<li>NFTs Launchpad</li>
-									<li>Launch DEFI</li>
-									<li>Building Casino games concept</li>
-									<li>Earn Crypto Casinos</li>
-									<li>Audit Smart Contract</li>
-									<li>Official launch of Crypto Casino</li>
-								</ul>
-							</div>
-							<div className="col-md-3">
-								{isMobile() && (
-									<span className="roadmap-time">Q4 2022</span>
-								)}
-								<ul className="roadmap-data">
-									<li>Ideology Metaverse Gaming</li>
-									<li>Creating Metaverse 2nd phase of NFTs</li>
-									<li>Building Game of Metaverse</li>
-									<li>Official Launch</li>
-								</ul>
-							</div>
-							<div className="col-md-3">
-								{isMobile() && (
-									<span className="roadmap-time">Q1 2023</span>
-								)}
-								<ul className="roadmap-data">
-									<li>Centralized Exchange</li>
-									<li>Trading Competition</li>
-									<li>Airdrop Competition</li>
-									<li>Burning Tokens</li>
-									<li>Organizing An event</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	)
+        </div>
+        <div className="col-md-12 mt-5">
+          <div className="roadmap-timeline">
+            <Reveal className='onStep' keyframes={fadeInUp} delay={500} duration={600} triggerOnce>
+              <div className="timeline"></div>
+              {!isMobile() && (
+                <div className="row">
+                  <div className="col-md-3">
+                    <span className="roadmap-time">Q2 2022</span>
+                  </div>
+                  <div className="col-md-3">
+                    <span className="roadmap-time">Q3 2022</span>
+                  </div>
+                  <div className="col-md-3">
+                    <span className="roadmap-time">Q4 2022</span>
+                  </div>
+                  <div className="col-md-3">
+                    <span className="roadmap-time">Q1 2023</span>
+                  </div>
+                </div>
+              )}
+            </Reveal>
+            <div className="row">
+              <div className="col-md-3">
+                {isMobile() && (
+                  <span className="roadmap-time">Q2 2022</span>
+                )}
+                <Reveal className='onStep' keyframes={fadeInUp} delay={800} duration={600} triggerOnce>
+                  <div>
+                    <ul className="roadmap-data">
+                      <li>Ideology Development of Concept</li>
+                      <li>Preparing Complete Structure</li>
+                      <li>Developing DEFI</li>
+                      <li>Developing Website</li>
+                      <li>Preparing NFTs</li>
+                      <li>Audit Smart Contract</li>
+                      <li>Promotion</li>
+                    </ul>
+                  </div>
+                </Reveal>
+              </div>
+              <div className="col-md-3">
+                {isMobile() && (
+                  <span className="roadmap-time">Q3 2022</span>
+                )}
+                <Reveal className='onStep' keyframes={fadeInUp} delay={1000} duration={600} triggerOnce>
+                  <div>
+                    <ul className="roadmap-data">
+                      <li>NFTs Launchpad</li>
+                      <li>Launch DEFI</li>
+                      <li>Building Casino games concept</li>
+                      <li>Earn Crypto Casinos</li>
+                      <li>Audit Smart Contract</li>
+                      <li>Official launch of Crypto Casino</li>
+                    </ul>
+                  </div>
+                </Reveal>
+              </div>
+              <div className="col-md-3">
+                {isMobile() && (
+                  <span className="roadmap-time">Q4 2022</span>
+                )}
+                <Reveal className='onStep' keyframes={fadeInUp} delay={1200} duration={600} triggerOnce>
+                  <div>
+                    <ul className="roadmap-data">
+                      <li>Ideology Metaverse Gaming</li>
+                      <li>Creating Metaverse 2nd phase of NFTs</li>
+                      <li>Building Game of Metaverse</li>
+                      <li>Official Launch</li>
+                    </ul>
+                  </div>
+                </Reveal>
+              </div>
+              <div className="col-md-3">
+                {isMobile() && (
+                  <span className="roadmap-time">Q1 2023</span>
+                )}
+                <Reveal className='onStep' keyframes={fadeInUp} delay={1400} duration={600} triggerOnce>
+                  <div>
+                    <ul className="roadmap-data">
+                      <li>Centralized Exchange</li>
+                      <li>Trading Competition</li>
+                      <li>Airdrop Competition</li>
+                      <li>Burning Tokens</li>
+                      <li>Organizing An event</li>
+                    </ul>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default RoadMap;

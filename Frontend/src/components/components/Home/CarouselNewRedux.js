@@ -1,13 +1,28 @@
-import React, { memo, useCallback, useEffect, useState, useRef } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Reveal from 'react-awesome-reveal';
+import { keyframes } from "@emotion/react";
 import styled from "styled-components";
 import ReactLoading from "react-loading";
 import { numberWithCommas } from "../../../utils";
 import { getNFTCardInfos, getAvaxPrice } from "../../../web3/web3";
 import * as selectors from '../../../store/selectors';
+
+const fadeInUp = keyframes`
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(40px);
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+`;
 
 const Loading = styled('div')`
   display: flex;
@@ -102,7 +117,9 @@ const CarouselNewRedux = () => {
       <div className='row'>
         <div className='col-lg-12'>
           <div className='text-center'>
-            <h1 className="fw-700">RECENT <span className="color">NFTs</span></h1>
+            <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
+              <h1 className="fw-700">RECENT <span className="color">NFTs</span></h1>
+            </Reveal>
           </div>
         </div>
       </div>

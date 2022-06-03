@@ -64,31 +64,37 @@ const Statistics = () => (
     <div className="container statistics_container">
       <div className='row justify-content-evenly'>
         <div className='col-md-4 p-sm-2 p-md-0'>
-          <div className="stat_item" style={{ background: 'url(./img/home/treasury_bg.png)', backgroundSize: 'contain' }}>
-            <img src="./img/home/treasury.png" alt=""></img>
-            <div>
-              <h5>Treasury Balance</h5>
-              <h4>$155,555.15</h4>
+          <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={800} triggerOnce>
+            <div className="stat_item" style={{ background: 'url(./img/home/treasury_bg.png)', backgroundSize: 'contain' }}>
+              <img src="./img/home/treasury.png" alt=""></img>
+              <div>
+                <h5>Treasury Balance</h5>
+                <h4>$155,555.15</h4>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
         <div className='col-md-4 p-sm-2 p-md-0'>
-          <div className='stat_item' style={{ background: 'url(./img/home/invest_bg.png)', backgroundSize: 'contain' }}>
-            <img src="./img/home/invest.png" alt=""></img>
-            <div>
-              <h5>Value Of Investment</h5>
-              <h4>$155,555.15</h4>
+          <Reveal className='onStep' keyframes={fadeInUp} delay={600} duration={1200} triggerOnce>
+            <div className='stat_item' style={{ background: 'url(./img/home/invest_bg.png)', backgroundSize: 'contain' }}>
+              <img src="./img/home/invest.png" alt=""></img>
+              <div>
+                <h5>Value Of Investment</h5>
+                <h4>$155,555.15</h4>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
         <div className='col-md-4 p-sm-2 p-md-0'>
-          <div className='stat_item' style={{ background: 'url(./img/home/holder_bg.png)', backgroundSize: 'contain' }}>
-            <img src="./img/home/holder.png" alt=""></img>
-            <div>
-              <h5>Total Holders</h5>
-              <h4>155,555</h4>
+          <Reveal className='onStep' keyframes={fadeInUp} delay={900} duration={1600} triggerOnce>
+            <div className='stat_item' style={{ background: 'url(./img/home/holder_bg.png)', backgroundSize: 'contain' }}>
+              <img src="./img/home/holder.png" alt=""></img>
+              <div>
+                <h5>Total Holders</h5>
+                <h4>155,555</h4>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </div>

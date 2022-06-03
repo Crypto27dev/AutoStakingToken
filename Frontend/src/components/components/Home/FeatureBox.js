@@ -83,7 +83,9 @@ const Featurebox = () => {
       <GlobalStyles />
       <img className="bg-icon1" src="./img/icons/bg-icon.png" alt=""></img>
       <div className='container relative'>
-        <h1 className='fw-700'>HOW DOES IT <span className='color'>WORK</span></h1>
+        <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
+          <h1 className='fw-700 text-center'>HOW DOES IT <span className='color'>WORK</span></h1>
+        </Reveal>
         <div className='row'>
           <div className="col-md-4">
             <div className="feature-box f-boxed style-3 stat_1">
