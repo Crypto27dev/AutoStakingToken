@@ -25,11 +25,11 @@ $color: #CFFD33;
 }
 
 .f-space {
-  font-family: 'Space Grotesk', Arial, Helvetica, sans-serif;
+  font-family: 'Space Grotesk', Arial, Helvetica, sans-serif !important;
 }
 
 .f-inter {
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif !important;
 }
 
 h1,
@@ -50,7 +50,13 @@ h6 {
   }
 
   .fs-#{$i} {
-    font-size: #{$i}px;
+    font-size: #{$i}px !important;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .container {
+    max-width: 1300px;
   }
 }
 
@@ -1097,4 +1103,10 @@ textarea:focus {
 
 .MuiPaper-root {
   border-radius: 10px !important;
+}
+
+.btn-disconnect {
+  background: transparent;
+  color: $color;
+  border: none;
 }

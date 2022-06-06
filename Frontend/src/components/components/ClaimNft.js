@@ -114,7 +114,6 @@ const ClaimNft = () => {
     const result = await getAllNFTInfos();
     if (result.success) {
       const data = result.nftInfos;
-      console.log('[Data] = ', data)
       let nftArray = [];
       for (let i = 0; i < data.tokenIDs.length; i++) {
         const createdTime = data.createdTime[i];
@@ -286,7 +285,7 @@ const ClaimNft = () => {
           </div>
         </div>
         {nftInfos && nftInfos.map((nft, index) => (
-          <div className="row">
+          <div className="row" key={index}>
             <div className="col-md-3 offset-md-6">
               {/* <Select
           styles={customStyles}

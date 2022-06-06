@@ -1,9 +1,10 @@
 import React from 'react';
+import Reveal from 'react-awesome-reveal';
 import Header from '../menu/header';
 import ColumnExplorer from '../components/ColumnExplorer';
 import Footer from '../components/footer';
 import { createGlobalStyle } from 'styled-components';
-import api from '../../core/api';
+import { fadeInUp } from '../../utils';
 
 const GlobalStyles = createGlobalStyle`
   .nav-image {
@@ -41,11 +42,13 @@ const Explore = () => {
     <div>
       <GlobalStyles />
       <Header />
-      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${api.rootUrl}/img/background/explore_banner.png)` }}>
+      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: 'url(/img/background/explore_banner.png)' }}>
         <div className='mainbreadcumb'>
           <div className='container'>
             <div className='d-flex flex-row align-items-center justify-content-center'>
-              <h1 className='banner-title text-center'>OPEN MARKET FOR NFTS</h1>
+              <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={800} triggerOnce>
+                <h1 className='banner-title text-center'>OPEN MARKET FOR NFTS</h1>
+              </Reveal>
             </div>
           </div>
         </div>

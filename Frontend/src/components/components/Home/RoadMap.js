@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createGlobalStyle } from 'styled-components';
 import Reveal from 'react-awesome-reveal';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import $ from 'jquery';
 import { isMobile } from '../../../utils';
 import { fadeInUp } from '../../../utils';
 
@@ -20,7 +21,6 @@ const GlobalStyles = createGlobalStyle`
 		position: relative;
 		font-family: 'Space Grotesk';
 		font-size: 20px;
-		color: white;
 		margin-left: -10px;
     @media only screen and (max-width: 768px) {
 			padding-left: 30px;
@@ -52,13 +52,20 @@ const GlobalStyles = createGlobalStyle`
 			}
 		}
 	}
-	.roadmap-data {
+  .roadmap-item {
 		color: white;
+    &:hover {
+      color: #cffd33;
+      font-weight: 700;
+    }
+  }
+	.roadmap-data {
 		margin-left: 0;
 		margin-top: 40px;
 		font-family: 'Inter';
     font-size: 18px;
     line-height: 28px;
+    cursor: pointer;
     @media only screen and (max-width: 768px) {
 			margin-top: 10px;
 		}
@@ -78,7 +85,7 @@ const GlobalStyles = createGlobalStyle`
 			}
 		}
 	}
-  .roadmap-prev, .roadmap-next {
+  .btn-roadmap {
     color: white;
     background: rgba(207, 253, 51, 0.1);
     border: 1px solid #6D6E70;
@@ -90,7 +97,9 @@ const GlobalStyles = createGlobalStyle`
     align-items: center;
     margin-left: 5px;
     margin-right: 5px;
-    &.roadmap-next {
+    cursor: pointer;
+    transition: .5s;
+    &:hover {
       background: #CFFD33;
       color: black;
     }
@@ -108,35 +117,17 @@ const RoadMap = () => {
               <h1 className="fw-700">THE <span className='color'>ROAD MAP</span></h1>
             </Reveal>
             <div className="d-flex flex-row align-items-center">
-              <span className="roadmap-prev"><ArrowBackIcon /></span>
-              <span className="roadmap-next"><ArrowForwardIcon /></span>
+              <span className="btn-roadmap"><ArrowBackIcon /></span>
+              <span className="btn-roadmap"><ArrowForwardIcon /></span>
             </div>
           </div>
         </div>
         <div className="col-md-12 mt-5">
           <div className="roadmap-timeline">
             <div className="timeline"></div>
-            {!isMobile() && (
-              <div className="row">
-                <div className="col-md-3">
-                  <span className="roadmap-time">Q2 2022</span>
-                </div>
-                <div className="col-md-3">
-                  <span className="roadmap-time">Q3 2022</span>
-                </div>
-                <div className="col-md-3">
-                  <span className="roadmap-time">Q4 2022</span>
-                </div>
-                <div className="col-md-3">
-                  <span className="roadmap-time">Q1 2023</span>
-                </div>
-              </div>
-            )}
             <div className="row">
-              <div className="col-md-3">
-                {isMobile() && (
-                  <span className="roadmap-time">Q2 2022</span>
-                )}
+              <div className="col-md-3 roadmap-item">
+                <span className="roadmap-time">Q2 2022</span>
                 <Reveal className='onStep' keyframes={fadeInUp} delay={800} duration={600} triggerOnce>
                   <div>
                     <ul className="roadmap-data">
@@ -151,10 +142,8 @@ const RoadMap = () => {
                   </div>
                 </Reveal>
               </div>
-              <div className="col-md-3">
-                {isMobile() && (
-                  <span className="roadmap-time">Q3 2022</span>
-                )}
+              <div className="col-md-3 roadmap-item">
+                <span className="roadmap-time">Q3 2022</span>
                 <Reveal className='onStep' keyframes={fadeInUp} delay={1000} duration={600} triggerOnce>
                   <div>
                     <ul className="roadmap-data">
@@ -168,10 +157,8 @@ const RoadMap = () => {
                   </div>
                 </Reveal>
               </div>
-              <div className="col-md-3">
-                {isMobile() && (
-                  <span className="roadmap-time">Q4 2022</span>
-                )}
+              <div className="col-md-3 roadmap-item">
+                <span className="roadmap-time">Q4 2022</span>
                 <Reveal className='onStep' keyframes={fadeInUp} delay={1200} duration={600} triggerOnce>
                   <div>
                     <ul className="roadmap-data">
@@ -183,10 +170,8 @@ const RoadMap = () => {
                   </div>
                 </Reveal>
               </div>
-              <div className="col-md-3">
-                {isMobile() && (
-                  <span className="roadmap-time">Q1 2023</span>
-                )}
+              <div className="col-md-3 roadmap-item">
+                <span className="roadmap-time">Q1 2023</span>
                 <Reveal className='onStep' keyframes={fadeInUp} delay={1400} duration={600} triggerOnce>
                   <div>
                     <ul className="roadmap-data">

@@ -80,7 +80,6 @@ const CarouselNewRedux = () => {
       return;
     }
     const result = await getNFTCardInfos();
-    console.log('[CardInfo] = ', result)
     if (result.success) {
       let cardInfoArr = [];
       for (let i = 0; i < result.cardInfos.length; i++) {

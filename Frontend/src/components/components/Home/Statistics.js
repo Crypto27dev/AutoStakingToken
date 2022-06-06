@@ -26,6 +26,10 @@ const GlobalStyles = createGlobalStyle`
     flex-direction: column;
     justify-content: space-between;
     filter: drop-shadow(0px 10px 50px #000000);
+    transition: transform .5s;
+    &:hover {
+      transform: scale(1.1);
+    }
     @media only screen and (max-width: 1199px) {
       width: 250px;
     }

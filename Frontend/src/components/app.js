@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Router, Location, Redirect } from '@reach/router';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTopBtn from './menu/ScrollToTop';
 import Dashboard from './pages/home';
 import MintEarning from './pages/mintEarning';
@@ -33,20 +35,33 @@ const PosedRouter = ({ children }) => (
   </Location>
 );
 
-const app = () => (
-  <div className="wraper" style={{ background: 'url(./img/background/page-bg.png)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%'}}>
-    <GlobalStyles />
-    <PosedRouter>
-      <ScrollTop path="/">
-        <Dashboard path="/" >
-          <Redirect to="/" />
-        </Dashboard>
-        <MintEarning path="/mint" />
-        <Explore path="/explore" />
-        <Admin path="/admin" />
-      </ScrollTop>
-    </PosedRouter>
-    <ScrollToTopBtn />
-  </div>
-);
-export default app;
+const App = () => {
+  return (
+    <div className="wraper" style={{ background: 'url(./img/background/page-bg.png)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%' }}>
+      <GlobalStyles />
+      <PosedRouter>
+        <ScrollTop path="/">
+          <Dashboard path="/" >
+            <Redirect to="/" />
+          </Dashboard>
+          <MintEarning path="/mint" />
+          <Explore path="/explore" />
+          <Admin path="/admin" />
+        </ScrollTop>
+      </PosedRouter>
+      <ScrollToTopBtn />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+      />
+    </div>
+  )
+};
+export default App;

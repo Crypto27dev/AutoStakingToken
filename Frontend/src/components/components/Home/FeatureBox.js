@@ -35,13 +35,13 @@ const GlobalStyles = createGlobalStyle`
   .bg-icon1 {
     position: absolute;
     left: -130px;
-    bottom: -60px;
+    bottom: -160px;
     z-index: 0;
   }
   .bg-icon2 {
     position: absolute;
     right: -90px;
-    top: -20px;
+    top: -140px;
     z-index: 0;
   }
 `;
@@ -74,7 +74,7 @@ const Featurebox = () => {
           <h1 className='fw-700 text-center'>HOW DOES IT <span className='color'>WORK</span></h1>
         </Reveal>
         <div className='row'>
-          <div className="col-md-4">
+          <div className="col-md-4 px-3">
             <div className="feature-box f-boxed style-3 stat_1">
               <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
                 <img className='i-boxed' src="img/home/work_1_1.png" alt=""></img>
@@ -90,7 +90,7 @@ const Featurebox = () => {
             </div>
           </div>
 
-          <div className="col-md-4">
+          <div className="col-md-4 px-3">
             <div className="feature-box f-boxed style-3 stat_2">
               <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
                 <img className='i-boxed' src="img/home/work_2_1.png" alt=""></img>
@@ -106,7 +106,7 @@ const Featurebox = () => {
             </div>
           </div>
 
-          <div className="col-md-4">
+          <div className="col-md-4 px-3">
             <div className="feature-box f-boxed style-3 stat_3">
               <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
                 <img className='i-boxed' src="img/home/work_3_1.png" alt=""></img>

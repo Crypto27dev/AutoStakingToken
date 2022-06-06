@@ -41,54 +41,19 @@ let web3Provider = null;
 export const loadWeb3 = async () => {
   try {
     // await web3Modal.updateTheme({
-    //   background: "rgb(39, 49, 56)",
+    //   background: "#4f5d21",
     //   main: "rgb(199, 199, 199)",
     //   secondary: "rgb(136, 136, 136)",
     //   border: "rgba(195, 195, 195, 0.14)",
     //   hover: "rgb(16, 26, 32)"
     // });
-    web3Modal.show = true;
-    await web3Modal.clearCachedProvider();
+    // web3Modal.show = true;
     let web3 = new Web3(config.mainNetUrl);
     store.dispatch(setWeb3(web3));
-    provider = await web3Modal.connect();
-    web3 = new Web3(provider);
-    web3Provider = new providers.Web3Provider(provider);
-    const network = await web3Provider.getNetwork();
-    console.log('[Network ID] = ', network)
-    if (web3.utils.toHex(network.chainId) === web3.utils.toHex(config.chainId)) {
-      store.dispatch(setWeb3(web3));
+    // await web3Modal.clearCachedProvider();
+    if (web3Modal.cachedProvider) {
+      await connectWallet();
     }
-    store.dispatch(setChainID(network.chainId));
-
-    const signer = web3Provider.getSigner();
-    const account = await signer.getAddress();
-    store.dispatch(setWalletAddr(account));
-
-    await getBalanceOfAccount();
-    provider.on("accountsChanged", async function (accounts) {
-      if (accounts[0] !== undefined) {
-        store.dispatch(setWalletAddr(accounts[0]));
-        await getBalanceOfAccount();
-      } else {
-        store.dispatch(setWalletAddr(''));
-      }
-    });
-
-    provider.on('chainChanged', async function (chainId) {
-      store.dispatch(setChainID(chainId));
-      console.log('[Chain Changed] = ', chainId);
-      if (web3.utils.toHex(chainId) === web3.utils.toHex(config.chainId)) {
-        provider = await web3Modal.connect();
-        web3 = new Web3(provider);
-        web3Provider = new providers.Web3Provider(provider);
-        store.dispatch(setWeb3(web3));
-      }
-    });
-
-    provider.on('disconnect', function (error) {
-      store.dispatch(setWalletAddr(''));
-    });
   } catch (error) {
     console.log('[Load Web3 error] = ', error);
   }
@@ -165,7 +130,7 @@ const changeNetwork = async () => {
 export const connectWallet = async () => {
   try {
     provider = await web3Modal.connect();
-    const web3 = new Web3(provider);
+    let web3 = new Web3(provider);
     store.dispatch(setWeb3(web3));
     web3Provider = new providers.Web3Provider(provider);
 
@@ -178,6 +143,28 @@ export const connectWallet = async () => {
     }
 
     await getBalanceOfAccount();
+    provider.on("accountsChanged", async function (accounts) {
+      if (accounts[0] !== undefined) {
+        store.dispatch(setWalletAddr(accounts[0]));
+        await getBalanceOfAccount();
+      } else {
+        store.dispatch(setWalletAddr(''));
+      }
+    });
+
+    provider.on('chainChanged', async function (chainId) {
+      store.dispatch(setChainID(chainId));
+      if (web3.utils.toHex(chainId) === web3.utils.toHex(config.chainId)) {
+        provider = await web3Modal.connect();
+        web3 = new Web3(provider);
+        web3Provider = new providers.Web3Provider(provider);
+        store.dispatch(setWeb3(web3));
+      }
+    });
+
+    provider.on('disconnect', function (error) {
+      store.dispatch(setWalletAddr(''));
+    });
     return {
       success: true
     }

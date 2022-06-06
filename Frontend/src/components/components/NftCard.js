@@ -19,7 +19,7 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
         </div>
         <div className="spacer-10"></div>
         <div className='d-flex justify-content-between'>
-          <span>Purchase on</span>
+          <span>Selling Cost</span>
           <div className='text-white'>$100</div>
         </div>
         <div className='single-line'></div>
