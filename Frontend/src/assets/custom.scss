@@ -60,6 +60,17 @@ h6 {
   }
 }
 
+@media (max-width: 575px) {
+  .col-xs-6 {
+      flex: 0 0 auto;
+      width: 50%;
+  }
+}
+
+img {
+  pointer-events: none;
+}
+
 .nft-carousel {
   .slick-slide {
     padding: 0 10px !important;
@@ -146,6 +157,10 @@ input::-webkit-inner-spin-button {
     padding: 0px;
   }
 }
+
+// .mintnft_block {
+//   min-height: 600px;
+// }
 
 .news-new_checkbox,
 .seller-new_checkbox,
@@ -311,14 +326,15 @@ footer.footer-light {
     transition: 0.7s;
   }
 
+  button:hover {
+    background-color: #CFFD33;
+    border: 1px solid #CFFD33;
+    color: black;
+    transition: 0.7s;
+  }
+
   &:hover {
     border: 1px solid #CFFD33;
-    button {
-      background-color: #CFFD33;
-      border: 1px solid #CFFD33;
-      color: black;
-      transition: 0.7s;
-    }
     .nft__item_preview {
       transform: scale(1.1);
       transition: 0.7s;
@@ -354,6 +370,7 @@ textarea {
 .form-control {
   color: white;
   margin-bottom: 5px;
+  border-radius: 0.5rem;
 }
 
 .form-control[readOnly] {
@@ -652,7 +669,47 @@ textarea:focus {
 }
 
 
-/*****    SweetAlert Toast        ******/
+/*****    SweetAlert && Toast        ******/
+.swal2-popup {
+  background: #212224 !important;
+  border-radius: 15px !important;
+  .swal2-title {
+    color: white;
+  }
+  .swal2-html-container {
+    color: white;
+  }
+  button {
+    display: block;
+    border-radius: 20px !important;
+    outline: 0;
+    text-decoration: none;
+    text-transform: uppercase ;
+    padding: 8px 40px;
+    font-family: 'Inter';
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 2px 2px 20px 0px rgba(131, 100, 226, 0);
+    transition: all 0.3s ease;
+    &:hover{
+      box-shadow: 2px 2px 20px 0px rgba(226, 140, 100, 0.5);
+      transition: all 0.3s ease;
+    }
+    &:focus {
+      box-shadow: none !important;
+    }
+    &.inline{
+      display: inline-block;
+      margin-right: 15px;
+      &.white{
+        color: $color !important;
+        background:$white;
+      }
+    }
+  }
+}
 .swal2-toast-shown .swal2-container.swal2-top {
   width: 400px !important;
 }
@@ -689,19 +746,6 @@ textarea:focus {
 
 .colored-toast .swal2-html-container {
   color: white;
-}
-
-.modal-content {
-  background: #21273e !important;
-  border-radius: 0.8rem !important;
-
-  h5 {
-    font-family: "Muli", sans-serif;
-  }
-
-  .dropdownSelect {
-    margin-right: 0px;
-  }
 }
 
 .btn2 {
@@ -1102,7 +1146,11 @@ textarea:focus {
 }
 
 .MuiPaper-root {
+  background-color: #262729 !important;
   border-radius: 10px !important;
+  a {
+    color: white;
+  }
 }
 
 .btn-disconnect {
@@ -1110,3 +1158,29 @@ textarea:focus {
   color: $color;
   border: none;
 }
+
+.modal-dialog {
+  .modal-header {
+    border-bottom: none;
+    padding-bottom: 0.3rem;
+    .btn-close{
+      background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.125 7.125L16.875 16.875M16.875 7.125L7.125 16.875L16.875 7.125Z' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/2em no-repeat !important;
+      width: 2rem;
+      height: 2rem;
+      background-size: 100%;
+      opacity: 1;
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+  }
+  .modal-footer {
+    border-top: none;
+    justify-content: space-evenly;
+    button {
+      width: 125px;
+      padding: 8px;
+    }
+  }
+}
+

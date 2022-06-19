@@ -4,7 +4,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const footer = () => (
   <footer className="footer-light">
-    <div className="footer-container">
+    {/* <div className="footer-container">
       <div className="container">
         <div className="row">
           <div className="col-md-3 col-sm-6 col-xs-1">
@@ -64,7 +64,7 @@ const footer = () => (
           </div>
         </div>
       </div>
-    </div>
+    </div> */}
     <div className="subfooter">
       <div className="container">
         <div className="row">
@@ -72,7 +72,12 @@ const footer = () => (
             <div className="de-flex">
               <div className="de-flex-col">
                 <span onClick={() => window.open("", "_self")}>
-                  <img alt="" className="f-logo d-1" src="./img/logo.png" width="80" />
+                  <img
+                    src="/img/logo.gif"
+                    className="f-logo d-1"
+                    alt="#"
+                    width={'200px'}
+                  />
                   <span className="text-white copy">&copy; Copyright 2022</span>
                 </span>
               </div>

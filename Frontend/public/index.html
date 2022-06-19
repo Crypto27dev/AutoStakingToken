@@ -58,9 +58,133 @@
   <!-- End of Async Drift Code -->
 
   <title>PEACE - NFT Marketplace</title>
+  <style>
+    @keyframes hideLoader {
+      0% {
+        width: 100%;
+        height: 100%;
+      }
+
+      100% {
+        width: 0;
+        height: 0;
+      }
+    }
+
+    @keyframes animateBg {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+
+      100% {
+        filter: hue-rotate(360deg);
+      }
+    }
+
+    body>div.loader {
+      position: fixed;
+      background: #222;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 99;
+      opacity: 0;
+      transition: opacity .5s ease;
+      overflow: hidden;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: animateBg 10s linear infinite;
+    }
+
+    body:not(.loaded)>div.loader {
+      opacity: 1;
+    }
+
+    body:not(.loaded) {
+      overflow: hidden;
+    }
+
+    body.loaded>div.loader {
+      animation: hideLoader .5s linear .5s forwards;
+    }
+
+    /* Typing Animation */
+    .loading-animation {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      position: relative;
+      left: -12px;
+    }
+
+    body>div.loader>div.loading-animation>span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(calc(18deg * var(--i)));
+    }
+
+    body>div.loader>div.loading-animation>span::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #00ff0a;
+      box-shadow: 0 0 10px #00ff0a, 0 0 20px #00ff0a, 0 0 40px #00ff0a,
+        0 0 60px #00ff0a, 0 0 80px #00ff0a, 0 0 100px #00ff0a;
+      animation: animate 1s linear infinite;
+      animation-delay: calc(0.05s * var(--i));
+    }
+
+    @keyframes animate {
+      0% {
+        transform: scale(1);
+      }
+
+      80%,
+      100% {
+        transform: scale(0);
+      }
+    }
+  </style>
+  <script type="text/javascript">
+    window.addEventListener("load", function () { document.querySelector('body').classList.add('loaded'); });
+  </script>
 </head>
 
 <body>
+  <div class="loader">
+    <div class="loading-animation">
+      <span style="--i: 1;"></span>
+      <span style="--i: 2;"></span>
+      <span style="--i: 3;"></span>
+      <span style="--i: 4;"></span>
+      <span style="--i: 5;"></span>
+      <span style="--i: 6;"></span>
+      <span style="--i: 7;"></span>
+      <span style="--i: 8;"></span>
+      <span style="--i: 9;"></span>
+      <span style="--i: 10;"></span>
+      <span style="--i: 11;"></span>
+      <span style="--i: 12;"></span>
+      <span style="--i: 13;"></span>
+      <span style="--i: 14;"></span>
+      <span style="--i: 15;"></span>
+      <span style="--i: 16;"></span>
+      <span style="--i: 17;"></span>
+      <span style="--i: 18;"></span>
+      <span style="--i: 19;"></span>
+      <span style="--i: 20;"></span>
+    </div>
+  </div>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
   <!--

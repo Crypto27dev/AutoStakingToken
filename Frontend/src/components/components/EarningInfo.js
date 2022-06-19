@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Reveal from 'react-awesome-reveal';
 import { createGlobalStyle } from 'styled-components';
-import { fadeInUp } from '../../utils';
+import { fadeInUp, numberWithCommas } from '../../utils';
 
 const GlobalStyles = createGlobalStyle`
   .statistics_container {
@@ -54,47 +54,74 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const EarningInfo = () => (
-  <div className='relative'>
-    <GlobalStyles />
-    <div className="container statistics_container">
-      <div className='d-flex flex-column flex-md-row justify-content-center gap-5'>
-        <div className='p-sm-2 p-md-0'>
-          <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={800} triggerOnce>
-            <div className='earn_item' style={{ background: 'url(./img/background/mint_item1.png)', backgroundSize: 'contain' }}>
-              <img src="./img/icons/mint_icon1.png" width="75px" alt=""></img>
-              <div>
-                <h5 className='fs-14'>Total Earning in PeaceGiga</h5>
-                <h4>$155,555.15</h4>
+const EarningInfo = ({ nftInfos, cardInfos }) => {
+  const dailyEarning = useMemo(() => {
+    let sum = 0;
+    if (nftInfos) {
+      nftInfos.forEach(nft => {
+        const price = Number(nft.tokenPrice) * (Number(nft.currentROI) / 100) / (3600 * 24 * 100);
+        sum += price;
+      });
+    }
+    return sum;
+  }, [nftInfos]);
+
+  const totalInfos = useMemo(() => {
+    let totalNfts = 0, totalEarning = 0;
+    if (cardInfos) {
+      cardInfos.forEach(card => {
+        totalNfts += Number(card.soldCount);
+        totalEarning += Number(card.soldCount) * Number(card.priceBUSD);
+      });
+    }
+    return {
+      totalEarning,
+      totalNfts
+    };
+  }, [cardInfos])
+
+  return (
+    <div className='relative'>
+      <GlobalStyles />
+      <div className="container statistics_container">
+        <div className='d-flex flex-column flex-md-row justify-content-center gap-5'>
+          <div className='p-sm-2 p-md-0'>
+            <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={800} triggerOnce>
+              <div className='earn_item' style={{ background: 'url(./img/background/mint_item1.png)', backgroundSize: 'contain' }}>
+                <img src="./img/icons/mint_icon1.png" width="75px" alt=""></img>
+                <div>
+                  <h5 className='fs-14'>Total Earning</h5>
+                  <h4>${numberWithCommas(totalInfos.totalEarning)}</h4>
+                </div>
               </div>
-            </div>
-          </Reveal>
-        </div>
-        <div className='p-sm-2 p-md-0'>
-          <Reveal className='onStep' keyframes={fadeInUp} delay={600} duration={1200} triggerOnce>
-            <div className='earn_item' style={{ background: 'url(./img/background/mint_item2.png)', backgroundSize: 'contain' }}>
-              <img src="./img/icons/mint_icon2.png" width="75px" alt=""></img>
-              <div>
-                <h5 className='fs-14'>Total NFTs</h5>
-                <h4>1555</h4>
+            </Reveal>
+          </div>
+          <div className='p-sm-2 p-md-0'>
+            <Reveal className='onStep' keyframes={fadeInUp} delay={600} duration={1200} triggerOnce>
+              <div className='earn_item' style={{ background: 'url(./img/background/mint_item2.png)', backgroundSize: 'contain' }}>
+                <img src="./img/icons/mint_icon2.png" width="75px" alt=""></img>
+                <div>
+                  <h5 className='fs-14'>Total NFTs</h5>
+                  <h4>{numberWithCommas(totalInfos.totalNfts)}</h4>
+                </div>
               </div>
-            </div>
-          </Reveal>
-        </div>
-        <div className='p-sm-2 p-md-0'>
-          <Reveal className='onStep' keyframes={fadeInUp} delay={900} duration={1600} triggerOnce>
-            <div className='earn_item' style={{ background: 'url(./img/background/mint_item3.png)', backgroundSize: 'contain' }}>
-              <img src="./img/icons/mint_icon3.png" width="75px" alt=""></img>
-              <div>
-                <h5 className='fs-14'>Daily Earning</h5>
-                <h4>$1200</h4>
+            </Reveal>
+          </div>
+          <div className='p-sm-2 p-md-0'>
+            <Reveal className='onStep' keyframes={fadeInUp} delay={900} duration={1600} triggerOnce>
+              <div className='earn_item' style={{ background: 'url(./img/background/mint_item3.png)', backgroundSize: 'contain' }}>
+                <img src="./img/icons/mint_icon3.png" width="75px" alt=""></img>
+                <div>
+                  <h5 className='fs-14'>Daily Earning</h5>
+                  <h4>${numberWithCommas(dailyEarning, 5)}</h4>
+                </div>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
         </div>
       </div>
+      <img className="bg-icon" src="./img/icons/bg-icon.png" alt=""></img>
     </div>
-    <img className="bg-icon" src="./img/icons/bg-icon.png" alt=""></img>
-  </div>
-);
+  )
+};
 export default EarningInfo;

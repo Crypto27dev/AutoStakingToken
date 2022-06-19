@@ -4,19 +4,9 @@ import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Reveal from 'react-awesome-reveal';
-import styled from "styled-components";
-import ReactLoading from "react-loading";
-import { numberWithCommas, fadeInUp } from "../../../utils";
-import { getNFTCardInfos, getAvaxPrice } from "../../../web3/web3";
+import { numberWithCommas, fadeInUp, SingleLoading } from "../../../utils";
+import { getNFTCardInfos, getBNBPrice } from "../../../web3/web3";
 import * as selectors from '../../../store/selectors';
-
-const Loading = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 15px;
-`;
 
 const settings = {
   infinite: false,
@@ -84,9 +74,8 @@ const CarouselNewRedux = () => {
       let cardInfoArr = [];
       for (let i = 0; i < result.cardInfos.length; i++) {
         let card = result.cardInfos[i];
-        const avax = await getAvaxPrice(card.priceUSDC);
-        // console.log('[Card USDC] = ', card.priceUSDC, '[Avax] = ', avax);
-        card = { ...card, avax };
+        const bnb = await getBNBPrice(card.priceBUSD);
+        card = { ...card, bnb };
         cardInfoArr.push(card);
       }
       setCardInfos(cardInfoArr);
@@ -111,9 +100,7 @@ const CarouselNewRedux = () => {
       <div className='mintnft_block'>
         <div className="align-items-stretch">
           {cardInfos.length === 0 && (
-            <Loading>
-              <ReactLoading type={'spinningBubbles'} color="#fff" />
-            </Loading>
+            <SingleLoading />
           )}
           {cardInfos.length > 0 && (
             <Slider {...settings} className="nft-carousel">
@@ -128,7 +115,7 @@ const CarouselNewRedux = () => {
                   <div className="px-4 mt-2">
                     <div className="d-flex flex-row justify-content-between">
                       <span className="fs-20 f-space text-white">{nft.symbol}</span>
-                      <span className="fs-20 f-space color">${numberWithCommas(nft.priceUSDC)}</span>
+                      <span className="fs-20 f-space color">${numberWithCommas(nft.priceBUSD)}</span>
                     </div>
                     <div className="single-line"></div>
                     <div className="nft_total d-flex justify-content-between align-items-center">
@@ -136,7 +123,7 @@ const CarouselNewRedux = () => {
                         Total
                       </div>
                       <div className="nft_total_value text-white">
-                        {Number(nft.avax).toFixed(5)} AVAX
+                        {numberWithCommas(nft.bnb, 3)} BNB
                       </div>
                     </div>
                     <div className="single-line"></div>

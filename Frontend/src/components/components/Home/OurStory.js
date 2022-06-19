@@ -27,7 +27,7 @@ const OurStory = () => (
         </p>
         <div className='space-single'></div>
         <p className='story-box text-white'>
-          From the moment we realised that the current market environment had a gap in it, we went all in and dedicated ourselves to becoming experts on the subject. Consequently, we discovered how this new phenomenon worked and how to exploit it. A name was then added to reflect our findings - Hold on for dear life!
+          From the moment we realised that the current market environment had a gap in it, we went all in and dedicated ourselves to becoming experts on the subject. Consequently, we discovered how this new phenomenon worked and how to exploit it. A name was then added to reflect our findings!
         </p>
         <span onClick={() => window.open("/whitepaper.pdf", "_target")} className="btn-main mt-4 mx-auto">Whitepaper</span>
       </Reveal>

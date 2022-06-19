@@ -11,12 +11,12 @@ const StyledButton = styled('button')(
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
   box-sizing: border-box;
-  min-height: calc(1.5em + 22px);
+  min-height: 38px;
   min-width: 100%;
-  background: #151b34;
-  border: 1px solid #5947FF;
+  background: transparent;
+  border: 1px solid white;
   border-radius: 10px;
-  padding: 10px;
+  padding: 5px 10px;
   text-align: left;
   line-height: 1.5;
   color: white;
@@ -45,9 +45,9 @@ const StyledListbox = styled('ul')(
   box-sizing: border-box;
   padding: 5px;
   margin: 10px 0;
-  min-width: 200px;
-  max-height: 400px;
-  background: rgb(21,27,52);
+  min-width: 106px;
+  max-height: 200px;
+  background: #2e2f31;
   border-radius: 0.75em;
   color: white;
   overflow: auto;
@@ -57,13 +57,13 @@ const StyledListbox = styled('ul')(
 
 const StyledOption = styled(OptionUnstyled)(
   ({ theme }) => `
-  background: rgb(21,27,52);
+  background: #2e2f31;
   list-style: none;
   padding: 8px;
   border-radius: 0.45em;
   cursor: default;
   &:hover {
-    background: rgb(8, 15, 42);
+    background: #3b3c3e;
   }
   &:last-of-type {
     border-bottom: none;
@@ -126,6 +126,6 @@ export default function UnstyledSelectRichOptions({ value, onChange, disabled })
 // ];
 
 const coins = [
-  { code: 0, label: 'AVAX' },
-  { code: 1, label: 'USDC' }
+  { code: 0, label: 'BNB' },
+  { code: 1, label: 'BUSD' }
 ];

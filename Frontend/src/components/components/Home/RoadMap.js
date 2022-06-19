@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { createGlobalStyle } from 'styled-components';
 import Reveal from 'react-awesome-reveal';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import $ from 'jquery';
-import { isMobile } from '../../../utils';
 import { fadeInUp } from '../../../utils';
 
 const GlobalStyles = createGlobalStyle`
@@ -20,7 +18,7 @@ const GlobalStyles = createGlobalStyle`
 	.roadmap-time {
 		position: relative;
 		font-family: 'Space Grotesk';
-		font-size: 20px;
+		font-size: 20px;;
 		margin-left: -10px;
     @media only screen and (max-width: 768px) {
 			padding-left: 30px;

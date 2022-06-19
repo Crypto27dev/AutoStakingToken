@@ -3,22 +3,12 @@ import { useSelector } from 'react-redux';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import styled from "styled-components";
-import ReactLoading from "react-loading";
 import Reveal from 'react-awesome-reveal';
-import Backdrop from '@mui/material/Backdrop';
 import Swal from 'sweetalert2';
-import { numberWithCommas, Toast, fadeInUp } from "../../utils";
-import { getNFTCardInfos, getAvaxPrice, mintNfts } from "../../web3/web3";
+import { toast } from 'react-toastify';
+import { numberWithCommas, fadeIn, fadeInUp, BackLoading, SingleLoading, isEmpty } from "../../utils";
+import { getNFTCardInfos, getBNBPrice, mintNfts } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
-
-const Loading = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 15px;
-`;
 
 const settings = {
   infinite: false,
@@ -73,72 +63,65 @@ const settings = {
   ]
 };
 
-const Prop = styled('h3')`f5 f4-ns mb0 white`;
-
-const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
+const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, cardPriceArr }) => {
   const slickRef = useRef(null);
   const slides = ["1", "2", "3", "4", "5", "6"];
-  const [cardInfos, setCardInfos] = useState([]);
+  const [cardInfos, setCardInfos] = useState(null);
+  const [cardPrices, setCardPrices] = useState(null);
   const [counts, setCounts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const web3 = useSelector(selectors.web3State);
+  const [refresh, setRefresh] = useState(false);
+  const wallet = useSelector(selectors.userWallet);
 
   const getCardInfos = useCallback(async () => {
-    if (!web3) {
-      return;
-    }
-    const result = await getNFTCardInfos();
-    console.log('[CardInfo] = ', result)
-    if (result.success) {
-      let cardInfoArr = [];
-      for (let i = 0; i < result.cardInfos.length; i++) {
-        let card = result.cardInfos[i];
-        const avax = await getAvaxPrice(card.priceUSDC);
-        // console.log('[Card USDC] = ', card.priceUSDC, '[Avax] = ', avax);
-        card = { ...card, avax };
-        cardInfoArr.push(card);
-      }
-      setCardInfos(cardInfoArr);
-    }
-  }, [web3]);
+    setCardPrices(cardPriceArr);
+    setCardInfos(cardInfoArr);
+  }, [cardInfoArr, cardPriceArr]);
 
   useEffect(() => {
     getCardInfos();
   }, [getCardInfos]);
 
-  const handleSlide = async (index, currentSlide) => {
+  const handleSlide = (index, currentSlide) => {
     let countArr = counts;
     countArr[index] = currentSlide + 1;
+    let newCardInfos = cardPrices;
+    newCardInfos[index] = Number(cardInfos[index].bnb) * (currentSlide + 1);
+    setCardPrices(newCardInfos);
     setCounts(countArr);
+    setRefresh(prevState => !prevState);
   }
 
-  const handleMint = async (_id, nft) => {
-    const count = counts[_id] === undefined ? 1 : counts[_id];
+  const handleMint = async (index, nft) => {
+    const count = counts[index] === undefined ? 1 : counts[index];
+    if (isEmpty(wallet)) {
+      toast.error(`Please connect your wallet.`);
+      return;
+    }
+    if ((nft.supply - nft.soldCount) <= 0) {
+      toast.error(`You can't mint anymore.`);
+      return;
+    }
     Swal.fire({
       title: 'Are you sure?',
       icon: 'warning',
-      text: `You are about to mint a new NFT`,
+      text: `You are about to mint a new NFT.`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
-    }).then(async (result) => {
-      if (result.isConfirmed) {
+    }).then(async (resp) => {
+      if (resp.isConfirmed) {
         setLoading(true);
-        const result = await mintNfts(_id, count, nft.avax);
-        if (result.success) {
-          Toast.fire({
-            icon: 'success',
-            title: 'Created a new NFT successfully!'
-          })
-        } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'Something went wrong.'
-          })
-        }
+        const result = await mintNfts(index, count, nft.bnb);
         setLoading(false);
+        if (result.success) {
+          onReload();
+          toast.success('Created a new NFT successfully!');
+        } else {
+          toast.error(result.status);
+        }
       }
     });
   }
@@ -153,86 +136,84 @@ const CarouselNFT = ({ showOnly = false, handleEdit, reload = false }) => {
         </div>
       </div>
       <div className='mintnft_block'>
-        <div className="align-items-stretch">
-          {cardInfos.length === 0 && (
-            <Loading>
-              <ReactLoading type={'spinningBubbles'} color="#fff" />
-            </Loading>
+        <div className="align-items-stretch h-100">
+          {cardInfos === null && (
+            <SingleLoading />
           )}
-          {cardInfos.length > 0 && (
-            <Slider {...settings} className="nft-carousel">
-              {cardInfos && cardInfos.map((nft, index) => (
-                <div className="nft_item block_1 text-center" key={index}>
-                  <div className="nft_avatar d-flex justify-content-center align-items-center">
-                    <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
-                    {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
+          {(cardInfos !== null && cardInfos.length === 0) && (
+            <span className="d-block text-white text-center color fs-24 my-4">No Minted NFTs</span>
+          )}
+          {cardInfos !== null && cardInfos.length > 0 && (
+            <Reveal className='onStep' keyframes={fadeIn} delay={200} duration={600} triggerOnce>
+              <Slider {...settings} className="nft-carousel">
+                {cardInfos && cardInfos.map((nft, index) => (
+                  <div className="nft_item block_1 text-center" key={index}>
+                    <div className="nft_avatar d-flex justify-content-center align-items-center">
+                      <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
+                      {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
                       <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
                     </video> */}
-                  </div>
-                  <div className="px-4 mt-2">
-                    <div className="d-flex flex-row justify-content-between">
-                      <span className="fs-20 f-space text-white">{nft.symbol}</span>
-                      <span className="fs-20 f-space color">${numberWithCommas(nft.priceUSDC)}</span>
                     </div>
-                    <div className="single-line"></div>
-                    {!showOnly && (
-                      <>
-                        <div className="nft_counter mb-1">
-                          <Slider
-                            centerMode={true}
-                            swipe={false}
-                            focusOnSelect={false}
-                            infinite={false}
-                            ref={slickRef}
-                            slidesToShow={1}
-                            slidesToScroll={1}
-                            vertical={true}
-                            afterChange={(value) => handleSlide(index, value)}
-                          >
-                            {slides.map((slide) => (
-                              <div key={slide} className="counter_num">
-                                {slide}
-                              </div>
-                            ))}
-                          </Slider>
-                        </div>
-                      </>
-                    )}
-                    <div className="nft_total d-flex justify-content-between align-items-center">
-                      <div className="nft_total_title">
-                        Total
+                    <div className="px-4 mt-2">
+                      <div className="d-flex flex-row justify-content-between">
+                        <span className="fs-20 f-space text-white">{nft.symbol}</span>
+                        <span className="fs-20 f-space color">${numberWithCommas(nft.priceBUSD)}</span>
                       </div>
-                      <div className="nft_total_value text-white">
-                        {Number(nft.avax).toFixed(5)} AVAX
-                      </div>
-                    </div>
-                    <div className="single-line"></div>
-                    <div className="nft_btn mb-2 mt-4">
-                      {showOnly ? (
-                        <button className="btn-main btn-arrow-bg" onClick={() => handleEdit(index, nft)}>Edit a {nft.symbol}</button>
-                      ) : (
-                        <button className="btn-main btn-arrow-bg" onClick={() => handleMint(index, nft)}>Mint a {nft.symbol}</button>
+                      <div className="single-line"></div>
+                      {!showOnly && (
+                        <>
+                          <div className="nft_counter mb-1">
+                            <Slider
+                              centerMode={true}
+                              swipe={false}
+                              focusOnSelect={false}
+                              infinite={false}
+                              ref={slickRef}
+                              slidesToShow={1}
+                              slidesToScroll={1}
+                              vertical={true}
+                              afterChange={(value) => handleSlide(index, value)}
+                            >
+                              {slides.map((slide) => (
+                                <div key={slide} className="counter_num">
+                                  {slide}
+                                </div>
+                              ))}
+                            </Slider>
+                          </div>
+                        </>
                       )}
-                    </div>
-                    <div className="nft_left my-3">
-                      {nft.supply - nft.soldCount} {nft.symbol} left
+                      <div className="nft_total d-flex justify-content-between align-items-center">
+                        <div className="nft_total_title">
+                          Total
+                        </div>
+                        <div className='d-flex flex-row justify-content-center align-items-center gap-1'>
+                          <img src="/img/icons/bnb.png" alt="" style={{ width: '20px', height: '20px' }}></img>
+                          <div className="nft_total_value text-white">
+                            {numberWithCommas(cardPrices[index], 10)} BNB
+                          </div>
+                        </div>
+                      </div>
+                      <div className="single-line"></div>
+                      <div className="nft_btn mb-2 mt-4">
+                        {showOnly ? (
+                          <button className="btn-main btn-arrow-bg" onClick={() => handleEdit(index, nft)}>Edit a {nft.symbol}</button>
+                        ) : (
+                          <button className="btn-main btn-arrow-bg" onClick={() => handleMint(index, nft)} disabled={(nft.supply - nft.soldCount) <= 0}>Mint a {nft.symbol}</button>
+                        )}
+                      </div>
+                      <div className="nft_left my-3">
+                        {nft.supply - nft.soldCount} {nft.symbol} left
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </Slider>
+                ))}
+              </Slider>
+            </Reveal>
           )}
         </div>
       </div>
-      {<Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <Loading>
-          <ReactLoading type={'spinningBubbles'} color="#fff" />
-          <Prop>Saving...</Prop>
-        </Loading>
-      </Backdrop>}
+      <BackLoading loading={loading} />
     </div>
   );
 }

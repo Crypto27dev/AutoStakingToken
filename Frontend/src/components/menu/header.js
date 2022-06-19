@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ReactLoading from 'react-loading';
 import Popover from '@mui/material/Popover';
-import LogoAnim from './Logo';
+// import LogoAnim from './Logo';
 import { connectWallet, disconnect } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
 import config from '../../config';
-import { isMobile } from "../../utils";
+import { Toast, isMobile } from "../../utils";
 
 setDefaultBreakpoints([
   { xs: 0 },
@@ -58,7 +58,7 @@ const Header = function () {
 
   useEffect(() => {
     if (web3 !== null && chainId !== '' && web3.utils.toHex(chainId) !== web3.utils.toHex(config.chainId)) {
-      toast.error('Please change the network to Avalanche.');
+      toast.error('Please change the network to BSC mainnet!');
     }
   }, [web3, chainId]);
 
@@ -89,12 +89,17 @@ const Header = function () {
         <div className='logo px-0'>
           <div className='navbar-title navbar-item'>
             <NavLink to="/">
-              <LogoAnim />
+              <img
+                src="/img/logo.gif"
+                className="img-fluid d-block"
+                alt="#"
+                width={'200px'}
+              />
             </NavLink>
           </div>
         </div>
 
-        <div className="d-flex gap-3">
+        <div className="d-flex justify-content-end w-100 gap-3">
           <BreakpointProvider>
             <Breakpoint l down>
               <Popover

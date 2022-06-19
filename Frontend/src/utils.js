@@ -1,6 +1,9 @@
 import moment from "moment";
 import web3 from 'web3';
 import Swal from 'sweetalert2';
+import styled from "styled-components";
+import ReactLoading from "react-loading";
+import Backdrop from '@mui/material/Backdrop';
 import api from "./core/api";
 import { keyframes } from "@emotion/react";
 
@@ -50,6 +53,36 @@ export const fadeInRight = keyframes`
     transform: translateX(0);
   }
 `;
+
+export const Loading = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const Prop = styled('h3')`f5 f4-ns mb0 white`;
+
+export const BackLoading = ({ loading, title = 'Pending...' }) => (
+  <Backdrop
+    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    open={loading}
+  >
+    <Loading>
+      <ReactLoading type={'spinningBubbles'} color="#fff" />
+      {title && (
+        <Prop>{title}</Prop>
+      )}
+    </Loading>
+  </Backdrop>
+)
+
+export const SingleLoading = () => (
+  <Loading>
+    <ReactLoading type={'spinningBubbles'} color="#fff" />
+  </Loading>
+)
 
 export function debounce(func, wait, immediate) {
   var timeout;
@@ -169,20 +202,19 @@ export function getTimeDifference(date) {
 }
 
 export function getUTCNow() {
-  var date = new Date();
-  var now_utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-  return now_utc;
+  return Date.now();
 }
 
-export function getUTCTimestamp(date) {
-  const utc_date = new Date(date);
-  var date_utc = Date.UTC(utc_date.getUTCFullYear(), utc_date.getUTCMonth(), utc_date.getUTCDate(), utc_date.getUTCHours(), utc_date.getUTCMinutes(), utc_date.getUTCSeconds());
-  return date_utc;
+export function getUTCTimestamp(_date) {
+  var date = new Date(_date);
+  var date_utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds())
+  return date_utc.getTime();
 }
 
 export function getUTCDate(timestamp) {
-  var dateString = moment.unix(timestamp).utc().format("LL");
-  return dateString;
+  const num_time = parseInt(timestamp) * 1000;
+  const date = new Date(num_time);
+  return moment.utc(date).format("MMM DD, YYYY");
 }
 
 export function getDeadlineTimestamp(start_time, duration) {
@@ -244,11 +276,11 @@ export function fromWei(value) {
 
 export function toWei(value) {
   const data = web3.utils.toWei(value);
-  return numberWithCommas(data);
+  return data;
 }
 
-export const numberWithCommas = (x) => {
-  return x.toLocaleString(undefined, { maximumFractionDigits: 5 });
+export const numberWithCommas = (x, digits = 3) => {
+  return Number(x).toLocaleString(undefined, { maximumFractionDigits: digits });
 }
 
 export const isEmpty = value =>

@@ -1,7 +1,10 @@
 import React, { memo, useEffect, useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap'
 import Select from 'react-select';
 import NftCard from '../NftCard';
+import { getAllSaleInfos } from '../../../web3/web3';
+import * as selectors from '../../../store/selectors';
 
 const default_nfts = [
   {
@@ -164,7 +167,8 @@ const customStyles = {
 
 const NftBoard = ({ range }) => {
   const [page, setPage] = useState(0);
-  const [openBuy, setOpenBuy] = useState(false);
+  const [nftInfos, setNftInfos] = useState([]);
+  const web3 = useSelector(selectors.web3State);
 
   const handleSort = (event) => {
     setPage(1);
@@ -177,16 +181,30 @@ const NftBoard = ({ range }) => {
   const onBuyNow = () => {
 
   }
-  
+
   const handleBuy = () => {
 
   }
+
+  const loadNFTs = useCallback(async () => {
+    if (!web3) {
+      return;
+    }
+    const result = await getAllSaleInfos();
+    if (result.success) {
+      setNftInfos(result.nftInfos);
+    }
+  }, [web3]);
+
+  useEffect(() => {
+    loadNFTs();
+  }, [loadNFTs]);
 
   return (
     <>
       <div className='row'>
         <div className="col-md-12 d-flex flex-row justify-content-between align-items-end">
-          <span className='fs-16 f-space text-white'>150 result</span>
+          <span className='fs-16 f-space text-white'>{nftInfos.length} result</span>
           <div className='select-sort'>
             <Select
               styles={customStyles}
@@ -201,7 +219,12 @@ const NftBoard = ({ range }) => {
           <div className='single-w-line'></div>
           <div className='spacer-10'></div>
         </div>
-        {default_nfts && default_nfts.map((nft, index) => (
+        {(nftInfos !== null && nftInfos.length === 0) && (
+          <div className="col-md-12 text-center my-4">
+            <span className="text-white color fs-24">No Sold NFTs</span>
+          </div>
+        )}
+        {nftInfos && nftInfos.map((nft, index) => (
           <NftCard nft={nft} key={index} onBuyNow={onBuyNow} />
         ))}
         <div className='col-lg-12'>
@@ -209,26 +232,6 @@ const NftBoard = ({ range }) => {
           <span onClick={onLoadMore} className="btn-main btn2 m-auto">Load More</span>
         </div>
       </div>
-      <Modal
-        show={openBuy}
-        size="md"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-        backdrop={false}
-        onHide={() => setOpenBuy(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Place a Bid
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        </Modal.Body>
-        <Modal.Footer>
-          <button className="btn-main" onClick={handleBuy}>Buy Now</button>
-          <button className="btn-main" onClick={() => setOpenBuy(false)}>Cancel</button>
-        </Modal.Footer>
-      </Modal>
     </>
   )
 }

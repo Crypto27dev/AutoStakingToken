@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import Reveal from 'react-awesome-reveal';
-import styled from "styled-components";
 import { Modal } from 'react-bootstrap'
-import ReactLoading from "react-loading";
-import Backdrop from '@mui/material/Backdrop';
+import { createGlobalStyle } from 'styled-components';
+import { toast } from 'react-toastify';
 import Header from '../menu/header';
 import Footer from '../components/footer';
 import CarouselNFT from '../components/CarouselNFT';
 import ImageUpload from '../components/NavImageUpload';
 import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork } from '../../web3/web3';
-import { Toast, isEmpty, fadeInUp } from '../../utils';
+import { isEmpty, fadeInUp, BackLoading } from '../../utils';
 
-const Loading = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 15px;
+const GlobalStyles = createGlobalStyle`
+  .modal-dialog {
+    width: 400px !important;
+  }
+  .modal-content {
+    background: #212224 !important;
+    border-radius: 0.8rem !important;
+  
+    h5 {
+      font-family: "Muli", sans-serif;
+    }
+  
+    .dropdownSelect {
+      margin-right: 0px;
+    }
+  }
 `;
-
-const Prop = styled('h3')`f5 f4-ns mb0 white`;
 
 const Admin = () => {
   const [openNew, setOpenNew] = useState(false);
@@ -29,7 +36,7 @@ const Admin = () => {
   const [selectNft, setSelectNft] = useState(null);
   const [inputValue, setInputValue] = useState({
     symbol: '',
-    priceUSDC: '',
+    priceBUSD: '',
     supply: ''
   });
   const [loading, setLoading] = useState(false);
@@ -37,7 +44,7 @@ const Admin = () => {
   const [error, setError] = useState({
     image: false,
     symbol: false,
-    priceUSDC: false,
+    priceBUSD: false,
     supply: false
   });
 
@@ -45,10 +52,7 @@ const Admin = () => {
     if (await checkNetwork()) {
       const result = await isOwner();
       if (!result) {
-        Toast.fire({
-          icon: 'error',
-          title: `You can't update NFT infos because you aren't a admin`
-        })
+        toast.error(`You can't update NFT infos because you aren't a admin.`);
       }
     }
   }
@@ -87,8 +91,8 @@ const Admin = () => {
       newError.symbol = true;
       result = false;
     }
-    if (isEmpty(inputValue.priceUSDC)) {
-      newError.priceUSDC = true;
+    if (isEmpty(inputValue.priceBUSD)) {
+      newError.priceBUSD = true;
       result = false;
     }
     if (isEmpty(inputValue.supply)) {
@@ -103,12 +107,12 @@ const Admin = () => {
     setError({
       image: false,
       symbol: false,
-      priceUSDC: false,
+      priceBUSD: false,
       supply: false
     });
     setInputValue({
       symbol: '',
-      priceUSDC: '',
+      priceBUSD: '',
       supply: ''
     });
   }
@@ -123,7 +127,7 @@ const Admin = () => {
     setError({
       image: false,
       symbol: false,
-      priceUSDC: false,
+      priceBUSD: false,
       supply: false
     });
     if (!validate()) return;
@@ -133,23 +137,17 @@ const Admin = () => {
       setReload(prevState => !prevState);
       setLoading(false);
       setOpenNew(false);
-      Toast.fire({
-        icon: 'success',
-        title: 'Created a new NFT successfully!'
-      })
+      toast.success('Created a new NFT successfully!');
     } else {
       setLoading(false);
-      Toast.fire({
-        icon: 'error',
-        title: 'Something went wrong.'
-      })
+      toast.error(result.status);
     }
   }
 
   const handleModalEdit = async (id, nft) => {
     initValue();
     setNftId(id);
-    setInputValue({symbol: nft.symbol, priceUSDC: nft.priceUSDC, supply: nft.supply});
+    setInputValue({symbol: nft.symbol, priceBUSD: nft.priceBUSD, supply: nft.supply});
     setNftImage({preview: nft.imgUri});
     setOpenEdit(true);
   }
@@ -162,21 +160,16 @@ const Admin = () => {
       setReload(prevState => !prevState);
       setLoading(false);
       setOpenEdit(false);
-      Toast.fire({
-        icon: 'success',
-        title: 'Updated a new NFT successfully!'
-      })
+      toast.success('Updated a new NFT successfully!');
     } else {
       setLoading(false);
-      Toast.fire({
-        icon: 'error',
-        title: 'Something went wrong.'
-      })
+      toast.error(result.status);
     }
   }
 
   return (
     <div>
+      <GlobalStyles />
       <Header />
       <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${'./img/background/mint_banner.png'})` }}>
         <div className='mainbreadcumb'>
@@ -234,9 +227,9 @@ const Admin = () => {
             </div>
             <div className="spacer-10"></div>
             <div className='col-md-12'>
-              <h5>Price USDC</h5>
-              <input type="number" name="priceUSDC" id="priceUSDC" value={inputValue.priceUSDC} className="form-control" placeholder="enter price USDC" onChange={handleChange} autoComplete="off" />
-              {error.priceUSDC && (
+              <h5>Price BUSD</h5>
+              <input type="number" name="priceBUSD" id="priceBUSD" value={inputValue.priceBUSD} className="form-control" placeholder="enter price USDC" onChange={handleChange} autoComplete="off" />
+              {error.priceBUSD && (
                 <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
               )}
             </div>
@@ -289,9 +282,9 @@ const Admin = () => {
             </div>
             <div className="spacer-10"></div>
             <div className='col-md-12'>
-              <h5>Price USDC</h5>
-              <input type="number" name="priceUSDC" id="priceUSDC" className="form-control" placeholder="enter price USDC" onChange={handleChange} autoComplete="off" />
-              {error.priceUSDC && (
+              <h5>Price BUSD</h5>
+              <input type="number" name="priceBUSD" id="priceBUSD" className="form-control" placeholder="enter price USDC" onChange={handleChange} autoComplete="off" />
+              {error.priceBUSD && (
                 <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
               )}
             </div>
@@ -310,15 +303,7 @@ const Admin = () => {
           <button className="btn-main" onClick={handleNew}>Create Now</button>
         </Modal.Footer>
       </Modal>
-      {<Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <Loading>
-          <ReactLoading type={'spinningBubbles'} color="#fff" />
-          <Prop>Saving...</Prop>
-        </Loading>
-      </Backdrop>}
+      <BackLoading loading={loading} title='Saving...' />
       <Footer />
     </div>
   )

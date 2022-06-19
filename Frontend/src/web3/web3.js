@@ -3,31 +3,36 @@ import Web3 from 'web3/dist/web3.min.js';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { providers } from 'ethers';
 import { create } from 'ipfs-http-client';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 import config from "../config";
 import store from "../store";
 import { setChainID, setWalletAddr, setBalance, setWeb3 } from '../store/actions';
-import { Toast } from '../utils';
 import api from '../core/api';
-const hundredContractABI = config.hundredContractAbi;
-const hundredContractAddress = config.hundredContractAddress;
-const USDCABI = config.USDCAbi;
-const USDCAddress = config.USDCAddress;
+const factoryABI = config.factoryABI;
+const factory_Addr = config.factoryContract;
+const NftABI = config.NftABI;
+const Nft_Addr = config.NftContract;
+const BUSD_Addr = config.BUSDAddress;
+const BUSD_ABI = config.BUSD_ABI;
+const Treasury_Addr = config.TreasuryAddress;
+const TOTAL_HOLDERS_URL = `https://api.covalenthq.com/v1/43114/tokens/${Nft_Addr}/token_holders/?quote-currency=USD&format=JSON&page-size=1000000000&key=ckey_4692876c71644fb1b93abfae7f9`;
 
 let web3Modal;
 if (typeof window !== "undefined") {
   web3Modal = new Web3Modal({
     show: true,
-    network: "rinkeby", // optional
+    network: "binance", // optional
     cacheProvider: true,
     providerOptions: {
       walletconnect: {
         package: WalletConnectProvider,
         options: {
           infuraId: config.INFURA_ID, // required
-          network: "rinkeby",
-          // rpc: {
-          //   4: config.mainNetUrl,
-          // },
+          network: "binance",
+          rpc: {
+            56: config.mainNetUrl,
+          },
         },
       },
     }, // required
@@ -66,7 +71,8 @@ export const disconnect = async () => {
   store.dispatch(setChainID(''));
   store.dispatch(setWalletAddr(''));
   store.dispatch(setBalance({
-    usdcBalance: ''
+    bnbBalance: '',
+    busdBalance: ''
   }));
 }
 
@@ -108,7 +114,7 @@ const changeNetwork = async () => {
           params: [
             {
               chainId: web3.utils.toHex(config.chainId),
-              chainName: 'Avalanche',
+              chainName: 'BSC',
               rpcUrls: [config.mainNetUrl] /* ... */,
             },
           ],
@@ -184,18 +190,21 @@ export const getBalanceOfAccount = async () => {
   try {
     const accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) return { success: false }
-    let avaxBalance = await web3.eth.getBalance(accounts[0]);
-    avaxBalance = web3.utils.fromWei(avaxBalance);
-    // const UsdcContract = new web3.eth.Contract(USDCABI, USDCAddress);
-    // let usdcBalance = await UsdcContract.methods.balanceOf(accounts[0]).call();
-    // usdcBalance = web3.utils.fromWei(usdcBalance, 'mwei');
+    let bnbBalance = await web3.eth.getBalance(accounts[0]);
+    bnbBalance = web3.utils.fromWei(bnbBalance);
+
+    const BUSDContract = await new web3.eth.Contract(BUSD_ABI, BUSD_Addr);
+    let busdBalance = await BUSDContract.methods.balanceOf(accounts[0]).call();
+    busdBalance = web3.utils.fromWei(busdBalance);
 
     store.dispatch(setBalance({
-      avaxBalance
+      bnbBalance,
+      busdBalance
     }));
     return {
       success: true,
-      usdcBalance: avaxBalance
+      bnbBalance,
+      busdBalance
     }
   } catch (error) {
     console.log('[Get Balance] = ', error);
@@ -209,14 +218,11 @@ export const getBalanceOfAccount = async () => {
 export const isOwner = async () => {
   const web3 = store.getState().auth.web3;
   if (!web3) return false;
-  try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return false;
-  }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
     let accounts = await web3.eth.getAccounts();
-    const owner = await window.contract.methods.owner().call();
+    if (accounts.length === 0) return { success: false }
+    const owner = await factoryContract.methods.owner().call();
 
     if (compareWalllet(accounts[0], owner)) {
       return true;
@@ -292,6 +298,7 @@ export const updateBalanceOfAccount = async () => {
   if (!web3) return { success: false }
   try {
     let accounts = await web3.eth.getAccounts();
+    if (accounts.length === 0) return { success: false }
     let accountBalance = await web3.eth.getBalance(accounts[0]);
     accountBalance = web3.utils.fromWei(accountBalance);
     store.dispatch(setBalance(accountBalance));
@@ -332,20 +339,26 @@ const parseErrorMsg = (errMsg) => {
   return returStr;
 }
 
+export const getBNBPrice = async (busd) => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return 0;
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+  try {
+    const busdInBNB = await factoryContract.methods.ONE_BUSD_IN_BNB().call();
+    const bnbPrice = Number(busdInBNB) * Number(busd);
+    let bnbWei = web3.utils.fromWei(bnbPrice.toString());
+    return bnbWei;
+  } catch (error) {
+    return 0;
+  }
+}
+
 export const getNFTCardInfos = async () => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
-  console.log('[getNFTCardInfos] = ', web3);
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
-  try {
-    const cardInfos = await window.contract.methods.getNFTCardInfos().call();
+    const cardInfos = await factoryContract.methods.getNFTCardInfos().call();
     return {
       success: true,
       cardInfos
@@ -359,39 +372,14 @@ export const getNFTCardInfos = async () => {
   }
 }
 
-export const getAvaxPrice = async (usdc) => {
-  const web3 = store.getState().auth.web3;
-  if (!web3) return 0;
-  try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return 0;
-  }
-  try {
-    const avaxPerUSDC = await window.contract.methods.ONE_USDC_AVAX().call();
-    const avaxPrice = Number(avaxPerUSDC) * Number(usdc);
-    let avaxWei = web3.utils.fromWei(avaxPrice.toString(), 'ether');
-    return avaxWei;
-  } catch (error) {
-    return 0;
-  }
-}
-
 export const getAllNFTInfos = async () => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
-  try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
     let accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) return { success: false }
-    const nftInfos = await window.contract.methods.getAllNFTInfos().call({ from: accounts[0] });
+    const nftInfos = await factoryContract.methods.getAllNFTInfos().call({ from: accounts[0] });
     return {
       success: true,
       nftInfos
@@ -405,19 +393,70 @@ export const getAllNFTInfos = async () => {
   }
 }
 
-export const getRewardAmountByNFT = async () => {
+export const getAllSaleInfos = async () => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
+    const cardInfos = await factoryContract.methods.getNFTCardInfos().call();
+    const saleInfos = await factoryContract.methods.getAllSaleInfos().call();
+    console.log('[CardInfos] = ', cardInfos)
+    console.log('[SaleInfos] = ', saleInfos)
+    let nftInfos = [];
+    for (let i = 0; i < saleInfos.length; i++) {
+      const saleInfo = saleInfos[i];
+      const index = await factoryContract.methods._allTokenIDToIndex(saleInfo.tokenId).call();
+      console.log(saleInfo.tokenId, index)
+      const card = cardInfos[index];
+      const symbol = card.symbol;
+      const price = card.priceBUSD;
+      const imgUri = card.imgUri;
+      const saleCost = web3.utils.fromWei(saleInfo.salePrice);
+      const kindOfCoin = Number(saleInfo.kindOfCoin);
+      const tokenId = saleInfo.tokenId;
+      const createdTime = saleInfo.createdTime;
+      const currentROI = saleInfo.currentROI;
+      const nft = { symbol, price, imgUri, saleCost, kindOfCoin, tokenId, createdTime, currentROI };
+      nftInfos.push(nft);
+    }
+
+    return {
+      success: true,
+      nftInfos
+    };
   } catch (error) {
     return {
       success: false,
-      status: "Something went wrong 1: " + error.message,
+      status: "Something went wrong 2: " + error.message
     };
   }
+}
+
+export const getIndexByTokenID = async (tokenId) => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
-    const rewardAmount = await window.contract.methods.getRewardAmountByNFT().call();
+    const id = await factoryContract.methods._allTokenIDToIndex(tokenId).call();
+    return {
+      success: true,
+      id
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      status: "Something went wrong 2: " + error.message
+    };
+  }
+}
+
+export const getRewardAmountByNFT = async () => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+  try {
+    const rewardAmount = await factoryContract.methods.getRewardAmountByNFT().call();
     return {
       success: true,
       rewardAmount
@@ -442,19 +481,13 @@ export const singleMintOnSale = async (currentAddr, itemId, auctionInterval, auc
     auctionInterval = 0;
 
   console.log("before creating contract")
-  try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
-  try {
-    let item_price = web3.utils.toWei(auctionPrice !== null ? auctionPrice.toString() : '0', 'ether');
-    //let mintingFee = web3.utils.toWei(author.minting_fee !== null ? author.minting_fee.toString() : '0', 'ether');
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
 
-    await window.contract.methods.singleMintOnSale(itemId, auctionInterval, item_price, kind).send({ from: currentAddr });
+  try {
+    let item_price = web3.utils.toWei(auctionPrice !== null ? auctionPrice.toString() : '0');
+    //let mintingFee = web3.utils.toWei(author.minting_fee !== null ? author.minting_fee.toString() : '0');
+
+    await factoryContract.methods.singleMintOnSale(itemId, auctionInterval, item_price, kind).send({ from: currentAddr });
 
     return {
       success: true,
@@ -479,18 +512,11 @@ export const batchMintOnSale = async (currentAddr, itemIds = [], auctionInterval
   if (auctionInterval === undefined || auctionInterval <= 0 || auctionInterval === null)
     auctionInterval = 0;
   console.log("before creating contract")
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
-  try {
-    let item_price = web3.utils.toWei(auctionPrice !== null ? auctionPrice.toString() : '0', 'ether');
-    //let mintingFee = web3.utils.toWei(author.minting_fee !== null ? author.minting_fee.toString() : '0', 'ether');    
-    await window.contract.methods.batchMintOnSale(itemIds, auctionInterval, item_price, kind).send({ from: currentAddr });
+    let item_price = web3.utils.toWei(auctionPrice !== null ? auctionPrice.toString() : '0');
+    //let mintingFee = web3.utils.toWei(author.minting_fee !== null ? author.minting_fee.toString() : '0');    
+    await factoryContract.methods.batchMintOnSale(itemIds, auctionInterval, item_price, kind).send({ from: currentAddr });
 
     return {
       success: true,
@@ -512,18 +538,14 @@ export const destroySale = async (currentAddr, tokenId) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
   try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-    var destroySale = window.contract.methods.destroySale(tokenId);
+    const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+    var destroySale = factoryContract.methods.destroySale(tokenId);
     let gasFee = await destroySale.estimateGas({ from: currentAddr });
-    // console.log("before getBalance");
     var balanceOfUser = await web3.eth.getBalance(currentAddr);
     var gasPrice = 30 * (10 ** 9);
 
     if (balanceOfUser <= gasFee * gasPrice) {
-      Toast.fire({
-        icon: 'error',
-        title: 'Insufficient balance.'
-      });
+      toast.error('Insufficient balance.');
       return {
         success: false
       };
@@ -541,42 +563,36 @@ export const destroySale = async (currentAddr, tokenId) => {
   }
 }
 
-export const buyNow = async (currentAddr, tokenId, price) => {
-  /*
-  acceptOrEndBid(string memory _tokenHash)
-  */
+export const buyNow = async (tokenId, price) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return;
   try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-    let item_price = web3.utils.toWei(price !== null ? price.toString() : '0', 'ether');
-    //alert("tokenHash = " +  tokenId + ", price=" + item_price);
-    var buyNow = window.contract.methods.buyNow(tokenId);
-    let gasFee = await buyNow.estimateGas({ from: currentAddr, value: item_price });
-    // console.log("before getBalance");
-    var balanceOfUser = await web3.eth.getBalance(currentAddr);
+    let accounts = await web3.eth.getAccounts();
+    if (accounts.length === 0) return { success: false, status: 'Please connect a wallet.' }
+    let item_price = web3.utils.toWei(price.toString());
+    const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+    const estimate = factoryContract.methods.buyNow(tokenId);
+    let gasFee = await estimate.estimateGas({ from: accounts[0], value: item_price });
+    var balanceOfUser = await web3.eth.getBalance(accounts[0]);
     var gasPrice = 30 * (10 ** 9);
 
     if (balanceOfUser <= gasFee * gasPrice) {
-      Toast.fire({
-        icon: 'error',
-        title: 'Insufficient balance.'
-      });
-      return;
+      return {
+        success: false,
+        status: 'Insufficient balance.'
+      };
     }
-    await buyNow.send({ from: currentAddr, value: item_price });
-
-    Toast.fire({
-      icon: 'error',
-      title: 'Succeed in purchasing a NFT.'
-    });
+    await estimate.send({ from: accounts[0], value: item_price });
     updateBalanceOfAccount();
-
+    return {
+      success: true
+    };
   } catch (error) {
-    Toast.fire({
-      icon: 'error',
-      title: parseErrorMsg(error.message)
-    });
+    console.log(error)
+    return {
+      success: false,
+      status: "Something went wrong: " + parseErrorMsg(error.message)
+    };
   }
 }
 
@@ -607,14 +623,7 @@ export const createNftFile = async (file, title, description) => {
 export const addNftCardInfo = async (nft, file) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
-  try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   let tokenURI, imageURI;
   const result = await createNftFile(file, nft.symbol, '');
   if (result.success) {
@@ -631,8 +640,11 @@ export const addNftCardInfo = async (nft, file) => {
   }
   try {
     let accounts = await web3.eth.getAccounts();
-    const tx = await window.contract.methods.addNFTCardInfo(nft.symbol, imageURI, nft.priceUSDC, 0, nft.supply).send({ from: accounts[0] });
-
+    if (accounts.length === 0) return { success: false }
+    const price = Number(nft.priceBUSD);
+    const estimate = factoryContract.methods.addNFTCardInfo(nft.symbol, imageURI, price, nft.supply);
+    await estimate.estimateGas({ from: accounts[0] });
+    const tx = await estimate.send({ from: accounts[0] });
     return {
       success: true,
       tx
@@ -640,7 +652,7 @@ export const addNftCardInfo = async (nft, file) => {
   } catch (error) {
     return {
       success: false,
-      status: "Something went wrong 2: " + error.message
+      status: error.message
     };
   }
 }
@@ -648,17 +660,14 @@ export const addNftCardInfo = async (nft, file) => {
 export const setNFTCardInfo = async (id, imgUri, nft) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
-  try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
     let accounts = await web3.eth.getAccounts();
-    const tx = await window.contract.methods.setNFTCardInfo(id, nft.symbol, imgUri, nft.priceUSDC, 0, nft.supply).send({ from: accounts[0] });
+    if (accounts.length === 0) return { success: false }
+    const price = Number(nft.priceBUSD);
+    const estimate = await factoryContract.methods.setNFTCardInfo(id, nft.symbol, imgUri, price, nft.supply);
+    await estimate.estimateGas({ from: accounts[0] });
+    const tx = await estimate.send({ from: accounts[0] });
     return {
       success: true,
       tx
@@ -672,30 +681,28 @@ export const setNFTCardInfo = async (id, imgUri, nft) => {
   }
 }
 
-export const mintNfts = async (id, count, avax) => {
+export const mintNfts = async (id, count, bnb) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
-  try {
-    let item_price = web3.utils.toWei(avax.toString(), 'ether');
+    let item_price = web3.utils.toWei(bnb.toString());
     let accounts = await web3.eth.getAccounts();
-    const tx = await window.contract.methods.mintNFTs(id, count).send({ from: accounts[0], value: item_price * count });
+    if (accounts.length === 0) return { success: false }
+    const estimate = factoryContract.methods.mintNFTs(id, count);
+    console.log(item_price, count, typeof count)
+    await estimate.estimateGas({ from: accounts[0], value: item_price * count });
+
+    const tx = await estimate.send({ from: accounts[0], value: item_price * count });
     return {
       success: true,
       tx
     };
   } catch (error) {
-    console.log(error);
+    console.log('[Mint Nfts] = ', parseErrorMsg(error.message))
     return {
       success: false,
-      status: "Something went wrong 2: " + error.message
+      status: parseErrorMsg(error.message)
     };
   }
 }
@@ -703,17 +710,13 @@ export const mintNfts = async (id, count, avax) => {
 export const claimByNft = async (id) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
-  try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
     let accounts = await web3.eth.getAccounts();
-    const tx = await window.contract.methods.claimByNFT(Number(id)).send({ from: accounts[0] });
+    if (accounts.length === 0) return { success: false }
+    const estimate = factoryContract.methods.claimByNFT(Number(id));
+    await estimate.estimateGas({ from: accounts[0] });
+    const tx = await estimate.send({ from: accounts[0] });
     return {
       success: true,
       tx
@@ -730,17 +733,13 @@ export const claimByNft = async (id) => {
 export const claimAll = async (id) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
-  try {
-    window.contract = await new web3.eth.Contract(hundredContractABI, hundredContractAddress);
-  } catch (error) {
-    return {
-      success: false,
-      status: "Something went wrong 1: " + error.message,
-    };
-  }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
     let accounts = await web3.eth.getAccounts();
-    const tx = await window.contract.methods.claimAll().send({ from: accounts[0] });
+    if (accounts.length === 0) return { success: false }
+    const estimate = factoryContract.methods.claimAll();
+    await estimate.estimateGas({ from: accounts[0] });
+    const tx = await estimate.send({ from: accounts[0] });
     return {
       success: true,
       tx
@@ -754,6 +753,62 @@ export const claimAll = async (id) => {
   }
 }
 
-export const createSale = async(id, interval, price, kind) => {
-  
+export const createSale = async (id, price, kind) => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+  const NftContract = await new web3.eth.Contract(NftABI, Nft_Addr);
+  try {
+    let accounts = await web3.eth.getAccounts();
+    if (accounts.length === 0) return { success: false }
+    let item_price = web3.utils.toWei(price.toString());
+
+    var estimate = NftContract.methods.setApprovalForAll(factory_Addr, true);
+    await estimate.estimateGas({ from: accounts[0] });
+    var tx = await estimate.send({ from: accounts[0] });
+
+    estimate = factoryContract.methods.createSaleReal(id, item_price, kind);
+    await estimate.estimateGas({ from: accounts[0] });
+    tx = await estimate.send({ from: accounts[0] });
+    return {
+      success: true,
+      tx
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      status: parseErrorMsg(error.message)
+    };
+  }
+}
+
+export const getTreasuryBalance = async () => {
+  try {
+    const web3 = store.getState().auth.web3;
+    if (!web3) return { success: false }
+    const balance = await web3.eth.getBalance(Treasury_Addr);
+    const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+    const busdInBNB = await factoryContract.methods.ONE_BUSD_IN_BNB().call();
+    const busd = Number(balance) / web3.utils.fromWei(busdInBNB.toString());
+    return {
+      success: true,
+      balance: busd
+    }
+  } catch (error) {
+    return {
+      success: false,
+      status: parseErrorMsg(error.message)
+    }
+  }
+}
+
+export const getNftHolders = async () => {
+  try {
+    const { data: response } = await axios.get(TOTAL_HOLDERS_URL);
+    return response.data.items.length;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
 }
