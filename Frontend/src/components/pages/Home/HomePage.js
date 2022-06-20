@@ -150,7 +150,7 @@ const HomePage = () => {
 
                                         />
                                     </div>
-                                    <h1 className="banner_title mb-4" data-aos='fade-up'>Income <span className="rocket_icon"><img src={bannerRocketOrange} alt="img" /></span> Generating NFTs</h1>
+                                    <h1 className="banner_title mb-4" data-aos='fade-up'>Income <span className="rocket_icon"><img src={bannerRocketOrange} alt="Can't load" /></span> Generating NFTs</h1>
                                     <p className="mb-4" data-aos='fade-up' data-aos-delay='150'>100 days will allow our investors to earn consistent returns in stablecoins while maintaining an established art presence.</p>
                                     <div className="pt-3 d-lg-flex" data-aos='fade-up' data-aos-delay='250'>
                                         <Button variant="primary" className="me-3 me-md-3">Let’s Start it</Button>
@@ -160,14 +160,14 @@ const HomePage = () => {
                             </Col>
                             <Col xs={12} md={5} lg={6} className="d-none d-md-block">
                                 <div className="home_banner_img" data-aos='zoom-in' data-aos-delay='350' data-aos-duration="1000">
-                                    <img src={bannerGridBg} className="banner_grid_img" alt="img" />
-                                    {/* <img src={bannerImg} className="img-fluid" alt="img" /> */}
+                                    <img src={bannerGridBg} className="banner_grid_img" alt="Can't load" />
+                                    {/* <img src={bannerImg} className="img-fluid" alt="Can't load" /> */}
                                     <BannerAnim />
                                 </div>
                             </Col>
                         </Row>
                         <div className="float-img float-img1 d-none d-md-block" data-aos='fade' data-aos-delay='450'>
-                            <img src={floatImg1} alt="img" />
+                            <img src={floatImg1} alt="Can't load" />
                         </div>
                     </Container>
                 </Section>
@@ -177,7 +177,7 @@ const HomePage = () => {
                         <div className="story_block_outer">
                             <div className="story_block_inner">
                                 <div className="story_round_img">
-                                    <img src={storyRoungImg} className="" alt="img" />
+                                    <img src={storyRoungImg} className="" alt="Can't load" />
                                 </div>
                                 <Row className="justify-content-center align-items-center flex-row-reverse">
                                     <Col xs={12} md={12} lg={6} className="pe-3 pe-xl-5 order-1" data-aos='fade-up' data-aos-delay='50' data-aos-once="true">
@@ -197,7 +197,7 @@ const HomePage = () => {
                                         </svg>
                                     </div> */}
 
-                                            {/* <img src={storyImg} className="story_img" alt="img" /> */}
+                                            {/* <img src={storyImg} className="story_img" alt="Can't load" /> */}
                                             <iframe width="560" height="415" src="https://www.youtube-nocookie.com/embed/cI4ryatVkKw?controls=0" title="Astro Introduction" allow="accelerometer; clipboard-write; encrypted-media; gyroscope;"></iframe>
                                         </div>
 
@@ -229,7 +229,7 @@ const HomePage = () => {
                                                 <div className="our_mission_item">
                                                     <div className="oms_item_inner">
                                                         <div className="os_icon mb-4 mt-3 mt-lg-4 d-flex justify-content-start">
-                                                            <img src={item.icon} className="team_member_img" alt="img" />
+                                                            <img src={item.icon} className="team_member_img" alt="Can't load" />
                                                         </div>
                                                         <h3 className="block_title mb-3">{item.title}</h3>
                                                         <p className="mb-4 text-common">{item.content}</p>
@@ -246,7 +246,7 @@ const HomePage = () => {
                         <div className="our_mission_item">
                             <div className="oms_item_inner">
                                 <div className="os_icon mb-4 mt-3 mt-lg-4 d-flex justify-content-start">
-                                    <img src={omsImg1} className="oms_img" alt="img" />
+                                    <img src={omsImg1} className="oms_img" alt="Can't load" />
                                 </div>
                                 <h3 className="block_title mb-3">NTFS</h3>
                                 <p className="mb-4 text-common">We are harnessing the untapped potential of NFT’s. Using the existing mechanics to build financial modeling overarching, iconic digital art. Providing investors consistent fixed income in Stablecoins while maintaining an established art presence. Each NFT will provide intrinsic art value, stablecoin returns along with exclusive future benefits. Every NFT we issue will be backed via our treasury in a multitude of assets.
@@ -258,7 +258,7 @@ const HomePage = () => {
                         <div className="our_mission_item">
                             <div className="oms_item_inner">
                                 <div className="os_icon mb-4 mt-3 mt-lg-4 d-flex justify-content-start">
-                                    <img src={omsImg2} className="oms_img" alt="img" />
+                                    <img src={omsImg2} className="oms_img" alt="Can't load" />
                                 </div>
                                 <h3 className="block_title mb-3">Investments</h3>
                                 <p className="mb-4 text-common">We believe the key to having successful investments is by having a plan for everything. We combine the deep expertise of our team who live and breathe crypto along with our community members who do the same. Allowing us to gather a broader range and perspective. Leading us to make the best investment decisions possible. Applying advanced hedging techniques and solid expertise, the team is able to reliably outperform major assets, while barely gaining exposure to risk throughout the process.
@@ -270,7 +270,7 @@ const HomePage = () => {
                         <div className="our_mission_item">
                             <div className="oms_item_inner">
                                 <div className="os_icon mb-4 mt-3 mt-lg-4 d-flex justify-content-start">
-                                    <img src={omsImg3} className="oms_img" alt="img" />
+                                    <img src={omsImg3} className="oms_img" alt="Can't load" />
                                 </div>
                                 <h3 className="block_title mb-3">Exclusive</h3>
                                 <p className="mb-4 text-common">A key aspect to our project is our set supply of NTfs for every drop. By being an early part of our investment community, you will not only get fixed income &amp; high quality art but also unlock exclusive benefits to our community. These will include everything from real-world perks to future airdrops and many more unique benefits.
@@ -292,7 +292,7 @@ const HomePage = () => {
                                             <path d="M46 22.3038C50 24.6132 50 30.3868 46 32.6962L9.25 53.9138C5.25 56.2232 0.249997 53.3364 0.249997 48.7176L0.249999 6.28237C0.25 1.66357 5.25 -1.22318 9.25 1.08622L46 22.3038Z" fill="#D7E3F4" />
                                         </svg>
                                     </div>
-                                    <img src={howitImage} className="team_member_img" alt="img" />
+                                    <img src={howitImage} className="team_member_img" alt="Can't load" />
                                 </div>
                             </Col>
                             <Col xs={12} md={8} lg={8} className="mb-3 mb-lg-0 mt-4 mt-md-0 pb-5 px-4">
@@ -353,7 +353,7 @@ const HomePage = () => {
                                 <div className="our_team_item d-flex justify-content-center">
                                     <div className="our_team_item_inner">
                                         <div className="ot_image_block">
-                                            <img src={ourteamImg1} className="team_member_img" alt="img" />
+                                            <img src={ourteamImg1} className="team_member_img" alt="Can't load" />
                                         </div>
                                         <div className="team_hover_content p-3 p-lg-4 d-flex justify-content-center flex-column">
 
@@ -370,7 +370,7 @@ const HomePage = () => {
                                 <div className="our_team_item d-flex justify-content-center">
                                     <div className="our_team_item_inner">
                                         <div className="ot_image_block">
-                                            <img src={ourteamImg2} className="team_member_img" alt="img" />
+                                            <img src={ourteamImg2} className="team_member_img" alt="Can't load" />
                                         </div>
                                         <div className="team_hover_content p-3 p-md-4 d-flex justify-content-center flex-column">
                                             <h3 className="block_title mb-2">Rohit Chopra</h3>
@@ -399,7 +399,7 @@ const HomePage = () => {
                                 <div className="our_team_item d-flex justify-content-center">
                                     <div className="our_team_item_inner">
                                         <div className="ot_image_block">
-                                            <img src={ourteamImg3} className="team_member_img" alt="img" />
+                                            <img src={ourteamImg3} className="team_member_img" alt="Can't load" />
                                         </div>
                                         <div className="team_hover_content p-3 p-md-4 d-flex justify-content-center flex-column">
                                             <h3 className="block_title mb-2">Arsh Johri</h3>

@@ -7,7 +7,7 @@ import Reveal from 'react-awesome-reveal';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { numberWithCommas, fadeIn, fadeInUp, BackLoading, SingleLoading, isEmpty } from "../../utils";
-import { getNFTCardInfos, getBNBPrice, mintNfts } from "../../web3/web3";
+import { mintNfts } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
 
 const settings = {
@@ -125,7 +125,6 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
       }
     });
   }
-
   return (
     <div className="container">
       <div className='row'>
@@ -149,7 +148,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                 {cardInfos && cardInfos.map((nft, index) => (
                   <div className="nft_item block_1 text-center" key={index}>
                     <div className="nft_avatar d-flex justify-content-center align-items-center">
-                      <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
+                      <img src={nft.imgUri} className="img-fluid" alt="Can't load" />
                       {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
                       <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
                     </video> */}

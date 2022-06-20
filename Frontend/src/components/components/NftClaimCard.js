@@ -117,7 +117,7 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
     <div className={className}>
       <div className="nft__item m-0">
         <div className="nft__item_wrap">
-          <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
+          <img src={nft.imgUri} className="img-fluid" alt="Can't load" />
           {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
             <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
           </video> */}

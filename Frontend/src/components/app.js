@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 export const ScrollTop = ({ children, location }) => {
-  React.useEffect(() => window.scrollTo(0, 0), [location])
+  useEffect(() => window.scrollTo(0, 0), [location])
   return children
 }
 

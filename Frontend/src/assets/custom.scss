@@ -911,6 +911,7 @@ textarea:focus {
       img {
         width: 100%;
         border-radius: 10px;
+        aspect-ratio: 1;
       }
 
       video {
@@ -1184,3 +1185,6 @@ textarea:focus {
   }
 }
 
+.react-loading-skeleton {
+  aspect-ratio: 1 !important;
+}

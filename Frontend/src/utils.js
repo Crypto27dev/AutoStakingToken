@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import styled from "styled-components";
 import ReactLoading from "react-loading";
 import Backdrop from '@mui/material/Backdrop';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import api from "./core/api";
 import { keyframes } from "@emotion/react";
 
@@ -96,6 +98,12 @@ export function debounce(func, wait, immediate) {
     }, wait);
     if (immediate && !timeout) func.apply(context, args);
   };
+}
+
+export const LoadingSkeleton = ({ width = 100 }) => {
+  return (
+    <Skeleton baseColor="#31331f" highlightColor="#474a31" width={width + '%'} />
+  );
 }
 
 export function isMobile() {

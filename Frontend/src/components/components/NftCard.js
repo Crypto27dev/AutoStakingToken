@@ -1,9 +1,11 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ROIBar from './Market/ROIBar';
-import { numberWithCommas, getUTCDate, BackLoading } from '../../utils';
-import { buyNow } from '../../web3/web3';
+import { numberWithCommas, getUTCDate, BackLoading, isEmpty } from '../../utils';
+import { buyNow, compareWalllet } from '../../web3/web3';
+import * as selectors from '../../store/selectors';
 
 const Date_Range = [80, 365, 730];
 const ROI_Range = [1.25, 0.5, 0.16];
@@ -14,6 +16,7 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
   const [left_time, setLeftTime] = useState(0);
   const [roi, setRoi] = useState(0);
   const [loading, setLoading] = useState(false);
+  const wallet = useSelector(selectors.userWallet);
 
   useEffect(() => {
     const curDate = parseInt((Date.now() / 1000 - Number(nft.createdTime)) / (3600 * 24));
@@ -32,7 +35,15 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
     setRoi(tempRoi);
   }, [nft.createdTime, nft.nftRevenue]);
 
-  const onBuyNow = () => {
+  const onBuyNow = useCallback(() => {
+    if (isEmpty(wallet)) {
+      toast.error(`Please connect your wallet.`);
+      return;
+    }
+    if (compareWalllet(nft.currentOwner, wallet)) {
+      toast.error(`You can't buy this NFT because it is yours.`);
+      return;
+    }
     Swal.fire({
       title: 'Are you sure?',
       icon: 'warning',
@@ -55,13 +66,13 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
         }
       }
     });
-  }
+  }, [nft.currentOwner, nft.kindOfCoin, nft.saleCost, nft.tokenId, onReload, wallet]);
 
   return (
     <div className={className}>
       <div className="nft__item m-0">
         <div className="nft__item_wrap">
-          <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="img" />
+          <img src={nft.imgUri} className="img-fluid" alt="Can't load" />
           {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
             <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
           </video> */}
