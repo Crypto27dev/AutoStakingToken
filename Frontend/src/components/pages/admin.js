@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import Reveal from 'react-awesome-reveal';
+import { useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap'
 import { createGlobalStyle } from 'styled-components';
 import { toast } from 'react-toastify';
@@ -7,8 +8,9 @@ import Header from '../menu/header';
 import Footer from '../components/footer';
 import CarouselNFT from '../components/CarouselNFT';
 import ImageUpload from '../components/NavImageUpload';
-import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork } from '../../web3/web3';
+import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork, getNFTCardInfos, getBNBPrice } from '../../web3/web3';
 import { isEmpty, fadeInUp, BackLoading } from '../../utils';
+import * as selectors from '../../store/selectors';
 
 const GlobalStyles = createGlobalStyle`
   .modal-dialog {
@@ -47,14 +49,19 @@ const Admin = () => {
     priceBUSD: false,
     supply: false
   });
+  const [cardInfos, setCardInfos] = useState(null);
+  const [cardPrices, setCardPrices] = useState(null);
+  const web3 = useSelector(selectors.web3State);
 
   const checkOwnerState = async () => {
     if (await checkNetwork()) {
       const result = await isOwner();
       if (!result) {
         toast.error(`You can't update NFT infos because you aren't a admin.`);
+        return false;
       }
     }
+    return true;
   }
 
   useEffect(() => {
@@ -118,6 +125,9 @@ const Admin = () => {
   }
   
   const handleModalNew = async() => {
+    if (!await checkOwnerState()) {
+      return;
+    }
     initValue();
     setNftImage({});
     setOpenNew(true)
@@ -167,6 +177,29 @@ const Admin = () => {
     }
   }
 
+  const getCardInfos = useCallback(async () => {
+    if (!web3) {
+      return;
+    }
+    const result = await getNFTCardInfos();
+    if (result.success) {
+      let cardPriceArr = [], cardInfoArr = [];
+      for (let i = 0; i < result.cardInfos.length; i++) {
+        let card = result.cardInfos[i];
+        const bnb = await getBNBPrice(card.priceBUSD);
+        card = { ...card, bnb };
+        cardPriceArr.push(bnb);
+        cardInfoArr.push(card);
+      }
+      setCardPrices(cardPriceArr);
+      setCardInfos(cardInfoArr);
+    }
+  }, [web3, reload]);
+
+  useEffect(() => {
+    getCardInfos();
+  }, [getCardInfos]);
+
   return (
     <div>
       <GlobalStyles />
@@ -191,7 +224,7 @@ const Admin = () => {
             <button className="btn-main btn2" onClick={handleModalNew}>Create a new NFT</button>
           </div>
         </div>
-        <CarouselNFT showOnly={true} handleEdit={handleModalEdit} reload={reload} />
+        <CarouselNFT showOnly={true} handleEdit={handleModalEdit} reload={reload} onReload={() => setReload(prevState => !prevState)} cardInfoArr={cardInfos} cardPriceArr={cardPrices}/>
       </section>
       <Modal
         show={openEdit}
@@ -303,7 +336,7 @@ const Admin = () => {
           <button className="btn-main" onClick={handleNew}>Create Now</button>
         </Modal.Footer>
       </Modal>
-      <BackLoading loading={loading} title='Saving...' />
+      <BackLoading loading={loading} title='Pending...' />
       <Footer />
     </div>
   )

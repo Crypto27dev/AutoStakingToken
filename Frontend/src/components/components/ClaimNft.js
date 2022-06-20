@@ -199,7 +199,7 @@ const ClaimNft = ({ onReload, nftInfos }) => {
           </div>
         </Reveal>
       </div>
-      <BackLoading loading={loading} title='Claiming...' />
+      <BackLoading loading={loading} title='Pending...' />
     </div >
   )
 }

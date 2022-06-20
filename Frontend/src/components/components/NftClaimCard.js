@@ -87,7 +87,6 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
   }
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     setInputValue(event.target.value);
     setError(false);
   }
@@ -124,7 +123,7 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
           </video> */}
         </div>
         <div className="nft__item_info mt-2">
-          <span className='fs-20 f-space text-white'>Dolphin NFT{nft.symbol}</span>
+          <span className='fs-20 f-space text-white'>{nft.symbol} {nft.tokenID}</span>
         </div>
         <div className='d-flex flex-row justify-content-between gap-2'>
           <div style={{ width: '50%' }}>
@@ -188,7 +187,7 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
           <button className="btn-main" onClick={() => handleSell(nft.tokenID)}>Sell Now</button>
         </Modal.Footer>
       </Modal>
-      <BackLoading loading={loading} title='Claiming...' />
+      <BackLoading loading={loading} title='Pending...' />
     </div>
   );
 };

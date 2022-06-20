@@ -35,7 +35,8 @@ const MintEarning = () => {
         const tokenID = data.tokenIDs[i];
         const imgUri = data.uris[i];
         const tokenPrice = data.tokenPrices[i];
-        const nft = { createdTime, currentROI, nftRevenue, tokenID, imgUri, tokenPrice };
+        const symbol = data.symbols[i];
+        const nft = { createdTime, currentROI, nftRevenue, tokenID, imgUri, tokenPrice, symbol };
         nftArray.push(nft);
       }
       setNftInfos(nftArray);

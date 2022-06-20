@@ -36,7 +36,7 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
     Swal.fire({
       title: 'Are you sure?',
       icon: 'warning',
-      text: `You will pay $${numberWithCommas(nft.saleCost, 5)} ${nft.kindOfCoin === 0 ? 'BNB' : 'BUSD'}`,
+      text: `You will pay ${numberWithCommas(nft.saleCost, 5)} ${nft.kindOfCoin === 0 ? 'BNB' : 'BUSD'}`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -45,11 +45,10 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
     }).then(async (resp) => {
       if (resp.isConfirmed) {
         setLoading(true);
-        console.log(nft)
-        const result = await buyNow(nft.tokenId, nft.saleCost);
-        // onReload();
+        const result = await buyNow(nft.tokenId, nft.saleCost, nft.kindOfCoin);
         setLoading(false);
         if (result.success) {
+          onReload();
           toast.success('Created a new NFT successfully!');
         } else {
           toast.error(result.status);
@@ -69,7 +68,7 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
         </div>
         <div className="spacer-10"></div>
         <div className="d-flex flex-row justify-content-between">
-          <span className="fs-18 f-space text-white">{nft.symbol}</span>
+          <span className="fs-18 f-space text-white">{nft.symbol} {nft.tokenId}</span>
           <span className="fs-18 f-space color">${numberWithCommas(nft.price)}</span>
         </div>
         <div className="spacer-10"></div>
@@ -109,7 +108,7 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
           <button className='btn-main m-auto' onClick={onBuyNow}>Buy Now</button>
         </div>
       </div>
-      <BackLoading loading={loading} title='Claiming...' />
+      <BackLoading loading={loading} title='Pending...' />
     </div>
   );
 };

@@ -40,33 +40,24 @@ const Faq = () => {
                 <Accordion>
                   <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={300} triggerOnce cascade>
                     <Accordion.Item eventKey="0">
-                      <Accordion.Header>What is 100 Days?</Accordion.Header>
+                      <Accordion.Header>What is PEACEGIGA?</Accordion.Header>
                       <Accordion.Body className="pt-1">
-                        100 days is an Income generating NFT project
+                        PEACEGIGA is an income generationg NFT project.
                       </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="1">
-                      <Accordion.Header>Who created 100 days?</Accordion.Header>
+                      <Accordion.Header>How to mint NFTs?</Accordion.Header>
                       <Accordion.Body className="pt-1">
-                        100 days was created by Rohit &amp; Arsh. However none of this would be
-                        possible without our talented team.
+                        Our NFT's can be found once "Mint &amp; Earning" tab is pressed. New NFT's will be released on the first of every month.
                       </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="2">
-                      <Accordion.Header>How to buy 100 days?</Accordion.Header>
+                      <Accordion.Header>What token are your rewards given in?</Accordion.Header>
                       <Accordion.Body className="pt-1">
-                        Our NFT’s can be found once “Launch App” is pressed. This will take you
-                        to our website where they will be available for purchase under the “Mint”
-                        tab. New NFT’s will be released on the first of every month.
+                        All our investors will receive daily rewards in stable coin.
                       </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="3">
-                      <Accordion.Header>What token are your rewards given in?</Accordion.Header>
-                      <Accordion.Body className="pt-1">
-                        All our investors will receive daily rewards in stablecoins.
-                      </Accordion.Body>
-                    </Accordion.Item>
-                    <Accordion.Item eventKey="4">
                       <Accordion.Header>Are you guys safe?</Accordion.Header>
                       <Accordion.Body className="pt-1">
                         We believe we have taken every precaution possible to make our
@@ -75,26 +66,25 @@ const Faq = () => {
                         in our white paper
                       </Accordion.Body>
                     </Accordion.Item>
-                    <Accordion.Item eventKey="5">
+                    <Accordion.Item eventKey="4">
                       <Accordion.Header>What is the artistic value of your NFTs?</Accordion.Header>
                       <Accordion.Body className="pt-1">
                         The artistic value of our NFT’s vary from tier to tier. Some may be created
                         by your favorite artist, contact creator or brand.
                       </Accordion.Body>
                     </Accordion.Item>
-                    <Accordion.Item eventKey="6">
+                    <Accordion.Item eventKey="5">
                       <Accordion.Header>What's the value of making the NFT sellable?</Accordion.Header>
                       <Accordion.Body className="pt-1">
                         The value behind having sellable NFT’s the second they are minted is this
                         gives our users the ability to cash out at any point of their choosing. Giving
                         true ownership to the users.
-
                       </Accordion.Body>
                     </Accordion.Item>
-                    <Accordion.Item eventKey="7">
+                    <Accordion.Item eventKey="6">
                       <Accordion.Header>Is this a Passive Income Project?</Accordion.Header>
                       <Accordion.Body className="pt-1">
-                        Yes this is what's beautiful about 100 days. Once you buy an NFT you
+                        Yes! this is what's beautiful about PEACEGIGA. Once you buy an NFT you
                         receive daily rewards with no input needed from the user. Allowing our
                         users to live life to its fullest without needing to constantly check there
                         computer.

@@ -336,6 +336,9 @@ const parseErrorMsg = (errMsg) => {
       returStr = subStr;
     }
   } else returStr = errMsg;
+  if (returStr.indexOf("insufficient funds") > 0) {
+    returStr = 'Insufficient funds for the transaction.'
+  }
   return returStr;
 }
 
@@ -400,13 +403,10 @@ export const getAllSaleInfos = async () => {
   try {
     const cardInfos = await factoryContract.methods.getNFTCardInfos().call();
     const saleInfos = await factoryContract.methods.getAllSaleInfos().call();
-    console.log('[CardInfos] = ', cardInfos)
-    console.log('[SaleInfos] = ', saleInfos)
     let nftInfos = [];
     for (let i = 0; i < saleInfos.length; i++) {
       const saleInfo = saleInfos[i];
-      const index = await factoryContract.methods._allTokenIDToIndex(saleInfo.tokenId).call();
-      console.log(saleInfo.tokenId, index)
+      const index = await factoryContract.methods._getCIDFromID(saleInfo.tokenId).call();
       const card = cardInfos[index];
       const symbol = card.symbol;
       const price = card.priceBUSD;
@@ -416,7 +416,8 @@ export const getAllSaleInfos = async () => {
       const tokenId = saleInfo.tokenId;
       const createdTime = saleInfo.createdTime;
       const currentROI = saleInfo.currentROI;
-      const nft = { symbol, price, imgUri, saleCost, kindOfCoin, tokenId, createdTime, currentROI };
+      const currentOwner = saleInfo.currentOwner;
+      const nft = { symbol, price, imgUri, saleCost, kindOfCoin, tokenId, createdTime, currentROI, currentOwner };
       nftInfos.push(nft);
     }
 
@@ -563,7 +564,7 @@ export const destroySale = async (currentAddr, tokenId) => {
   }
 }
 
-export const buyNow = async (tokenId, price) => {
+export const buyNow = async (tokenId, price, kindOfCoin) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return;
   try {
@@ -572,7 +573,14 @@ export const buyNow = async (tokenId, price) => {
     let item_price = web3.utils.toWei(price.toString());
     const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
     const estimate = factoryContract.methods.buyNow(tokenId);
-    let gasFee = await estimate.estimateGas({ from: accounts[0], value: item_price });
+    let gasFee = 0;
+    if (kindOfCoin === 0) {
+      gasFee = await estimate.estimateGas({ from: accounts[0], value: item_price });
+    } else {
+      const BUSDContract = await new web3.eth.Contract(BUSD_ABI, BUSD_Addr);
+      await BUSDContract.methods.approve(factory_Addr, item_price).send({ from: accounts[0] });
+      gasFee = await estimate.estimateGas({ from: accounts[0] });
+    }
     var balanceOfUser = await web3.eth.getBalance(accounts[0]);
     var gasPrice = 30 * (10 ** 9);
 
@@ -582,7 +590,11 @@ export const buyNow = async (tokenId, price) => {
         status: 'Insufficient balance.'
       };
     }
-    await estimate.send({ from: accounts[0], value: item_price });
+    if (kindOfCoin === 0) {
+      await estimate.send({ from: accounts[0], value: item_price });
+    } else {
+      await estimate.send({ from: accounts[0] })
+    }
     updateBalanceOfAccount();
     return {
       success: true
@@ -591,7 +603,7 @@ export const buyNow = async (tokenId, price) => {
     console.log(error)
     return {
       success: false,
-      status: "Something went wrong: " + parseErrorMsg(error.message)
+      status: parseErrorMsg(error.message)
     };
   }
 }
@@ -690,7 +702,6 @@ export const mintNfts = async (id, count, bnb) => {
     let accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) return { success: false }
     const estimate = factoryContract.methods.mintNFTs(id, count);
-    console.log(item_price, count, typeof count)
     await estimate.estimateGas({ from: accounts[0], value: item_price * count });
 
     const tx = await estimate.send({ from: accounts[0], value: item_price * count });
@@ -790,7 +801,7 @@ export const getTreasuryBalance = async () => {
     const balance = await web3.eth.getBalance(Treasury_Addr);
     const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
     const busdInBNB = await factoryContract.methods.ONE_BUSD_IN_BNB().call();
-    const busd = Number(balance) / web3.utils.fromWei(busdInBNB.toString());
+    const busd = web3.utils.fromWei(balance.toString()) / web3.utils.fromWei(busdInBNB.toString());
     return {
       success: true,
       balance: busd

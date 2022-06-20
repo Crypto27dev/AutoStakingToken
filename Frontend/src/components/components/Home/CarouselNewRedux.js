@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { navigate } from '@reach/router';
 import Reveal from 'react-awesome-reveal';
 import { numberWithCommas, fadeInUp, SingleLoading } from "../../../utils";
 import { getNFTCardInfos, getBNBPrice } from "../../../web3/web3";
@@ -127,7 +128,7 @@ const CarouselNewRedux = () => {
                       </div>
                     </div>
                     <div className="single-line"></div>
-                    <button className="btn-main btn-arrow-bg">VIEW</button>
+                    <button className="btn-main btn-arrow-bg" onClick={() => navigate('mint')}>VIEW</button>
                     <div className="spacer-10"></div>
                   </div>
                 </div>

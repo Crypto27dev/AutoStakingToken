@@ -168,6 +168,7 @@ const customStyles = {
 const NftBoard = ({ range }) => {
   const [page, setPage] = useState(0);
   const [nftInfos, setNftInfos] = useState([]);
+  const [reload, setReload] = useState(false);
   const web3 = useSelector(selectors.web3State);
 
   const handleSort = (event) => {
@@ -178,14 +179,6 @@ const NftBoard = ({ range }) => {
     setPage(prevState => prevState + 1);
   }
 
-  const onBuyNow = () => {
-
-  }
-
-  const handleBuy = () => {
-
-  }
-
   const loadNFTs = useCallback(async () => {
     if (!web3) {
       return;
@@ -194,7 +187,7 @@ const NftBoard = ({ range }) => {
     if (result.success) {
       setNftInfos(result.nftInfos);
     }
-  }, [web3]);
+  }, [web3, reload]);
 
   useEffect(() => {
     loadNFTs();
@@ -225,7 +218,7 @@ const NftBoard = ({ range }) => {
           </div>
         )}
         {nftInfos && nftInfos.map((nft, index) => (
-          <NftCard nft={nft} key={index} onBuyNow={onBuyNow} />
+          <NftCard nft={nft} key={index} onReload={() => setReload(prevState => !prevState)} />
         ))}
         <div className='col-lg-12'>
           <div className="spacer-single"></div>

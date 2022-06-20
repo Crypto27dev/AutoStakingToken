@@ -1,6 +1,7 @@
 import React from 'react';
 import Reveal from 'react-awesome-reveal';
 import { createGlobalStyle } from 'styled-components';
+import ReactTypingEffect from 'react-typing-effect';
 import { navigate } from '@reach/router';
 import { fadeInUp, fadeIn } from '../../../utils';
 
@@ -43,6 +44,26 @@ const GlobalStyles = createGlobalStyle`
       justify-content: center;
     }
   }
+  .type_text {
+    font-size: 2rem;
+    font-weight: 500;
+    font-style: italic;
+    color: white;
+    @media only screen and (max-width: 992px) {
+      font-size: 1.4rem;
+    }
+  }
+  .type_cursor {
+    color: #CFFD33;
+    transform: translateY(-3px);
+    -webkit-transform: translateY(-3px);
+    font-style: normal;
+  }
+  .sm-text-center {
+    @media only screen and (max-width: 992px) {
+      text-align: center;
+    }
+  }
 `;
 
 const slidermain = () => (
@@ -55,7 +76,13 @@ const slidermain = () => (
     </div>
     <div className="container banner-container">
       <div className="row align-items-center">
-        <div className="col-md-6">
+        <div className="col-md-6 sm-text-center">
+          <ReactTypingEffect
+            text={["Cash Out Anytime", "Up to 3x return over 24 months", "Sellable", "Secure & Transparent", "Rewards paid in Stablecoins", "Continuous Innovation"]}
+            speed={"60"} eraseSpeed={"30"} eraseDelay={"3000"} typingDelay={"30"}
+            className={"type_text"}
+            cursorClassName={"type_cursor"}
+          />
           <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={600} triggerOnce>
             <h1 className="banner-title"><span className='color'>MINT</span> & EARNING BUSD, <span className="color">NFT</span></h1>
           </Reveal>
