@@ -67,31 +67,16 @@ const footer = () => (
     </div> */}
     <div className="subfooter">
       <div className="container">
-        <div className="row">
-          <div className="col-md-12">
-            <div className="de-flex">
-              <div className="de-flex-col">
-                <span onClick={() => window.open("", "_self")}>
-                  <img
-                    src="/img/logo.gif"
-                    className="f-logo d-1"
-                    alt="#"
-                    width={'200px'}
-                  />
-                  <span className="text-white copy">&copy; Copyright 2022</span>
-                </span>
-              </div>
-              <div className="de-flex-col">
-                <div className="social-icons">
-                  <span onClick={() => window.open("", "_self")}><i className="fa fa-facebook fa-lg text-black"></i></span>
-                  <span onClick={() => window.open("", "_self")}><i className="fa fa-twitter fa-lg text-black"></i></span>
-                  <span onClick={() => window.open("", "_self")}><i className="fa fa-linkedin fa-lg text-black"></i></span>
-                  <span onClick={() => window.open("", "_self")}><i className="fa fa-pinterest fa-lg text-black"></i></span>
-                  <span onClick={() => window.open("", "_self")}><i className="fa fa-rss fa-lg text-black"></i></span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="de-flex align-items-center">
+          <span onClick={() => window.open("/", "_self")}>
+            <img
+              src="/img/logo.gif"
+              className="f-logo d-1"
+              alt="#"
+              width={'200px'}
+            />
+          </span>
+          <span className="copy">Copyright &copy; 2022 <span className="color" onClick={() => window.open("/", "_self")}>PEACE GIGA</span> All Rights Reserved</span>
         </div>
       </div>
     </div>

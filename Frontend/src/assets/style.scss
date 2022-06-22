@@ -112,6 +112,7 @@ section{
   overflow: hidden;
   width: 100%;
   background: #082032;
+  min-height: 100vh;
   .wraperitem{
     width: 100%;
     height: 100%;
@@ -841,6 +842,7 @@ a{
       &.active{
         transition: all 0.3s ease;
         color: $color;
+        font-weight: 700;
         // .lines{
         //   width: 90%;
         //   transition: .7s;
@@ -912,7 +914,7 @@ a{
     .menu{
       display: flex;
       justify-content: flex-end;
-      gap: 32px;
+      gap: 15px;
     }
     .nav-icon{
       display: none;
@@ -926,9 +928,9 @@ a{
         padding: 15px 0 10px;
       }
       &.navbar {
-        position: relative;
+        position: absolute !important;
         .logo{
-          position: fixed;
+          position: absolute;
           left: -10px;
           display: inline-block;
         }
@@ -1018,7 +1020,7 @@ a{
       background-color:$white;
       }
        &.sticky {
-       position: absolute !important;
+        position: absolute !important;
        }
      }
      @media only screen and (max-width: 641px) {

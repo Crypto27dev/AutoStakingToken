@@ -7,8 +7,8 @@ import { numberWithCommas, getUTCDate, BackLoading, isEmpty } from '../../utils'
 import { buyNow, compareWalllet } from '../../web3/web3';
 import * as selectors from '../../store/selectors';
 
-const Date_Range = [80, 365, 730];
-const ROI_Range = [1.25, 0.5, 0.16];
+const Date_Range = [65, 365, 730];
+const ROI_Range = [1.5, 0.7, 0.3];
 
 //react functional component
 const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-4', onReload }) => {
@@ -41,7 +41,7 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
       return;
     }
     if (compareWalllet(nft.currentOwner, wallet)) {
-      toast.error(`You can't buy this NFT because it is yours.`);
+      toast.error(`You can't buy this NFT because it's yours.`);
       return;
     }
     Swal.fire({

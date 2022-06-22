@@ -78,7 +78,7 @@ const slidermain = () => (
       <div className="row align-items-center">
         <div className="col-md-6 sm-text-center">
           <ReactTypingEffect
-            text={["Cash Out Anytime", "Up to 3x return over 24 months", "Sellable", "Secure & Transparent", "Rewards paid in Stablecoins", "Continuous Innovation"]}
+            text={["Cash Out Anytime", "Up to 4x return over 24 months", "Sellable", "Secure & Transparent", "Rewards paid in Stablecoins", "Continuous Innovation"]}
             speed={"60"} eraseSpeed={"30"} eraseDelay={"3000"} typingDelay={"30"}
             className={"type_text"}
             cursorClassName={"type_cursor"}

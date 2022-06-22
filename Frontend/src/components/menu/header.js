@@ -9,7 +9,7 @@ import Popover from '@mui/material/Popover';
 import { connectWallet, disconnect } from "../../web3/web3";
 import * as selectors from '../../store/selectors';
 import config from '../../config';
-import { Toast, isMobile } from "../../utils";
+import { isMdScreen } from "../../utils";
 
 setDefaultBreakpoints([
   { xs: 0 },
@@ -67,7 +67,7 @@ const Header = function () {
     const totop = document.getElementById("scroll-to-top");
     const sticky = header.offsetTop;
     const scrollCallBack = window.addEventListener("scroll", () => {
-      if (!isMobile()) {
+      if (!isMdScreen()) {
         if (window.pageYOffset > sticky) {
           header.classList.add("sticky");
           totop.classList.add("show");
@@ -131,6 +131,11 @@ const Header = function () {
                     Open Market
                   </NavLink>
                 </div>
+                <div className='navbar-item'>
+                  <NavLink to="/lottery" onClick={handleClose}>
+                    Lottery
+                  </NavLink>
+                </div>
               </Popover>
             </Breakpoint>
 
@@ -151,6 +156,12 @@ const Header = function () {
                 <div className='navbar-item'>
                   <NavLink to="/explore">
                     Open Market
+                    <span className='lines'></span>
+                  </NavLink>
+                </div>
+                <div className='navbar-item'>
+                  <NavLink to="/lottery">
+                    Lottery
                     <span className='lines'></span>
                   </NavLink>
                 </div>

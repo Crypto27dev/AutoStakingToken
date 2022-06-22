@@ -87,15 +87,15 @@ const ROIBar = ({ date, rate, roi }) => {
         <BootstrapTooltip title={
           <div className="d-flex flex-column">
             <div className="d-flex justify-content-between gap-3">
-              <span>ROI: 1.25%</span>
-              <span>80 Days</span>
+              <span>ROI: 1.5%</span>
+              <span>65 Days</span>
             </div>
             <div className="d-flex justify-content-between gap-3">
-              <span>ROI: 0.5%</span>
-              <span>285 Days</span>
+              <span>ROI: 0.7%</span>
+              <span>300 Days</span>
             </div>
             <div className="d-flex justify-content-between gap-3">
-              <span>ROI: 0.16%</span>
+              <span>ROI: 0.3%</span>
               <span>365 Days</span>
             </div>
           </div>

@@ -8,8 +8,8 @@ import ROIBar from './Market/ROIBar';
 import { claimByNft } from '../../web3/web3';
 import { isEmpty, fromWei, getUTCDate, BackLoading } from '../../utils';
 
-const Date_Range = [80, 365, 730];
-const ROI_Range = [1.25, 0.5, 0.16];
+const Date_Range = [65, 365, 730];
+const ROI_Range = [1.5, 0.7, 0.3];
 
 const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4', onReload }) => {
   const [left_time, setLeftTime] = useState(0);

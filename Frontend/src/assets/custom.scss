@@ -62,13 +62,137 @@ h6 {
 
 @media (max-width: 575px) {
   .col-xs-6 {
-      flex: 0 0 auto;
-      width: 50%;
+    flex: 0 0 auto;
+    width: 50%;
   }
 }
 
 img {
   pointer-events: none;
+}
+
+@keyframes coin_left {
+  0% {
+    opacity: 0;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+}
+
+.vertical-scroll {
+  position: fixed;
+  top: 35%;
+  left: 2%;
+  width: 44px;
+  border-radius: 40px;
+  box-shadow: 0 4px 13px 0 rgb(0 0 0 / 40%);
+  background-color: rgb(255 255 255 / 30%);
+  z-index: 99;
+
+  ul {
+    text-align: center;
+    padding: 14px 0 8px;
+    list-style: none;
+
+    li {
+      padding: 7px 0;
+    }
+
+    a {
+      font-size: 22px;
+      color: #9fd464;
+
+      &:hover {
+        color: #b9ff00;
+      }
+    }
+  }
+
+  .coin-menu {
+    font-size: 22px;
+    color: #9fd464;
+    img {
+      margin-left: 2px;
+    }
+    .coin-detail {
+      position: absolute;
+      left: 45px;
+      bottom: 8px;
+      width: 115px;
+      background-color: rgba(255, 255, 255, 0.3);
+      color: white;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 16px;
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: all .3s ease-in-out;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &:hover {
+      color: #b9ff00;
+      cursor: pointer;
+
+      .coin-detail {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  @media only screen and (max-width: 576px) {
+    top: auto;
+    bottom: 2%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 240px;
+    background-color: #505050;
+
+    ul {
+      margin: 0;
+      padding: 5px;
+
+      li {
+        display: inline-block;
+        padding: 0 10px;
+      }
+    }
+
+    .coin-menu {
+      img {
+        margin-left: 0;
+        margin-bottom: 3px;
+      }
+      .coin-detail {
+        left: auto;
+        right: -22px;
+        bottom: 45px;
+        opacity: 0;
+        transform: scaleY(0);
+        transform-origin: bottom;
+      }
+
+      &:hover {
+        .coin-detail {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+      }
+    }
+  }
 }
 
 .nft-carousel {
@@ -153,6 +277,7 @@ input::-webkit-inner-spin-button {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+
   @media only screen and (max-width: 768px) {
     padding: 0px;
   }
@@ -322,6 +447,7 @@ footer.footer-light {
     color: white;
     transition: 0.7s;
   }
+
   .nft__item_preview {
     transition: 0.7s;
   }
@@ -335,6 +461,7 @@ footer.footer-light {
 
   &:hover {
     border: 1px solid #CFFD33;
+
     .nft__item_preview {
       transform: scale(1.1);
       transition: 0.7s;
@@ -673,18 +800,21 @@ textarea:focus {
 .swal2-popup {
   background: #212224 !important;
   border-radius: 15px !important;
+
   .swal2-title {
     color: white;
   }
+
   .swal2-html-container {
     color: white;
   }
+
   button {
     display: block;
     border-radius: 20px !important;
     outline: 0;
     text-decoration: none;
-    text-transform: uppercase ;
+    text-transform: uppercase;
     padding: 8px 40px;
     font-family: 'Inter';
     font-weight: 600;
@@ -693,23 +823,28 @@ textarea:focus {
     cursor: pointer;
     box-shadow: 2px 2px 20px 0px rgba(131, 100, 226, 0);
     transition: all 0.3s ease;
-    &:hover{
+
+    &:hover {
       box-shadow: 2px 2px 20px 0px rgba(226, 140, 100, 0.5);
       transition: all 0.3s ease;
     }
+
     &:focus {
       box-shadow: none !important;
     }
-    &.inline{
+
+    &.inline {
       display: inline-block;
       margin-right: 15px;
-      &.white{
-        color: $color !important;
-        background:$white;
+
+      &.white {
+        color: $color  !important;
+        background: $white;
       }
     }
   }
 }
+
 .swal2-toast-shown .swal2-container.swal2-top {
   width: 400px !important;
 }
@@ -752,6 +887,7 @@ textarea:focus {
   background: transparent;
   border: solid 1px #CFFD33;
   color: white;
+
   &:hover {
     background: #CFFD33;
     color: black;
@@ -858,6 +994,7 @@ textarea:focus {
       left: 0px;
       z-index: 9;
     }
+
     &:before {
       font-size: 35px;
     }
@@ -867,6 +1004,7 @@ textarea:focus {
     @media only screen and (max-width: 600px) {
       right: 16px;
     }
+
     &:before {
       font-size: 35px;
     }
@@ -885,7 +1023,7 @@ textarea:focus {
       border: 1px solid $color;
       background-image: none;
     }
-    
+
     .nft_avatar {
       padding: 10px;
     }
@@ -907,6 +1045,7 @@ textarea:focus {
     }
 
     .nft_avatar {
+
       // margin: 20px;
       img {
         width: 100%;
@@ -1051,9 +1190,11 @@ textarea:focus {
 .banner-title {
   font-weight: 700;
   font-size: 72px;
+
   @media only screen and (max-width: 1199px) {
     font-size: 58px;
   }
+
   @media only screen and (max-width: 992px) {
     font-size: 40px;
     text-align: center;
@@ -1062,10 +1203,12 @@ textarea:focus {
 
 .banner-video {
   width: 100%;
+
   @media only screen and (max-width: 768px) {
     width: 200%;
     margin-left: -50%;
   }
+
   video {
     width: 100%;
   }
@@ -1127,7 +1270,7 @@ textarea:focus {
   }
 
   .accordion-button::after {
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L5.37333 8L10.6667 0H0Z' fill='%23CFFD33'/%3E%3C/svg%3E");    
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L5.37333 8L10.6667 0H0Z' fill='%23CFFD33'/%3E%3C/svg%3E");
     width: 2rem;
     height: 2rem;
     background-color: #2C2D2F;
@@ -1149,6 +1292,7 @@ textarea:focus {
 .MuiPaper-root {
   background-color: #262729 !important;
   border-radius: 10px !important;
+
   a {
     color: white;
   }
@@ -1164,20 +1308,24 @@ textarea:focus {
   .modal-header {
     border-bottom: none;
     padding-bottom: 0.3rem;
-    .btn-close{
+
+    .btn-close {
       background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.125 7.125L16.875 16.875M16.875 7.125L7.125 16.875L16.875 7.125Z' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/2em no-repeat !important;
       width: 2rem;
       height: 2rem;
       background-size: 100%;
       opacity: 1;
+
       &:hover {
         opacity: 0.75;
       }
     }
   }
+
   .modal-footer {
     border-top: none;
     justify-content: space-evenly;
+
     button {
       width: 125px;
       padding: 8px;

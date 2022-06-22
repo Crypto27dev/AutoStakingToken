@@ -72,7 +72,7 @@ const ColumnExplorer = () => {
     <div className='container'>
       <div className="row explorer">
         <GlobalStyles />
-        <div className="col-lg-3 col-md-4 col-xs-12 filter-container">
+        <div className="col-lg-3 col-md-4 col-xs-12 filter-container mb-2">
           <div className='d-flex flex-row justify-content-between align-items-center'>
             <h3><i className="fa fa-filter"></i> Filter</h3>
             <span className='color text-decoration-underline'>Reset</span>
@@ -111,7 +111,7 @@ const ColumnExplorer = () => {
             </div>
           </CollapseItem>
         </div>
-        <div className="col-lg-9 col-md-8 col-xs-12">
+        <div className="col-lg-9 col-md-8 col-xs-12 mb-2">
           <NftBoard />
         </div>
       </div>
