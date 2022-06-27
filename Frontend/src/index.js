@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { convertAniBinaryToCSS } from "ani-cursor";
-import cursor from '../src/assets/cursor.ani';
 import "./assets/animated.css";
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import '../node_modules/et-line/style.css';
@@ -17,20 +15,6 @@ import { loadWeb3 } from "./web3/web3";
 //redux store
 import { Provider } from 'react-redux'
 import store from './store';
-
-async function applyCursor(selector, aniUrl) {
-	const response = await fetch(aniUrl);
-	const data = new Uint8Array(await response.arrayBuffer());
-
-	const style = document.createElement("style");
-	style.innerText = convertAniBinaryToCSS(selector, data);
-	document.head.appendChild(style);
-}
-
-applyCursor(
-	"#root",
-	window.location.origin + cursor
-);
 
 loadWeb3();
 

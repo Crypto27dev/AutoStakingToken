@@ -88,7 +88,7 @@ const Statistics = () => {
                 <img src="./img/home/invest.png" alt=""></img>
                 <div>
                   <h5>Value Of Investment</h5>
-                  <h4>$100,000</h4>
+                  <h4>$55,000</h4>
                 </div>
               </div>
             </Reveal>

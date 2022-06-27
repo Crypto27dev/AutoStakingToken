@@ -66,6 +66,7 @@ const ColumnExplorer = () => {
     let newChain = chain;
     newChain[event.target.name] = event.target.checked;
     setChain(newChain);
+    console.log(RoiRange);
   }
   
   return (

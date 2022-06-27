@@ -63,12 +63,12 @@ const App = () => {
       <nav className='vertical-scroll'>
         <ul>
           <li>
-            <a href="https://t.me/+U_54d6JQOOwwNmM1" className='' target="_blank" rel="noreferrer">
+            <a href="https://t.me/PeaceTokenFinanceOfficial" className='' target="_blank" rel="noreferrer">
               <i className="fa-brands fa-telegram"></i>
             </a>
           </li>
           <li>
-            <a href="https://twitter.com/MagicVenture_io" className='' target="_blank" rel="noreferrer">
+            <a href="https://twitter.com/peace_tokenfin?s=09" className='' target="_blank" rel="noreferrer">
               <i className="fa-brands fa-twitter"></i>
             </a>
           </li>
@@ -78,7 +78,12 @@ const App = () => {
             </a>
           </li>
           <li>
-            <a href="/whitepaper.pdf" className='' target="_blank" rel="noreferrer">
+            <a href=" https://instagram.com/peace.token" className='' target="_blank" rel="noreferrer">
+              <i className="fa-brands fa-instagram"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://peacegiga.gitbook.io/whitepaper" className='' target="_blank" rel="noreferrer">
               <i className="fa-solid fa-book-sparkles"></i>
             </a>
           </li>

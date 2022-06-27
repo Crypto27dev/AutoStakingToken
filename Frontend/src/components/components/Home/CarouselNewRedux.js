@@ -63,7 +63,7 @@ const settings = {
 };
 
 const CarouselNewRedux = () => {
-  const [cardInfos, setCardInfos] = useState([]);
+  const [cardInfos, setCardInfos] = useState(null);
   const web3 = useSelector(selectors.web3State);
 
   const getCardInfos = useCallback(async () => {
@@ -100,10 +100,13 @@ const CarouselNewRedux = () => {
       </div>
       <div className='mintnft_block'>
         <div className="align-items-stretch">
-          {cardInfos.length === 0 && (
+          {cardInfos === null && (
             <SingleLoading />
           )}
-          {cardInfos.length > 0 && (
+          {(cardInfos !== null && cardInfos.length === 0) && (
+            <span className="d-block text-white text-center color fs-24 my-4">No Minted NFTs</span>
+          )}
+          {cardInfos !== null && cardInfos.length > 0 && (
             <Slider {...settings} className="nft-carousel">
               {cardInfos && cardInfos.map((nft, index) => (
                 <div className="nft_item recent_nft block_1 text-center" key={index}>

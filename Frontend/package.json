@@ -13,7 +13,6 @@
     "@reach/router": "^1.3.4",
     "@tim-soft/react-spring-web": "^9.0.0-beta.36",
     "@walletconnect/web3-provider": "^1.7.8",
-    "ani-cursor": "^0.0.5",
     "aos": "^2.3.4",
     "axios": "^0.23.0",
     "bootstrap": "^5.1.1",

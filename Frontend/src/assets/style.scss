@@ -67,6 +67,7 @@ body {
   word-spacing: 0px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: url('./cursor.gif'), pointer;
 }
 #routerhang{
   transform: unset !important;

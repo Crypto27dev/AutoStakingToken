@@ -62,7 +62,7 @@ const GlobalStyles = createGlobalStyle`
     .background {
       position: absolute;
       width: 330px;
-      top: -20px;
+      top: -25px;
       left: -15px;
     }
   }
@@ -98,14 +98,12 @@ const Lottery = () => {
 
   const fetchPrizeResult = (abort) => {
     if (!canStart) {
-      toast('no times!');
       return false;
     }
     return new Promise((resolve, reject) => {
       // setTimeout
       setTimeout(() => {
         const resultPrizeIndex = Math.floor(Math.random() * 16);
-        console.log('[Result] = ', resultPrizeIndex)
         if (resultPrizeIndex < 0) {
           reject();
           toast('something is wrong!');
@@ -121,23 +119,22 @@ const Lottery = () => {
   };
 
   const timeout = () => {
-    console.log('Timed Out');
   };
 
   const stateChange = (drawing) => {
-    console.log(drawing ? 'Enter the lottery' : 'Leave the draw');
   };
 
   return (
     <div>
       <GlobalStyles />
       <Header />
-      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: 'url(/img/background/explore_banner.png)' }}>
+      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: 'url(/img/lottery/banner.png)' }}>
         <div className='mainbreadcumb'>
           <div className='container'>
-            <div className='d-flex flex-row align-items-center justify-content-center'>
+            <div className='row m-10-hor'>
               <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={800} triggerOnce>
-                <h1 className='banner-title text-center'>LOTTERY</h1>
+                <img className='banner-title' src="/img/lottery/title.png" alt=""></img>
+                <h2>Comming Soon</h2>
               </Reveal>
             </div>
           </div>
@@ -147,12 +144,14 @@ const Lottery = () => {
       <section className="container lottery-container">
         <div className='turntable'>
           <Turntable
+            mode='mode'
             size={300}
             prizes={prizes}
             onStart={fetchPrizeResult}
             onComplete={complete}
             onTimeout={timeout}
             onStateChange={stateChange}
+            auto={false}
           >
             {/* Dial pointer click button */}
             <div className="inner-shadow" />

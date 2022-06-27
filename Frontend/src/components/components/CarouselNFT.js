@@ -90,6 +90,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
     setCardPrices(newCardInfos);
     setCounts(countArr);
     setRefresh(prevState => !prevState);
+    console.log(refresh);
   }
 
   const handleMint = async (index, nft) => {
@@ -148,7 +149,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                 {cardInfos && cardInfos.map((nft, index) => (
                   <div className="nft_item block_1 text-center" key={index}>
                     <div className="nft_avatar d-flex justify-content-center align-items-center">
-                      <img src={nft.imgUri} className="img-fluid" alt="Can't load" />
+                      <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="Can't load" />
                       {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
                       <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
                     </video> */}

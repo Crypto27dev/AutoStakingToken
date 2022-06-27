@@ -158,7 +158,7 @@ img {
     left: 0;
     right: 0;
     margin: auto;
-    width: 240px;
+    width: 280px;
     background-color: #505050;
 
     ul {
@@ -1197,6 +1197,14 @@ textarea:focus {
 
   @media only screen and (max-width: 992px) {
     font-size: 40px;
+    text-align: center;
+  }
+}
+
+.banner-img {
+  width: 360px;
+  @media only screen and (max-width: 992px) {
+    width: 300px;
     text-align: center;
   }
 }
