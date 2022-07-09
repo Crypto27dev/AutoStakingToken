@@ -84,11 +84,11 @@ const slidermain = () => (
             cursorClassName={"type_cursor"}
           />
           <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={600} triggerOnce>
-            <h1 className="banner-title"><span className='color'>MINT</span> & EARNING BUSD, <span className="color">NFT</span></h1>
+            <h1 className="banner-title"><span className='color'>MINT</span> & EARNING USDT, <span className="color">NFT</span></h1>
           </Reveal>
           <Reveal className='onStep' keyframes={fadeInUp} delay={600} duration={600} triggerOnce>
             <p className="banner-subtitle">
-              Mint NFTs, Receive BUSD And Buy/Sell NFTs on Marketplace
+              Mint NFTs, Receive USDT And Buy/Sell NFTs on Marketplace
             </p>
           </Reveal>
           <div className="spacer-10"></div>

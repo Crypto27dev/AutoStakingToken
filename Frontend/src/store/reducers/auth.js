@@ -7,7 +7,7 @@ export const defaultState = {
   wallet: '',
   balance: {
     bnbBalance: '',
-    busdBalance: '',
+    usdtBalance: '',
   },
   chainID: '',
   loading: false

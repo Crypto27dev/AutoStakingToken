@@ -2,14 +2,16 @@ import React, { memo, useState, useEffect, useMemo, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { Modal } from 'react-bootstrap'
-import SelectCoin from './SelectCoin';
+// import SelectCoin from './SelectCoin';
 import { createSale } from '../../web3/web3';
 import ROIBar from './Market/ROIBar';
 import { claimByNft } from '../../web3/web3';
 import { isEmpty, fromWei, getUTCDate, BackLoading } from '../../utils';
 
-const Date_Range = [65, 365, 730];
-const ROI_Range = [1.5, 0.7, 0.3];
+const ONE_YEAR = 365;
+const TWO_YEAR = 365 * 2;
+const ONE_YEAR_ROI = 70;
+const TWO_YEAR_ROI = 30;
 
 const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4', onReload }) => {
   const [left_time, setLeftTime] = useState(0);
@@ -17,13 +19,13 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
   const [roi, setRoi] = useState(0);
   const [openSell, setOpenSell] = useState(false);
   const [inputValue, setInputValue] = useState(0);
-  const [itemCoin, setItemCoin] = useState(0);
+  // const [itemCoin, setItemCoin] = useState(0);
   const [error, setError] = useState(false);
   const [revenue, setRevenue] = useState(0);
   const [loading, setLoading] = useState(false);
-
+  
   const bonus = useMemo(() => {
-    const price = Number(nft.tokenPrice);
+    const price = fromWei(nft.tokenPrice);
     return price * roi / (3600 * 24 * 100);
   }, [nft.tokenPrice, roi]);
 
@@ -42,20 +44,25 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
   useEffect(() => {
     const curDate = parseInt((Date.now() / 1000 - Number(nft.createdTime)) / (3600 * 24));
     let leftDate = 0, percent = 100, tempRoi = 0;
-    for (var index in Date_Range) {
-      const element = Date_Range[index];
-      if (curDate <= element) {
-        leftDate = element - curDate;
-        percent = leftDate / element * 100;
-        tempRoi = ROI_Range[index];
-        break;
-      }
+    const days = Math.round(10000 / Number(nft.currentROI));
+    if (curDate <= days) {
+      leftDate = days - curDate;
+      percent = leftDate / days * 100;
+      tempRoi = Number(nft.currentROI) / 100;
+    } else if (curDate <= ONE_YEAR) {
+      leftDate = ONE_YEAR - curDate;
+      percent = leftDate / ONE_YEAR * 100;
+      tempRoi = ONE_YEAR_ROI / 100;
+    } else if (curDate <= TWO_YEAR) {
+      leftDate = TWO_YEAR - curDate;
+      percent = leftDate / TWO_YEAR * 100;
+      tempRoi = TWO_YEAR_ROI / 100;
     }
     setLeftTime(leftDate);
     setRate(percent);
     setRoi(tempRoi);
     setRevenue(fromWei(nft.nftRevenue));
-  }, [nft.createdTime, nft.nftRevenue]);
+  }, [nft.createdTime, nft.nftRevenue, nft.currentROI]);
 
   const onClaim = async (nft) => {
     Swal.fire({
@@ -76,7 +83,7 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
           onReload();
           toast.success('Successfully claimed!');
         } else {
-          toast.error(result.error);
+          toast.error(result.status);
         }
       }
     });
@@ -91,9 +98,9 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
     setError(false);
   }
 
-  const handleSelectCoin = (event) => {
-    setItemCoin(event);
-  }
+  // const handleSelectCoin = (event) => {
+  //   setItemCoin(event);
+  // }
 
   const validate = useCallback(() => {
     if (isEmpty(inputValue) || inputValue === 0) {
@@ -108,10 +115,10 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
     if (!validate()) return;
     setOpenSell(false);
     setLoading(true);
-    await createSale(id, inputValue, itemCoin);
+    await createSale(id, inputValue/*, itemCoin*/);
     onReload();
     setLoading(false);
-  }, [inputValue, itemCoin, onReload, validate]);
+  }, [inputValue, onReload, validate/*, itemCoin*/]);
 
   return (
     <div className={className}>
@@ -123,7 +130,7 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
           </video> */}
         </div>
         <div className="nft__item_info mt-2">
-          <span className='fs-20 f-space text-white'>{nft.symbol} {nft.tokenID}</span>
+          <span className='fs-20 f-space text-white'>{nft.symbol} #{nft.tokenID}</span>
         </div>
         <div className='d-flex flex-row justify-content-between gap-2'>
           <div style={{ width: '50%' }}>
@@ -167,17 +174,17 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
           <form id="form-create-item" className="form-border" action="#">
             <div className="field-set">
               <div className="row">
-                <div className="col-md-8">
+                <div className="col-md-12">
                   <h5>Price</h5>
                   <input type="number" name="item_price" id="item_price" className="form-control" placeholder="enter price for one item" onChange={handleChange} autoComplete="off" />
                   {error && (
                     <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
                   )}
                 </div>
-                <div className="col-md-4">
+                {/* <div className="col-md-4">
                   <h5>&nbsp;</h5>
                   <SelectCoin value={itemCoin} onChange={handleSelectCoin} />
-                </div>
+                </div> */}
               </div>
             </div>
           </form>

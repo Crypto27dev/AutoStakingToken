@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Reveal from 'react-awesome-reveal';
 import { createGlobalStyle } from 'styled-components';
-import { fadeInUp, numberWithCommas } from '../../utils';
+import { fadeInUp, numberWithCommas, fromWei } from '../../utils';
 
 const GlobalStyles = createGlobalStyle`
   .statistics_container {
@@ -59,7 +59,7 @@ const EarningInfo = ({ nftInfos, cardInfos }) => {
     let sum = 0;
     if (nftInfos) {
       nftInfos.forEach(nft => {
-        const price = Number(nft.tokenPrice) * (Number(nft.currentROI) / 100) / (3600 * 24 * 100);
+        const price = fromWei(nft.tokenPrice) * (Number(nft.currentROI) / 100) / (3600 * 24 * 100);
         sum += price;
       });
     }
@@ -71,7 +71,7 @@ const EarningInfo = ({ nftInfos, cardInfos }) => {
     if (cardInfos) {
       cardInfos.forEach(card => {
         totalNfts += Number(card.soldCount);
-        totalEarning += Number(card.soldCount) * Number(card.priceBUSD);
+        totalEarning += Number(card.soldCount) * Number(card.priceUSDT);
       });
     }
     return {

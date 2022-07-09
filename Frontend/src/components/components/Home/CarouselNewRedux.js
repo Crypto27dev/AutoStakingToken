@@ -5,8 +5,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { navigate } from '@reach/router';
 import Reveal from 'react-awesome-reveal';
-import { numberWithCommas, fadeInUp, SingleLoading } from "../../../utils";
-import { getNFTCardInfos, getBNBPrice } from "../../../web3/web3";
+import { numberWithCommas, fadeInUp, SingleLoading, fromWei } from "../../../utils";
+import { getNFTCardInfos } from "../../../web3/web3";
 import * as selectors from '../../../store/selectors';
 
 const settings = {
@@ -75,8 +75,8 @@ const CarouselNewRedux = () => {
       let cardInfoArr = [];
       for (let i = 0; i < result.cardInfos.length; i++) {
         let card = result.cardInfos[i];
-        const bnb = await getBNBPrice(card.priceBUSD);
-        card = { ...card, bnb };
+        const priceUSDT = fromWei(card.priceUSDT);
+        card = { ...card, priceUSDT };
         cardInfoArr.push(card);
       }
       setCardInfos(cardInfoArr);
@@ -119,7 +119,7 @@ const CarouselNewRedux = () => {
                   <div className="px-4 mt-2">
                     <div className="d-flex flex-row justify-content-between">
                       <span className="fs-20 f-space text-white">{nft.symbol}</span>
-                      <span className="fs-20 f-space color">${numberWithCommas(nft.priceBUSD)}</span>
+                      <span className="fs-20 f-space color">${numberWithCommas(nft.priceUSDT)}</span>
                     </div>
                     <div className="single-line"></div>
                     <div className="nft_total d-flex justify-content-between align-items-center">
@@ -127,7 +127,7 @@ const CarouselNewRedux = () => {
                         Total
                       </div>
                       <div className="nft_total_value text-white">
-                        {numberWithCommas(nft.bnb, 3)} BNB
+                        {numberWithCommas(nft.priceUSDT, 10)} BNB
                       </div>
                     </div>
                     <div className="single-line"></div>

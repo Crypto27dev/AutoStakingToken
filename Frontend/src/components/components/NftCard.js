@@ -47,7 +47,7 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
     Swal.fire({
       title: 'Are you sure?',
       icon: 'warning',
-      text: `You will pay ${numberWithCommas(nft.saleCost, 5)} ${nft.kindOfCoin === 0 ? 'BNB' : 'BUSD'}`,
+      text: `You will pay ${numberWithCommas(nft.saleCost, 5)} ${nft.kindOfCoin === 0 ? 'BNB' : 'USDT'}`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -86,13 +86,8 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
         <div className='d-flex justify-content-between'>
           <span>Selling Cost</span>
           <div className='d-flex align-items-center justify-content-center gap-1'>
-            {nft.kindOfCoin === 0 && (
-              <img src="/img/icons/bnb.png" alt="" style={{ width: '20px', height: '20px' }}></img>
-            )}
-            {nft.kindOfCoin === 1 && (
-              <img src="/img/icons/busd.png" alt="" style={{ width: '20px', height: '20px' }}></img>
-            )}
-            <div className='text-white'>{numberWithCommas(nft.saleCost, 5)}{nft.kindOfCoin === 0 ? 'BNB' : 'BUSD'}</div>
+            <img src="/img/icons/usdt.png" alt="" style={{ width: '20px', height: '20px' }}></img>
+            <div className='text-white'>{numberWithCommas(nft.saleCost, 5)}{nft.kindOfCoin === 0 ? 'BNB' : 'USDT'}</div>
           </div>
         </div>
         <div className="single-line"></div>

@@ -8,8 +8,8 @@ import Header from '../menu/header';
 import Footer from '../components/footer';
 import CarouselNFT from '../components/CarouselNFT';
 import ImageUpload from '../components/NavImageUpload';
-import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork, getNFTCardInfos, getBNBPrice } from '../../web3/web3';
-import { isEmpty, fadeInUp, BackLoading } from '../../utils';
+import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork, getNFTCardInfos } from '../../web3/web3';
+import { isEmpty, fadeInUp, BackLoading, fromWei } from '../../utils';
 import * as selectors from '../../store/selectors';
 
 const GlobalStyles = createGlobalStyle`
@@ -38,7 +38,8 @@ const Admin = () => {
   const [selectNft, setSelectNft] = useState(null);
   const [inputValue, setInputValue] = useState({
     symbol: '',
-    priceBUSD: '',
+    priceUSDT: '',
+    roi: '',
     supply: ''
   });
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,8 @@ const Admin = () => {
   const [error, setError] = useState({
     image: false,
     symbol: false,
-    priceBUSD: false,
+    priceUSDT: false,
+    roi: false,
     supply: false
   });
   const [cardInfos, setCardInfos] = useState(null);
@@ -98,8 +100,12 @@ const Admin = () => {
       newError.symbol = true;
       result = false;
     }
-    if (isEmpty(inputValue.priceBUSD)) {
-      newError.priceBUSD = true;
+    if (isEmpty(inputValue.priceUSDT)) {
+      newError.priceUSDT = true;
+      result = false;
+    }
+    if (isEmpty(inputValue.roi)) {
+      newError.roi = true;
       result = false;
     }
     if (isEmpty(inputValue.supply)) {
@@ -114,12 +120,14 @@ const Admin = () => {
     setError({
       image: false,
       symbol: false,
-      priceBUSD: false,
+      priceUSDT: false,
+      roi: false,
       supply: false
     });
     setInputValue({
       symbol: '',
-      priceBUSD: '',
+      priceUSDT: '',
+      roi: '',
       supply: ''
     });
   }
@@ -137,7 +145,7 @@ const Admin = () => {
     setError({
       image: false,
       symbol: false,
-      priceBUSD: false,
+      priceUSDT: false,
       supply: false
     });
     if (!validate()) return;
@@ -157,7 +165,7 @@ const Admin = () => {
   const handleModalEdit = async (id, nft) => {
     initValue();
     setNftId(id);
-    setInputValue({symbol: nft.symbol, priceBUSD: nft.priceBUSD, supply: nft.supply});
+    setInputValue({symbol: nft.symbol, priceUSDT: nft.priceUSDT, roi: Number(nft.nftROI) / 100, supply: nft.supply});
     setNftImage({preview: nft.imgUri});
     setOpenEdit(true);
   }
@@ -179,6 +187,7 @@ const Admin = () => {
 
   const getCardInfos = useCallback(async () => {
     if (!web3) {
+      console.log(reload);
       return;
     }
     const result = await getNFTCardInfos();
@@ -186,9 +195,9 @@ const Admin = () => {
       let cardPriceArr = [], cardInfoArr = [];
       for (let i = 0; i < result.cardInfos.length; i++) {
         let card = result.cardInfos[i];
-        const bnb = await getBNBPrice(card.priceBUSD);
-        card = { ...card, bnb };
-        cardPriceArr.push(bnb);
+        const priceUSDT = fromWei(card.priceUSDT);
+        card = { ...card, priceUSDT };
+        cardPriceArr.push(priceUSDT);
         cardInfoArr.push(card);
       }
       setCardPrices(cardPriceArr);
@@ -260,10 +269,18 @@ const Admin = () => {
             </div>
             <div className="spacer-10"></div>
             <div className='col-md-12'>
-              <h5>Price BUSD</h5>
-              <input type="number" name="priceBUSD" id="priceBUSD" value={inputValue.priceBUSD} className="form-control" placeholder="enter price USDC" onChange={handleChange} autoComplete="off" />
-              {error.priceBUSD && (
+              <h5>Price USDT</h5>
+              <input type="number" name="priceUSDT" id="priceUSDT" value={inputValue.priceUSDT} className="form-control" placeholder="enter price USDC" onChange={handleChange} autoComplete="off" />
+              {error.priceUSDT && (
                 <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
+              )}
+            </div>
+            <div className="spacer-10"></div>
+            <div className='col-md-12'>
+              <h5>ROI</h5>
+              <input type="number" name="roi" id="roi" value={inputValue.roi} className="form-control" placeholder="enter ROI" onChange={handleChange} autoComplete="off" />
+              {error.roi && (
+                <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the ROI.</span>
               )}
             </div>
             <div className="spacer-10"></div>
@@ -315,10 +332,18 @@ const Admin = () => {
             </div>
             <div className="spacer-10"></div>
             <div className='col-md-12'>
-              <h5>Price BUSD</h5>
-              <input type="number" name="priceBUSD" id="priceBUSD" className="form-control" placeholder="enter price USDC" onChange={handleChange} autoComplete="off" />
-              {error.priceBUSD && (
+              <h5>Price USDT</h5>
+              <input type="number" name="priceUSDT" id="priceUSDT" className="form-control" placeholder="enter price USDC" onChange={handleChange} autoComplete="off" />
+              {error.priceUSDT && (
                 <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the price.</span>
+              )}
+            </div>
+            <div className="spacer-10"></div>
+            <div className='col-md-12'>
+              <h5>ROI</h5>
+              <input type="number" name="roi" id="roi" className="form-control" placeholder="enter ROI" onChange={handleChange} autoComplete="off" />
+              {error.roi && (
+                <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the ROI.</span>
               )}
             </div>
             <div className="spacer-10"></div>

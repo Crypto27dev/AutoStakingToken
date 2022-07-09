@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from '@reach/router';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const footer = () => (
   <footer className="footer-light">

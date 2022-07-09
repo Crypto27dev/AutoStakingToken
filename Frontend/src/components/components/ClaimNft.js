@@ -148,7 +148,7 @@ const ClaimNft = ({ onReload, nftInfos }) => {
           onReload();
           toast.success('Successfully claimed!');
         } else {
-          toast.error(result.error);
+          toast.error(result.status);
         }
       }
     });

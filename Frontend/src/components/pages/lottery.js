@@ -134,7 +134,7 @@ const Lottery = () => {
             <div className='row m-10-hor'>
               <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={800} triggerOnce>
                 <img className='banner-title' src="/img/lottery/title.png" alt=""></img>
-                <h2>Comming Soon</h2>
+                <h2>Coming Soon</h2>
               </Reveal>
             </div>
           </div>

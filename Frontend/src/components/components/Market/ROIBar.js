@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { useMemo, memo } from "react";
 import { styled } from '@mui/material/styles';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
@@ -62,6 +62,14 @@ function CapGradientSVG() {
 }
 
 const ROIBar = ({ date, rate, roi }) => {
+  const days_1 = useMemo(() => {
+    return Math.round(100 / roi);
+  }, [roi]);
+
+  const days_2 = useMemo(() => {
+    return 365 - days_1;
+  }, [days_1])
+
   return (
     <>
       <GlobalStyles />
@@ -87,12 +95,12 @@ const ROIBar = ({ date, rate, roi }) => {
         <BootstrapTooltip title={
           <div className="d-flex flex-column">
             <div className="d-flex justify-content-between gap-3">
-              <span>ROI: 1.5%</span>
-              <span>65 Days</span>
+              <span>ROI: {roi}%</span>
+              <span>{days_1} Days</span>
             </div>
             <div className="d-flex justify-content-between gap-3">
               <span>ROI: 0.7%</span>
-              <span>300 Days</span>
+              <span>{days_2} Days</span>
             </div>
             <div className="d-flex justify-content-between gap-3">
               <span>ROI: 0.3%</span>

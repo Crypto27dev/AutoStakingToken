@@ -77,6 +77,7 @@ const NftBoard = ({ range }) => {
   const web3 = useSelector(selectors.web3State);
 
   const handleSort = (event) => {
+    console.log(page);
     setPage(1);
   }
 
@@ -86,6 +87,7 @@ const NftBoard = ({ range }) => {
 
   const loadNFTs = useCallback(async () => {
     if (!web3) {
+      console.log(reload)
       return;
     }
     const result = await getAllSaleInfos();

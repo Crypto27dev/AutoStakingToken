@@ -6,8 +6,8 @@ import Footer from '../components/footer';
 import EarningInfo from '../components/EarningInfo';
 import CarouselNFT from '../components/CarouselNFT';
 import ClaimNft from '../components/ClaimNft';
-import { getAllNFTInfos, getNFTCardInfos, getBNBPrice } from '../../web3/web3';
-import { fadeInUp } from '../../utils';
+import { getAllNFTInfos, getNFTCardInfos } from '../../web3/web3';
+import { fadeInUp, fromWei } from '../../utils';
 import * as selectors from '../../store/selectors';
 
 const MintEarning = () => {
@@ -19,8 +19,8 @@ const MintEarning = () => {
   const web3 = useSelector(selectors.web3State);
 
   const getNFTInfos = useCallback(async () => {
-    console.log('[Wallet] = ', wallet);
     if (!web3) {
+      console.log('[Wallet] = ', wallet, refresh);
       return;
     }
     const result = await getAllNFTInfos();
@@ -45,6 +45,7 @@ const MintEarning = () => {
 
   const getCardInfos = useCallback(async () => {
     if (!web3) {
+      console.log(refresh);
       return;
     }
     const result = await getNFTCardInfos();
@@ -52,9 +53,9 @@ const MintEarning = () => {
       let cardPriceArr = [], cardInfoArr = [];
       for (let i = 0; i < result.cardInfos.length; i++) {
         let card = result.cardInfos[i];
-        const bnb = await getBNBPrice(card.priceBUSD);
-        card = { ...card, bnb };
-        cardPriceArr.push(bnb);
+        const priceUSDT = fromWei(card.priceUSDT);
+        card = { ...card, priceUSDT };
+        cardPriceArr.push(priceUSDT);
         cardInfoArr.push(card);
       }
       setCardPrices(cardPriceArr);

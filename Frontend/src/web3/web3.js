@@ -13,10 +13,11 @@ const factoryABI = config.factoryABI;
 const factory_Addr = config.factoryContract;
 const NftABI = config.NftABI;
 const Nft_Addr = config.NftContract;
-const BUSD_Addr = config.BUSDAddress;
-const BUSD_ABI = config.BUSD_ABI;
+const USDT_Addr = config.USDTAddress;
+const USDT_ABI = config.USDT_ABI;
 const Treasury_Addr = config.TreasuryAddress;
 const TOTAL_HOLDERS_URL = `https://api.covalenthq.com/v1/43114/tokens/${Nft_Addr}/token_holders/?quote-currency=USD&format=JSON&page-size=1000000000&key=ckey_4692876c71644fb1b93abfae7f9`;
+const MAX_APPROVE_AMOUNT = 2 ** 32 - 1;
 
 let web3Modal;
 if (typeof window !== "undefined") {
@@ -72,7 +73,7 @@ export const disconnect = async () => {
   store.dispatch(setWalletAddr(''));
   store.dispatch(setBalance({
     bnbBalance: '',
-    busdBalance: ''
+    usdtBalance: ''
   }));
 }
 
@@ -193,18 +194,18 @@ export const getBalanceOfAccount = async () => {
     let bnbBalance = await web3.eth.getBalance(accounts[0]);
     bnbBalance = web3.utils.fromWei(bnbBalance);
 
-    const BUSDContract = await new web3.eth.Contract(BUSD_ABI, BUSD_Addr);
-    let busdBalance = await BUSDContract.methods.balanceOf(accounts[0]).call();
-    busdBalance = web3.utils.fromWei(busdBalance);
+    const USDTContract = await new web3.eth.Contract(USDT_ABI, USDT_Addr);
+    let usdtBalance = await USDTContract.methods.balanceOf(accounts[0]).call();
+    usdtBalance = web3.utils.fromWei(usdtBalance);
 
     store.dispatch(setBalance({
       bnbBalance,
-      busdBalance
+      usdtBalance
     }));
     return {
       success: true,
       bnbBalance,
-      busdBalance
+      usdtBalance
     }
   } catch (error) {
     console.log('[Get Balance] = ', error);
@@ -342,13 +343,13 @@ const parseErrorMsg = (errMsg) => {
   return returStr;
 }
 
-export const getBNBPrice = async (busd) => {
+export const getBNBPrice = async (usdt) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return 0;
   const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
-    const busdInBNB = await factoryContract.methods.ONE_BUSD_IN_BNB().call();
-    const bnbPrice = Number(busdInBNB) * Number(busd);
+    const usdtInBNB = await factoryContract.methods.ONE_USDT_IN_BNB().call();
+    const bnbPrice = Number(usdtInBNB) * Number(usdt);
     let bnbWei = web3.utils.fromWei(bnbPrice.toString());
     return bnbWei;
   } catch (error) {
@@ -409,7 +410,7 @@ export const getAllSaleInfos = async () => {
       const index = await factoryContract.methods._getCIDFromID(saleInfo.tokenId).call();
       const card = cardInfos[index];
       const symbol = card.symbol;
-      const price = card.priceBUSD;
+      const price = card.priceUSDT;
       const imgUri = card.imgUri;
       const saleCost = web3.utils.fromWei(saleInfo.salePrice);
       const kindOfCoin = Number(saleInfo.kindOfCoin);
@@ -577,8 +578,8 @@ export const buyNow = async (tokenId, price, kindOfCoin) => {
     if (kindOfCoin === 0) {
       gasFee = await estimate.estimateGas({ from: accounts[0], value: item_price });
     } else {
-      const BUSDContract = await new web3.eth.Contract(BUSD_ABI, BUSD_Addr);
-      await BUSDContract.methods.approve(factory_Addr, item_price).send({ from: accounts[0] });
+      const USDTContract = await new web3.eth.Contract(USDT_ABI, USDT_Addr);
+      await USDTContract.methods.approve(factory_Addr, item_price).send({ from: accounts[0] });
       gasFee = await estimate.estimateGas({ from: accounts[0] });
     }
     var balanceOfUser = await web3.eth.getBalance(accounts[0]);
@@ -653,8 +654,8 @@ export const addNftCardInfo = async (nft, file) => {
   try {
     let accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) return { success: false }
-    const price = Number(nft.priceBUSD);
-    const estimate = factoryContract.methods.addNFTCardInfo(nft.symbol, imageURI, price, nft.supply);
+    const price = web3.utils.toWei(nft.priceUSDT.toString());
+    const estimate = factoryContract.methods.addNFTCardInfo(nft.symbol, imageURI, price, Number(nft.roi) * 100, nft.supply);
     await estimate.estimateGas({ from: accounts[0] });
     const tx = await estimate.send({ from: accounts[0] });
     return {
@@ -664,7 +665,7 @@ export const addNftCardInfo = async (nft, file) => {
   } catch (error) {
     return {
       success: false,
-      status: error.message
+      status: parseErrorMsg(error.message)
     };
   }
 }
@@ -676,8 +677,8 @@ export const setNFTCardInfo = async (id, imgUri, nft) => {
   try {
     let accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) return { success: false }
-    const price = Number(nft.priceBUSD);
-    const estimate = await factoryContract.methods.setNFTCardInfo(id, nft.symbol, imgUri, price, nft.supply);
+    const price = web3.utils.toWei(nft.priceUSDT.toString());
+    const estimate = await factoryContract.methods.setNFTCardInfo(id, nft.symbol, imgUri, price, Number(nft.roi) * 100, nft.supply);
     await estimate.estimateGas({ from: accounts[0] });
     const tx = await estimate.send({ from: accounts[0] });
     return {
@@ -688,23 +689,41 @@ export const setNFTCardInfo = async (id, imgUri, nft) => {
     console.log(error);
     return {
       success: false,
-      status: "Something went wrong 2: " + error.message
+      status: parseErrorMsg(error.message)
     };
   }
 }
 
-export const mintNfts = async (id, count, bnb) => {
+export const mintNfts = async (id, count, price) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
   const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   try {
-    let item_price = web3.utils.toWei(bnb.toString());
+    const itemPrice = Number(price) * count;
+    let item_price = web3.utils.toWei(itemPrice.toString());
     let accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) return { success: false }
-    const estimate = factoryContract.methods.mintNFTs(id, count);
-    await estimate.estimateGas({ from: accounts[0], value: item_price * count });
 
-    const tx = await estimate.send({ from: accounts[0], value: item_price * count });
+    const USDTContract = await new web3.eth.Contract(USDT_ABI, USDT_Addr);
+    let usdtBalance = await USDTContract.methods.balanceOf(accounts[0]).call();
+    usdtBalance = web3.utils.fromWei(usdtBalance);
+    if (Number(usdtBalance) < itemPrice) {
+      return {
+        success: false,
+        status: 'Insufficient Balance'
+      }
+    }
+    const allowance = await USDTContract.methods.allowance(accounts[0], factory_Addr).call();
+    console.log(allowance)
+    if (web3.utils.fromWei(allowance) < MAX_APPROVE_AMOUNT) {
+      const maxAmount = web3.utils.toWei(MAX_APPROVE_AMOUNT.toString());  
+      await USDTContract.methods.approve(factory_Addr, maxAmount).send({ from: accounts[0] });
+    }
+
+    const estimate = factoryContract.methods.mintNFTs(id, count);
+    console.log(id, item_price, count)
+    await estimate.estimateGas({ from: accounts[0] });
+    const tx = await estimate.send({ from: accounts[0] });
     return {
       success: true,
       tx
@@ -736,7 +755,7 @@ export const claimByNft = async (id) => {
     console.log(error);
     return {
       success: false,
-      status: "Something went wrong 2: " + error.message
+      status: parseErrorMsg(error.message)
     };
   }
 }
@@ -759,7 +778,7 @@ export const claimAll = async (id) => {
     console.log(error);
     return {
       success: false,
-      status: "Something went wrong 2: " + error.message
+      status: parseErrorMsg(error.message)
     };
   }
 }
@@ -800,11 +819,11 @@ export const getTreasuryBalance = async () => {
     if (!web3) return { success: false }
     const balance = await web3.eth.getBalance(Treasury_Addr);
     const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
-    const busdInBNB = await factoryContract.methods.ONE_BUSD_IN_BNB().call();
-    const busd = web3.utils.fromWei(balance.toString()) / web3.utils.fromWei(busdInBNB.toString());
+    const usdtInBNB = await factoryContract.methods.ONE_USDT_IN_BNB().call();
+    const usdt = web3.utils.fromWei(balance.toString()) / web3.utils.fromWei(usdtInBNB.toString());
     return {
       success: true,
-      balance: busd
+      balance: usdt
     }
   } catch (error) {
     return {

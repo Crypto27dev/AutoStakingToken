@@ -86,7 +86,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
     let countArr = counts;
     countArr[index] = currentSlide + 1;
     let newCardInfos = cardPrices;
-    newCardInfos[index] = Number(cardInfos[index].bnb) * (currentSlide + 1);
+    newCardInfos[index] = Number(cardInfos[index].priceUSDT) * (currentSlide + 1);
     setCardPrices(newCardInfos);
     setCounts(countArr);
     setRefresh(prevState => !prevState);
@@ -115,7 +115,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
     }).then(async (resp) => {
       if (resp.isConfirmed) {
         setLoading(true);
-        const result = await mintNfts(index, count, nft.bnb);
+        const result = await mintNfts(index, count, nft.priceUSDT);
         setLoading(false);
         if (result.success) {
           onReload();
@@ -149,7 +149,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                 {cardInfos && cardInfos.map((nft, index) => (
                   <div className="nft_item block_1 text-center" key={index}>
                     <div className="nft_avatar d-flex justify-content-center align-items-center">
-                      <img src={'/img/nfts/dolphin.png'} className="img-fluid" alt="Can't load" />
+                      <img src={nft.imgUri} className="img-fluid" alt="Can't load" />
                       {/* <video className="nft-video-item" poster="" autoPlay={true} loop={true} muted>
                       <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
                     </video> */}
@@ -157,7 +157,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                     <div className="px-4 mt-2">
                       <div className="d-flex flex-row justify-content-between">
                         <span className="fs-20 f-space text-white">{nft.symbol}</span>
-                        <span className="fs-20 f-space color">${numberWithCommas(nft.priceBUSD)}</span>
+                        <span className="fs-20 f-space color">${numberWithCommas(nft.priceUSDT)}</span>
                       </div>
                       <div className="single-line"></div>
                       {!showOnly && (
@@ -188,9 +188,9 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                           Total
                         </div>
                         <div className='d-flex flex-row justify-content-center align-items-center gap-1'>
-                          <img src="/img/icons/bnb.png" alt="" style={{ width: '20px', height: '20px' }}></img>
+                          <img src="/img/icons/usdt.png" alt="" style={{ width: '20px', height: '20px' }}></img>
                           <div className="nft_total_value text-white">
-                            {numberWithCommas(cardPrices[index], 10)} BNB
+                            {numberWithCommas(cardPrices[index], 10)} USDT
                           </div>
                         </div>
                       </div>
@@ -203,7 +203,14 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                         )}
                       </div>
                       <div className="nft_left my-3">
-                        {nft.supply - nft.soldCount} {nft.symbol} left
+                        <div className="nft-left-detail">
+                          <span>ROI:</span>
+                          <span>{Number(cardInfos[index].nftROI) / 100}%</span>
+                        </div>
+                        <div className="nft-left-detail">
+                          <span>Remains:</span>
+                          <span>{nft.supply - nft.soldCount}</span>
+                        </div>
                       </div>
                     </div>
                   </div>

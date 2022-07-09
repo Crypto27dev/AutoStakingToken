@@ -127,5 +127,5 @@ export default function UnstyledSelectRichOptions({ value, onChange, disabled })
 
 const coins = [
   { code: 0, label: 'BNB' },
-  { code: 1, label: 'BUSD' }
+  { code: 1, label: 'USDT' }
 ];
