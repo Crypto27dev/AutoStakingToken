@@ -1,5 +1,7 @@
 import React, { memo, useCallback, useEffect, useState, useRef } from "react";
 import { useSelector } from 'react-redux';
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -62,6 +64,17 @@ const settings = {
     }
   ]
 };
+
+const BootstrapTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette.common.black,
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.black
+  },
+}));
 
 const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, cardPriceArr }) => {
   const slickRef = useRef(null);
@@ -185,7 +198,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                       )}
                       <div className="nft_total d-flex justify-content-between align-items-center">
                         <div className="nft_total_title">
-                          Total
+                          Cost
                         </div>
                         <div className='d-flex flex-row justify-content-center align-items-center gap-1'>
                           <img src="/img/icons/usdt.png" alt="" style={{ width: '20px', height: '20px' }}></img>
@@ -202,11 +215,28 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                           <button className="btn-main btn-arrow-bg" onClick={() => handleMint(index, nft)} disabled={(nft.supply - nft.soldCount) <= 0}>Mint a {nft.symbol}</button>
                         )}
                       </div>
-                      <div className="nft_left my-3">
-                        <div className="nft-left-detail">
-                          <span>ROI:</span>
-                          <span>{Number(cardInfos[index].nftROI) / 100}%</span>
+                      <BootstrapTooltip title={
+                        <div className="d-flex flex-column">
+                          <span className="text-center fs-14">Daily Earning</span>
+                          <div className="d-flex justify-content-between gap-4 align-items-center">
+                            <span className="fs-13"><img src="/img/icons/usdt.png" alt="" style={{ width: '20px', height: '20px' }}></img> {Number(cardInfos[index].nftROI) * Number(cardPrices[index]) / (10 ** 8) * 10 ** 4 }</span>
+                            <span className="fs-13">{Math.floor(10000 / Number(cardInfos[index].nftROI))} Days</span>
+                          </div>
+                          <div className="spacer-10"></div>
+                          <div className="d-flex justify-content-between gap-4 align-items-center">
+                            <span className="fs-13"><img src="/img/icons/hodl.png" alt="" style={{ width: '20px', height: '20px' }}></img> {(cardInfos[index].nftTOKEN)}</span>
+                            <span className="fs-13">{365 * 2 - Math.floor(10000 / Number(cardInfos[index].nftROI))} Days</span>
+                          </div>
                         </div>
+                      }>
+                        <div className="nft_left">
+                          <div className="nft-left-detail">
+                            <span>ROI:</span>
+                            <span>{Number(cardInfos[index].nftROI) / 100}%</span>
+                          </div>
+                        </div>
+                      </BootstrapTooltip>
+                      <div className="nft_left mt-1 mb-3">
                         <div className="nft-left-detail">
                           <span>Remains:</span>
                           <span>{nft.supply - nft.soldCount}</span>

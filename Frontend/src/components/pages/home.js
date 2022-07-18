@@ -4,6 +4,7 @@ import SliderMain from '../components/Home/SliderMain';
 import FeatureBox from '../components/Home/FeatureBox';
 import Statistics from '../components/Home/Statistics';
 import OurStory from '../components/Home/OurStory';
+import Chart from '../components/Home/Chart';
 import CarouselNewRedux from '../components/Home/CarouselNewRedux';
 import Faq from '../components/Home/Faq';
 import Footer from '../components/footer';
@@ -18,6 +19,10 @@ const home = () => (
 
     <section className='py-5'>
       <Statistics />
+    </section>
+
+    <section className='py-5'>
+      <Chart />
     </section>
 
     <section className='py-5'>

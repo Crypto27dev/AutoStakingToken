@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useMemo, useCallback } from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { Modal } from 'react-bootstrap'
@@ -8,31 +8,31 @@ import ROIBar from './Market/ROIBar';
 import { claimByNft } from '../../web3/web3';
 import { isEmpty, fromWei, getUTCDate, BackLoading } from '../../utils';
 
-const ONE_YEAR = 365;
 const TWO_YEAR = 365 * 2;
-const ONE_YEAR_ROI = 70;
-const TWO_YEAR_ROI = 30;
 
 const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4', onReload }) => {
   const [left_time, setLeftTime] = useState(0);
   const [rate, setRate] = useState(100);
   const [roi, setRoi] = useState(0);
+  const [dailyRewardCoin, setDailyRewardCoin] = useState(0);
+  const [dailyRewardToken, setDailyRewardToken] = useState(0);
+  const [coinRevenue, setCoinRevenue] = useState(0);
+  const [tokenRevenue, setTokenRevenue] = useState(0);
+  const [canStable, setCanStable] = useState(false);
   const [openSell, setOpenSell] = useState(false);
   const [inputValue, setInputValue] = useState(0);
   // const [itemCoin, setItemCoin] = useState(0);
   const [error, setError] = useState(false);
-  const [revenue, setRevenue] = useState(0);
   const [loading, setLoading] = useState(false);
-  
-  const bonus = useMemo(() => {
-    const price = fromWei(nft.tokenPrice);
-    return price * roi / (3600 * 24 * 100);
-  }, [nft.tokenPrice, roi]);
 
   const calcRevenue = useCallback(() => {
-    const temp = revenue + bonus;
-    setRevenue(temp);
-  }, [bonus, revenue]);
+    const revenue = canStable ? (coinRevenue + dailyRewardCoin / (3600 * 24)) : (tokenRevenue + dailyRewardToken / (3600 * 24));
+    if (canStable) {
+      setCoinRevenue(revenue);
+    } else {
+      setTokenRevenue(revenue);
+    }
+  }, [coinRevenue, tokenRevenue, dailyRewardCoin, dailyRewardToken, canStable]);
 
   useEffect(() => {
     const timerId = setInterval(() => calcRevenue(), 1000);
@@ -43,32 +43,42 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
 
   useEffect(() => {
     const curDate = parseInt((Date.now() / 1000 - Number(nft.createdTime)) / (3600 * 24));
-    let leftDate = 0, percent = 100, tempRoi = 0;
-    const days = Math.round(10000 / Number(nft.currentROI));
+    let leftDate = 0, percent = 100;
+    const days = Math.floor(10000 / Number(nft.currentROI));
+    const tempRoi = Number(nft.currentROI) / 100;
+    const price = fromWei(nft.tokenPrice);
     if (curDate <= days) {
       leftDate = days - curDate;
       percent = leftDate / days * 100;
-      tempRoi = Number(nft.currentROI) / 100;
-    } else if (curDate <= ONE_YEAR) {
-      leftDate = ONE_YEAR - curDate;
-      percent = leftDate / ONE_YEAR * 100;
-      tempRoi = ONE_YEAR_ROI / 100;
+      const rewardCoin = price * tempRoi / 100;
+      setDailyRewardCoin(rewardCoin);
+      setCanStable(true);
     } else if (curDate <= TWO_YEAR) {
       leftDate = TWO_YEAR - curDate;
       percent = leftDate / TWO_YEAR * 100;
-      tempRoi = TWO_YEAR_ROI / 100;
+      const rewardToken = Number(nft.nftToken);
+      setDailyRewardToken(rewardToken);
+      setCanStable(false);
     }
     setLeftTime(leftDate);
     setRate(percent);
     setRoi(tempRoi);
-    setRevenue(fromWei(nft.nftRevenue));
-  }, [nft.createdTime, nft.nftRevenue, nft.currentROI]);
+    setCoinRevenue(fromWei(nft.nftUSDT));
+    setTokenRevenue(fromWei(nft.nftHODL));
+  }, [nft.createdTime, nft.nftUSDT, nft.nftHODL, nft.currentROI, nft.tokenPrice, nft.nftToken]);
 
   const onClaim = async (nft) => {
+    let text = "You will receive ";
+    if (coinRevenue > 0) {
+      text += coinRevenue.toFixed(8 - coinRevenue.toString().split('.')[0].length) + ' USDT ';
+    }
+    if (tokenRevenue > 0) {
+      text += tokenRevenue.toFixed(8 - tokenRevenue.toString().split('.')[0].length) + ' HODL';
+    }
     Swal.fire({
       title: 'Are you sure?',
       icon: 'warning',
-      text: `You will receive $${revenue.toFixed(8 - revenue.toString().split('.')[0].length)}`,
+      text: text,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -140,18 +150,18 @@ const NftClaimCard = ({ nft, className = 'd-item col-lg-3 col-md-4 col-sm-6 col-
             <div className='d-flex flex-column justify-content-between h-100'>
               <div>
                 <span>Purchase on</span>
-                <div className='text-white'>{getUTCDate(nft.createdTime)}</div>
+                <div className='text-white'>{getUTCDate(nft.createdTime).format("MMM DD, YYYY")}</div>
               </div>
               <div className="single-line"></div>
               <div>
                 <span>Revenue</span>
-                <div className='text-white'>${revenue.toFixed(8 - revenue.toString().split('.')[0].length)}</div>
+                <div className='text-white'>${canStable ? (coinRevenue.toFixed(8 - coinRevenue.toString().split('.')[0].length)) : (tokenRevenue.toFixed(8 - tokenRevenue.toString().split('.')[0].length))}</div>
               </div>
             </div>
           </div>
         </div>
         <div className="spacer-10"></div>
-        <div className="d-flex justify-content-between">
+         <div className="d-flex justify-content-between">
           <button className='btn-main' onClick={() => onClaim(nft)}>Claim</button>
           <button className='btn-main' onClick={onSell}>Sell</button>
         </div>

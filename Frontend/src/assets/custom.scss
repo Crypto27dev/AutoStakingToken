@@ -1306,7 +1306,7 @@ textarea:focus {
 }
 
 .MuiPaper-root {
-  background-color: #262729 !important;
+  background-color: #262729;
   border-radius: 10px !important;
 
   a {
@@ -1351,4 +1351,67 @@ textarea:focus {
 
 .react-loading-skeleton {
   aspect-ratio: 1 !important;
+}
+
+.admin-input-section {
+  align-items: center;
+  gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  span {
+    white-space: nowrap;
+    width: 200px;
+    text-align: center;
+  }
+
+  .btn4 {
+    width: 200px;
+  }
+
+  select {
+    width: 100%;
+    background: transparent;
+    border: solid 1px white;
+    border-radius: 4px;
+    padding: 10px;
+    outline: none;
+
+    option {
+      width: 100%;
+      background: white;
+      color: black;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.select-date {
+  .MuiFormControl-root {
+    margin: 0;
+  }
+  .MuiPaper-root {
+    background-color: white;
+  }
+  .MuiOutlinedInput-root {
+    border: solid 1px white !important;
+    background: transparent !important;
+    color: white !important;
+    &:hover {
+      border: solid 1px white !important;
+    }
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+  }
+
+  .MuiSvgIcon-root {
+    color: white !important;
+  }
 }

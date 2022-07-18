@@ -896,7 +896,7 @@ a{
       width: max-content;
       padding-right:30px;
       position: fixed;
-      top: -10px;
+      top: 15px;
       .navbar-item {
         position: relative;
         top: 2px;
@@ -932,7 +932,7 @@ a{
         position: absolute !important;
         .logo{
           position: absolute;
-          left: -10px;
+          left: 10px;
           display: inline-block;
         }
         .search{

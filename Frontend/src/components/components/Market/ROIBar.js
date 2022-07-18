@@ -61,13 +61,13 @@ function CapGradientSVG() {
   );
 }
 
-const ROIBar = ({ date, rate, roi }) => {
+const ROIBar = ({ date, rate, roi, token }) => {
   const days_1 = useMemo(() => {
-    return Math.round(100 / roi);
+    return Math.floor(100 / roi);
   }, [roi]);
 
   const days_2 = useMemo(() => {
-    return 365 - days_1;
+    return 365 * 2 - days_1;
   }, [days_1])
 
   return (
@@ -99,12 +99,8 @@ const ROIBar = ({ date, rate, roi }) => {
               <span>{days_1} Days</span>
             </div>
             <div className="d-flex justify-content-between gap-3">
-              <span>ROI: 0.7%</span>
+              <span>HODL: {token}</span>
               <span>{days_2} Days</span>
-            </div>
-            <div className="d-flex justify-content-between gap-3">
-              <span>ROI: 0.3%</span>
-              <span>365 Days</span>
             </div>
           </div>
         }>

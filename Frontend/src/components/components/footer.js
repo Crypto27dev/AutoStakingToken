@@ -68,13 +68,13 @@ const footer = () => (
         <div className="de-flex align-items-center">
           <span onClick={() => window.open("/", "_self")}>
             <img
-              src="/img/logo.gif"
+              src="/img/logo.png"
               className="f-logo d-1"
               alt="#"
-              width={'200px'}
+              width={'140px'}
             />
           </span>
-          <span className="copy">Copyright &copy; 2022 <span className="color" onClick={() => window.open("/", "_self")}>PEACE GIGA</span> All Rights Reserved</span>
+          <span className="copy">Copyright &copy; 2022 <span className="color" onClick={() => window.open("/", "_self")}>HODL</span> All Rights Reserved</span>
         </div>
       </div>
     </div>

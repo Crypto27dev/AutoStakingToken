@@ -95,7 +95,7 @@ const ColumnExplorer = () => {
             <div className="onStep fadeIn">
               <div className='row'>
                 <div className='col-md-12 d-flex flex-column'>
-                  <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/usdt.png"} alt="" width="30px"></img> Binance Smart Chain
+                  <label className="new_checkbox"><img src={api.rootUrl + "/img/icons/bnb.png"} alt="" width="30px"></img> Binance Smart Chain
                     <input type="checkbox" name="bsc" onChange={handleCheck} disabled defaultChecked />
                     <span className="checkmark"></span>
                   </label>

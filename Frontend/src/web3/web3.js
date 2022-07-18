@@ -383,16 +383,34 @@ export const getAllNFTInfos = async () => {
   try {
     let accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) return { success: false }
+    const cardInfos = await factoryContract.methods.getNFTCardInfos().call();
     const nftInfos = await factoryContract.methods.getAllNFTInfos().call({ from: accounts[0] });
+    let nftArray = [];
+    for (let i = 0; i < nftInfos.tokenIDs.length; i++) {
+      const createdTime = nftInfos.createdTime[i];
+        if (Number(createdTime) === 0) continue;
+      const tokenID = nftInfos.tokenIDs[i];
+      const index = await factoryContract.methods._getCIDFromID(tokenID).call();
+      const card = cardInfos[index];
+      console.log(card)
+      const currentROI = card.nftROI;
+      const imgUri = nftInfos.uris[i];
+      const tokenPrice = nftInfos.tokenPrices[i];
+      const symbol = nftInfos.symbols[i];
+      const nftUSDT = nftInfos.nftUSDT[i];
+      const nftHODL = nftInfos.nftHODL[i];
+      const canStable = nftInfos.canStable[i];
+      const nft = { createdTime, currentROI, tokenID, nftUSDT, nftHODL, canStable, imgUri, tokenPrice, symbol };
+      nftArray.push(nft);
+    }
     return {
       success: true,
-      nftInfos
-    };
-
+      nftInfos: nftArray
+    }
   } catch (error) {
     return {
       success: false,
-      status: "Something went wrong 2: " + error.message
+      status: parseErrorMsg(error.message)
     };
   }
 }
@@ -633,9 +651,46 @@ export const createNftFile = async (file, title, description) => {
   }
 };
 
+export const getMintStartTime = async () => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
+  try {
+    const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+    const mintTime = await factoryContract.methods.MINT_START_TIME().call();
+    return mintTime;
+  } catch(error) {
+    console.log('[MintStartTime] = ', error);
+    return 0;
+  }
+}
+
+export const setMintStartTime = async (_time) => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
+  try {
+    const accounts = await web3.eth.getAccounts();
+    if (accounts.length === 0) return { success: false }
+    const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+    const estimate = factoryContract.methods.setMintStartTime(_time);
+    await estimate.estimateGas({ from: accounts[0] });
+    await factoryContract.methods.setMintStartTime(_time).send({ from: accounts[0] });
+    return {
+      success: true
+    }
+  } catch (error) {
+    return {
+      success: false,
+      status: parseErrorMsg(error.message)
+    }
+  }
+}
+
+
 export const addNftCardInfo = async (nft, file) => {
   const web3 = store.getState().auth.web3;
   if (!web3) return { success: false }
+  let accounts = await web3.eth.getAccounts();
+  if (accounts.length === 0) return { success: false }
   const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
   let tokenURI, imageURI;
   const result = await createNftFile(file, nft.symbol, '');
@@ -652,10 +707,8 @@ export const addNftCardInfo = async (nft, file) => {
     };
   }
   try {
-    let accounts = await web3.eth.getAccounts();
-    if (accounts.length === 0) return { success: false }
     const price = web3.utils.toWei(nft.priceUSDT.toString());
-    const estimate = factoryContract.methods.addNFTCardInfo(nft.symbol, imageURI, price, Number(nft.roi) * 100, nft.supply);
+    const estimate = factoryContract.methods.addNFTCardInfo(nft.symbol, imageURI, price, Number(nft.roi) * 100, nft.token, nft.supply);
     await estimate.estimateGas({ from: accounts[0] });
     const tx = await estimate.send({ from: accounts[0] });
     return {
@@ -678,7 +731,7 @@ export const setNFTCardInfo = async (id, imgUri, nft) => {
     let accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) return { success: false }
     const price = web3.utils.toWei(nft.priceUSDT.toString());
-    const estimate = await factoryContract.methods.setNFTCardInfo(id, nft.symbol, imgUri, price, Number(nft.roi) * 100, nft.supply);
+    const estimate = await factoryContract.methods.setNFTCardInfo(id, nft.symbol, imgUri, price, Number(nft.roi) * 100, nft.token, nft.supply);
     await estimate.estimateGas({ from: accounts[0] });
     const tx = await estimate.send({ from: accounts[0] });
     return {
@@ -818,9 +871,9 @@ export const getTreasuryBalance = async () => {
     const web3 = store.getState().auth.web3;
     if (!web3) return { success: false }
     const balance = await web3.eth.getBalance(Treasury_Addr);
-    const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
-    const usdtInBNB = await factoryContract.methods.ONE_USDT_IN_BNB().call();
-    const usdt = web3.utils.fromWei(balance.toString()) / web3.utils.fromWei(usdtInBNB.toString());
+    // const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+    // const usdtInBNB = await factoryContract.methods.ONE_USDT_IN_BNB().call();
+    const usdt = web3.utils.fromWei(balance.toString())/* / web3.utils.fromWei(usdtInBNB.toString())*/;
     return {
       success: true,
       balance: usdt

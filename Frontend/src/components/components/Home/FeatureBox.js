@@ -84,7 +84,7 @@ const Featurebox = () => {
                   <h2 className="text-center">Set up your wallet</h2>
                 </Reveal>
                 <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
-                  <p className="">Once you’ve set up your wallet of choice, connect it to PEACEGIGA by clicking the wallet icon in the top right corner.</p>
+                  <p className="">Once you’ve set up your wallet of choice, connect it to HODL by clicking the wallet icon in the top right corner.</p>
                 </Reveal>
               </div>
             </div>

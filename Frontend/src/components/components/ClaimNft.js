@@ -120,20 +120,30 @@ const ClaimNft = ({ onReload, nftInfos }) => {
     if (!web3) {
       return;
     }
-    let totalRevenue = 0;
+    let totalUSDT = 0, totalHODL = 0;
     const result = await getAllNFTInfos();
     if (result.success) {
       const data = result.nftInfos;
       for (let i = 0; i < data.tokenIDs.length; i++) {
-        const nftRevenue = fromWei(data.nftRevenue[i]);
-        totalRevenue += nftRevenue;
+        const nftUSDT = fromWei(data.nftUSDT[i]);
+        const nftHODL = fromWei(data.nftHODL[i]);
+        totalUSDT += nftUSDT;
+        totalHODL += nftHODL;
       }
+    }
+
+    let text = "You will receive ";
+    if (totalUSDT > 0) {
+      text += totalUSDT.toFixed(8 - totalUSDT.toString().split('.')[0].length) + ' USDT ';
+    }
+    if (totalHODL > 0) {
+      text += totalHODL.toFixed(8 - totalHODL.toString().split('.')[0].length) + ' HODL';
     }
 
     Swal.fire({
       title: 'Are you sure?',
       icon: 'warning',
-      text: `You will receive $${totalRevenue.toFixed(8 - totalRevenue.toString().split('.')[0].length)}`,
+      text: text,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',

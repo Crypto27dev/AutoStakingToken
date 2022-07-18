@@ -99,7 +99,7 @@ const NftCard = ({ nft, className = 'd-item col-xl-3 col-lg-4 col-md-6 col-sm-6 
             <div className='d-flex flex-column justify-content-between h-100'>
               <div>
                 <span>Created at</span>
-                <div className='text-white fs-15'>{getUTCDate(nft.createdTime)}</div>
+                <div className='text-white fs-15'>{getUTCDate(nft.createdTime).format("MMM DD, YYYY")}</div>
               </div>
               <div className="single-line"></div>
               <div>

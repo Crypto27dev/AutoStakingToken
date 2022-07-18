@@ -78,7 +78,7 @@ const slidermain = () => (
       <div className="row align-items-center">
         <div className="col-md-6 sm-text-center">
           <ReactTypingEffect
-            text={["Cash Out Anytime", "Up to 4x return over 24 months", "Sellable", "Secure & Transparent", "Rewards paid in Stablecoins", "Continuous Innovation"]}
+            text={["Cash Out Anytime", "Up to ROI in short time", "Sellable", "Secure & Transparent", /*"Rewards paid in Stablecoins",*/ "Continuous Innovation"]}
             speed={"60"} eraseSpeed={"30"} eraseDelay={"3000"} typingDelay={"30"}
             className={"type_text"}
             cursorClassName={"type_cursor"}
@@ -101,9 +101,10 @@ const slidermain = () => (
         </div>
         <div className="col-md-6 xs-hide">
           <Reveal className='onStep text-center' keyframes={fadeIn} delay={900} duration={1500} triggerOnce>
-            <video className="banner-video-item" poster="" autoPlay={true} loop={true} muted>
+            <img className="banner-video-item" src="./img/nfts/Ratha.png" alt=""></img>
+            {/* <video className="banner-video-item" poster="" autoPlay={true} loop={true} muted>
               <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
-            </video>
+            </video> */}
           </Reveal>
         </div>
       </div>

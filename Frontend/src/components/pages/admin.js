@@ -3,13 +3,18 @@ import Reveal from 'react-awesome-reveal';
 import { useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap'
 import { createGlobalStyle } from 'styled-components';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterMoment from '@mui/lab/AdapterMoment';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import TextField from '@mui/material/TextField';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 import Header from '../menu/header';
 import Footer from '../components/footer';
 import CarouselNFT from '../components/CarouselNFT';
 import ImageUpload from '../components/NavImageUpload';
-import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork, getNFTCardInfos } from '../../web3/web3';
-import { isEmpty, fadeInUp, BackLoading, fromWei } from '../../utils';
+import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork, getNFTCardInfos, getMintStartTime, setMintStartTime } from '../../web3/web3';
+import { isEmpty, fadeInUp, BackLoading, fromWei, getUTCDate } from '../../utils';
 import * as selectors from '../../store/selectors';
 
 const GlobalStyles = createGlobalStyle`
@@ -28,6 +33,13 @@ const GlobalStyles = createGlobalStyle`
       margin-right: 0px;
     }
   }
+
+  .btn-new {
+    margin-left: auto;
+    @media only screen and (max-width: 768px) {
+      margin: auto;
+    }
+  }
 `;
 
 const Admin = () => {
@@ -36,10 +48,12 @@ const Admin = () => {
   const [nftId, setNftId] = useState(0);
   const [nftImage, setNftImage] = useState({});
   const [selectNft, setSelectNft] = useState(null);
+  const [mintTime, setMintTime] = useState(new Date());
   const [inputValue, setInputValue] = useState({
     symbol: '',
     priceUSDT: '',
     roi: '',
+    token: '',
     supply: ''
   });
   const [loading, setLoading] = useState(false);
@@ -49,10 +63,12 @@ const Admin = () => {
     symbol: false,
     priceUSDT: false,
     roi: false,
+    token: false,
     supply: false
   });
   const [cardInfos, setCardInfos] = useState(null);
   const [cardPrices, setCardPrices] = useState(null);
+  const [curMintTime, setCurMintTime] = useState(0);
   const web3 = useSelector(selectors.web3State);
 
   const checkOwnerState = async () => {
@@ -108,6 +124,10 @@ const Admin = () => {
       newError.roi = true;
       result = false;
     }
+    if (isEmpty(inputValue.token)) {
+      newError.token = true;
+      result = false;
+    }
     if (isEmpty(inputValue.supply)) {
       newError.supply = true;
       result = false;
@@ -122,17 +142,19 @@ const Admin = () => {
       symbol: false,
       priceUSDT: false,
       roi: false,
+      token: false,
       supply: false
     });
     setInputValue({
       symbol: '',
       priceUSDT: '',
       roi: '',
+      token: '',
       supply: ''
     });
   }
-  
-  const handleModalNew = async() => {
+
+  const handleModalNew = async () => {
     if (!await checkOwnerState()) {
       return;
     }
@@ -162,11 +184,15 @@ const Admin = () => {
     }
   }
 
+  const handleMintTime = (newValue) => {
+    setMintTime(newValue);
+  };
+
   const handleModalEdit = async (id, nft) => {
     initValue();
     setNftId(id);
-    setInputValue({symbol: nft.symbol, priceUSDT: nft.priceUSDT, roi: Number(nft.nftROI) / 100, supply: nft.supply});
-    setNftImage({preview: nft.imgUri});
+    setInputValue({ symbol: nft.symbol, priceUSDT: nft.priceUSDT, roi: Number(nft.nftROI) / 100, token: nft.nftTOKEN, supply: nft.supply });
+    setNftImage({ preview: nft.imgUri });
     setOpenEdit(true);
   }
 
@@ -202,8 +228,26 @@ const Admin = () => {
       }
       setCardPrices(cardPriceArr);
       setCardInfos(cardInfoArr);
+
+      const result_2 = await getMintStartTime();
+      setCurMintTime(result_2);
     }
+     
   }, [web3, reload]);
+
+  const onClick_SetMintTime = async () => {
+    setLoading(true);
+    const end = Math.floor(moment(mintTime).valueOf() / 1000);
+    const timezoneOffset = new Date().getTimezoneOffset() * 60;
+    const real_time = end - timezoneOffset;
+    let result = await setMintStartTime(real_time);
+    if (result.success) {
+      toast.success('Updated the end time successfully.');
+    } else {
+      toast.error(result.status);
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
     getCardInfos();
@@ -213,15 +257,13 @@ const Admin = () => {
     <div>
       <GlobalStyles />
       <Header />
-      <section className='jumbotron breadcumb nav-image' style={{ backgroundImage: `url(${'./img/background/mint_banner.png'})` }}>
+      <section className='jumbotron breadcumb mint-banner' style={{ backgroundImage: `url('./img/background/mint_banner.png')` }}>
         <div className='mainbreadcumb'>
           <div className='container'>
             <div className='row m-10-hor'>
-              <div className='col-12'>
-                <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
-                  <h1 className='banner-title text-center'>ADMIN</h1>
-                </Reveal>
-              </div>
+              <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
+                <h1 className='banner-title text-center'>ADMIN</h1>
+              </Reveal>
             </div>
           </div>
         </div>
@@ -229,11 +271,25 @@ const Admin = () => {
 
       <section className='container p-0 mt-5'>
         <div className='row'>
-          <div className='col-lg-12' align="right">
-            <button className="btn-main btn2" onClick={handleModalNew}>Create a new NFT</button>
+          <div className='col-md-12'>
+            <div className="admin-input-section select-date">
+              <span className='fs-20 text-white'>Mint Time: </span>
+              <span className='fs-20 text-white'>{getUTCDate(curMintTime).format("MMM DD, YYYY")}</span>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DateTimePicker
+                  value={mintTime}
+                  onChange={handleMintTime}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+              <button className='btn-main btn4' onClick={() => { onClick_SetMintTime() }}>SET</button>
+            </div>
+          </div>
+          <div className='col-lg-12'>
+            <button className="btn-main btn2 btn-new" onClick={handleModalNew}>Create a new NFT</button>
           </div>
         </div>
-        <CarouselNFT showOnly={true} handleEdit={handleModalEdit} reload={reload} onReload={() => setReload(prevState => !prevState)} cardInfoArr={cardInfos} cardPriceArr={cardPrices}/>
+        <CarouselNFT showOnly={true} handleEdit={handleModalEdit} reload={reload} onReload={() => setReload(prevState => !prevState)} cardInfoArr={cardInfos} cardPriceArr={cardPrices} />
       </section>
       <Modal
         show={openEdit}
@@ -278,9 +334,17 @@ const Admin = () => {
             <div className="spacer-10"></div>
             <div className='col-md-12'>
               <h5>ROI</h5>
-              <input type="number" name="roi" id="roi" value={inputValue.roi} className="form-control" placeholder="enter ROI" onChange={handleChange} autoComplete="off" />
+              <input type="number" name="roi" id="roi" value={inputValue.roi} className="form-control" placeholder="enter ROI (1.7%)" onChange={handleChange} autoComplete="off" />
               {error.roi && (
                 <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the ROI.</span>
+              )}
+            </div>
+            <div className="spacer-10"></div>
+            <div className='col-md-12'>
+              <h5>Token Per Day</h5>
+              <input type="number" name="token" id="token" value={inputValue.token} className="form-control" placeholder="enter token amount" onChange={handleChange} autoComplete="off" />
+              {error.roi && (
+                <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the token amount per day.</span>
               )}
             </div>
             <div className="spacer-10"></div>
@@ -341,9 +405,17 @@ const Admin = () => {
             <div className="spacer-10"></div>
             <div className='col-md-12'>
               <h5>ROI</h5>
-              <input type="number" name="roi" id="roi" className="form-control" placeholder="enter ROI" onChange={handleChange} autoComplete="off" />
+              <input type="number" name="roi" id="roi" className="form-control" placeholder="enter ROI (1.7%)" onChange={handleChange} autoComplete="off" />
               {error.roi && (
                 <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the ROI.</span>
+              )}
+            </div>
+            <div className="spacer-10"></div>
+            <div className='col-md-12'>
+              <h5>Token Per Day</h5>
+              <input type="number" name="token" id="token" className="form-control" placeholder="enter token amount" onChange={handleChange} autoComplete="off" />
+              {error.roi && (
+                <span className='text-error mb-2'><i className="fa fa-warning" /> Please insert the token amount per day.</span>
               )}
             </div>
             <div className="spacer-10"></div>

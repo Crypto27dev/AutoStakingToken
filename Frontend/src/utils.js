@@ -222,7 +222,7 @@ export function getUTCTimestamp(_date) {
 export function getUTCDate(timestamp) {
   const num_time = parseInt(timestamp) * 1000;
   const date = new Date(num_time);
-  return moment.utc(date).format("MMM DD, YYYY");
+  return moment.utc(date);
 }
 
 export function getDeadlineTimestamp(start_time, duration) {

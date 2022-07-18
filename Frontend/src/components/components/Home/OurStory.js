@@ -50,17 +50,19 @@ const OurStory = () => (
     <GlobalStyles />
     <div className="container text-center">
       <div className='row align-items-center'>
-        <div className='col-md-5 col-sm-12'>
+        <div className='col-lg-5 col-md-5 col-sm-12'>
           <Slider {...settings} className="logo-carousel">
-            <video poster="" autoPlay={true} loop={true} muted className='logo-video' controls>
+            <img className="logo-video" src="./img/nfts/Transportor.png" alt=""></img>
+            <img className="logo-video" src="./img/nfts/Carrier.png" alt=""></img>
+            {/* <video poster="" autoPlay={true} loop={true} muted className='logo-video' controls>
               <source src="./video/promote1.mp4" type="video/mp4"></source>
             </video>
             <video poster="" autoPlay={true} loop={true} muted className='logo-video' controls>
               <source src="./video/promote2.mp4" type="video/mp4"></source>
-            </video>
+            </video> */}
           </Slider>
         </div>
-        <div className='col-md-7 col-sm-12'>
+        <div className='col-lg-7 col-md-7 col-sm-12'>
           <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={300} triggerOnce cascade>
             <h1 className='fw-700'>OUR <span className='color'>STORY</span></h1>
             <p className='story-box text-white'>

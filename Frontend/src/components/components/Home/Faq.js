@@ -40,9 +40,9 @@ const Faq = () => {
                 <Accordion>
                   <Reveal className='onStep' keyframes={fadeInUp} delay={300} duration={300} triggerOnce cascade>
                     <Accordion.Item eventKey="0">
-                      <Accordion.Header>What is PEACEGIGA?</Accordion.Header>
+                      <Accordion.Header>What is HODL?</Accordion.Header>
                       <Accordion.Body className="pt-1">
-                        PEACEGIGA is an income generationg NFT project.
+                        HODL is an income generationg NFT project.
                       </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="1">
@@ -84,7 +84,7 @@ const Faq = () => {
                     <Accordion.Item eventKey="6">
                       <Accordion.Header>Is this a Passive Income Project?</Accordion.Header>
                       <Accordion.Body className="pt-1">
-                        Yes! this is what's beautiful about PEACEGIGA. Once you buy an NFT you
+                        Yes! this is what's beautiful about HODL. Once you buy an NFT you
                         receive daily rewards with no input needed from the user. Allowing our
                         users to live life to its fullest without needing to constantly check there
                         computer.

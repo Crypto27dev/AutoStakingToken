@@ -24,22 +24,9 @@ const MintEarning = () => {
       return;
     }
     const result = await getAllNFTInfos();
+    console.log(result)
     if (result.success) {
-      const data = result.nftInfos;
-      let nftArray = [];
-      for (let i = 0; i < data.tokenIDs.length; i++) {
-        const createdTime = data.createdTime[i];
-        if (Number(createdTime) === 0) continue;
-        const currentROI = data.currentROI[i];
-        const nftRevenue = data.nftRevenue[i];
-        const tokenID = data.tokenIDs[i];
-        const imgUri = data.uris[i];
-        const tokenPrice = data.tokenPrices[i];
-        const symbol = data.symbols[i];
-        const nft = { createdTime, currentROI, nftRevenue, tokenID, imgUri, tokenPrice, symbol };
-        nftArray.push(nft);
-      }
-      setNftInfos(nftArray);
+      setNftInfos(result.nftInfos);
     }
   }, [web3, wallet, refresh]);
 
