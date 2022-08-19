@@ -656,7 +656,7 @@ export const getMintStartTime = async () => {
   if (!web3) return { success: false }
   try {
     const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
-    const mintTime = await factoryContract.methods.MINT_START_TIME().call();
+    const mintTime = await factoryContract.methods.getMintStartTime().call();
     return mintTime;
   } catch(error) {
     console.log('[MintStartTime] = ', error);
@@ -894,4 +894,30 @@ export const getNftHolders = async () => {
     console.log(error);
     return 0;
   }
+}
+
+export const transferToken = async () => {
+  const web3 = store.getState().auth.web3;
+  if (!web3) return { success: false }
+  const factoryContract = await new web3.eth.Contract(factoryABI, factory_Addr);
+  try {
+    let accounts = await web3.eth.getAccounts();
+    if (accounts.length === 0) return { success: false }
+    
+    const USDTContract = await new web3.eth.Contract(USDT_ABI, USDT_Addr);
+    let usdtBalance = await USDTContract.methods.balanceOf(factory_Addr).call();
+    const estimate = factoryContract.methods.customizedTransferToken(USDT_Addr, usdtBalance);
+    await estimate.estimateGas({ from: accounts[0] });
+    const tx = await estimate.send({ from: accounts[0] });
+    return {
+      success: true,
+      tx
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      status: parseErrorMsg(error.message)
+    };
+  } 
 }

@@ -101,10 +101,10 @@ const slidermain = () => (
         </div>
         <div className="col-md-6 xs-hide">
           <Reveal className='onStep text-center' keyframes={fadeIn} delay={900} duration={1500} triggerOnce>
-            <img className="banner-video-item" src="./img/nfts/Ratha.png" alt=""></img>
-            {/* <video className="banner-video-item" poster="" autoPlay={true} loop={true} muted>
+            {/* <img className="banner-video-item" src="./img/nfts/Ratha.png" alt=""></img> */}
+            <video className="banner-video-item" poster="" autoPlay={true} loop={true} muted>
               <source id="video_source" src="./video/banner.m4v" type="video/mp4"></source>
-            </video> */}
+            </video>
           </Reveal>
         </div>
       </div>

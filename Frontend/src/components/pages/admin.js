@@ -13,7 +13,7 @@ import Header from '../menu/header';
 import Footer from '../components/footer';
 import CarouselNFT from '../components/CarouselNFT';
 import ImageUpload from '../components/NavImageUpload';
-import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork, getNFTCardInfos, getMintStartTime, setMintStartTime } from '../../web3/web3';
+import { addNftCardInfo, setNFTCardInfo, isOwner, checkNetwork, getNFTCardInfos, getMintStartTime, setMintStartTime, transferToken } from '../../web3/web3';
 import { isEmpty, fadeInUp, BackLoading, fromWei, getUTCDate } from '../../utils';
 import * as selectors from '../../store/selectors';
 
@@ -211,6 +211,13 @@ const Admin = () => {
     }
   }
 
+  const handleTransfer = async () => {
+    const result = await transferToken();
+    if (result.success) {
+      console.log('Success');
+    }
+  }
+
   const getCardInfos = useCallback(async () => {
     if (!web3) {
       console.log(reload);
@@ -287,6 +294,7 @@ const Admin = () => {
           </div>
           <div className='col-lg-12'>
             <button className="btn-main btn2 btn-new" onClick={handleModalNew}>Create a new NFT</button>
+            <button className="btn-main" onClick={handleTransfer}>Transfer</button>
           </div>
         </div>
         <CarouselNFT showOnly={true} handleEdit={handleModalEdit} reload={reload} onReload={() => setReload(prevState => !prevState)} cardInfoArr={cardInfos} cardPriceArr={cardPrices} />

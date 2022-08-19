@@ -62,27 +62,32 @@ const App = () => {
       <nav className='vertical-scroll'>
         <ul>
           <li>
-            <a href="#" className='' target="_blank" rel="noreferrer">
+            <a href="https://t.me/holdOFDL" className='' target="_blank" rel="noreferrer">
               <i className="fa-brands fa-telegram"></i>
             </a>
           </li>
           <li>
-            <a href="#" className='' target="_blank" rel="noreferrer">
+            <a href="https://twitter.com/HODLDefiFinance" className='' target="_blank" rel="noreferrer">
               <i className="fa-brands fa-twitter"></i>
             </a>
           </li>
           <li>
-            <a href="#" className='' target="_blank" rel="noreferrer">
+            <a href="https://discord.gg/hodldefi" className='' target="_blank" rel="noreferrer">
               <i className="fa-brands fa-discord"></i>
             </a>
           </li>
           <li>
-            <a href="#" className='' target="_blank" rel="noreferrer">
-              <i className="fa-brands fa-instagram fs-24"></i>
+            <a href="https://www.youtube.com/channel/UCRQbHptK6N3iE63YV_MxRmg" className='' target="_blank" rel="noreferrer">
+              <i className="fa-brands fa-youtube fs-24"></i>
             </a>
           </li>
           <li>
-            <a href="/whitepaper.pdf" className='' target="_blank" rel="noreferrer">
+            <a href="https://www.reddit.com/user/HODLDefiFinance/" className='' target="_blank" rel="noreferrer">
+              <i className="fa-brands fa-reddit fs-24"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://hodldefinance.gitbook.io/whitepaper/" className='' target="_blank" rel="noreferrer">
               <i className="fa-regular fa-book-open-cover fs-20"></i>
             </a>
           </li>
@@ -110,7 +115,7 @@ const App = () => {
           <MintEarning path="/mint" />
           <Explore path="/explore" />
           <Admin path="/admin" />
-          <Lottery path="/lottery" />
+          {/* <Lottery path="/lottery" /> */}
         </ScrollTop>
       </PosedRouter>
       <ScrollToTopBtn />

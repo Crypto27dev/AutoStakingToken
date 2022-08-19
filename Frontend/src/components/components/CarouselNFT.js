@@ -219,7 +219,7 @@ const CarouselNFT = ({ showOnly = false, handleEdit, onReload, cardInfoArr, card
                         <div className="d-flex flex-column">
                           <span className="text-center fs-14">Daily Earning</span>
                           <div className="d-flex justify-content-between gap-4 align-items-center">
-                            <span className="fs-13"><img src="/img/icons/usdt.png" alt="" style={{ width: '20px', height: '20px' }}></img> {Number(cardInfos[index].nftROI) * Number(cardPrices[index]) / (10 ** 8) * 10 ** 4 }</span>
+                            <span className="fs-13"><img src="/img/icons/usdt.png" alt="" style={{ width: '20px', height: '20px' }}></img> { Number(cardInfos[index].nftROI) * Number(cardPrices[index]) / 10 ** 4 }</span>
                             <span className="fs-13">{Math.floor(10000 / Number(cardInfos[index].nftROI))} Days</span>
                           </div>
                           <div className="spacer-10"></div>

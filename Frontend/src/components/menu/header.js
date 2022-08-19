@@ -131,11 +131,11 @@ const Header = function () {
                     Open Market
                   </NavLink>
                 </div>
-                <div className='navbar-item'>
+                {/* <div className='navbar-item'>
                   <NavLink to="/lottery" onClick={handleClose}>
                     Lottery
                   </NavLink>
-                </div>
+                </div> */}
               </Popover>
             </Breakpoint>
 
@@ -159,12 +159,12 @@ const Header = function () {
                     <span className='lines'></span>
                   </NavLink>
                 </div>
-                <div className='navbar-item'>
+                {/* <div className='navbar-item'>
                   <NavLink to="/lottery">
                     Lottery
                     <span className='lines'></span>
                   </NavLink>
-                </div>
+                </div> */}
               </div>
             </Breakpoint>
           </BreakpointProvider>

@@ -127,7 +127,7 @@ const CarouselNewRedux = () => {
                         Total
                       </div>
                       <div className="nft_total_value text-white">
-                        {numberWithCommas(nft.priceUSDT, 10)} BNB
+                        {numberWithCommas(nft.priceUSDT, 10)} USDT
                       </div>
                     </div>
                     <div className="single-line"></div>

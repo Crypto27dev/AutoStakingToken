@@ -2,6 +2,7 @@ import React from 'react';
 import Reveal from 'react-awesome-reveal';
 import { createGlobalStyle } from 'styled-components';
 import { fadeInUp } from '../../../utils';
+import config from '../../../config';
 
 const GlobalStyles = createGlobalStyle`
   .chart_frame {
@@ -13,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 const ChartURL =
-  'https://teams.bogged.finance/embeds/chart?address=0xf5a16B3a979f8C4EcdcFb33714e1Be1180F73080&chain=bsc&charttype=line&theme=bg:23251AFF|bg2:CFFD3320|primary:CFFD33FF|secondary:1BC870FF|text:F3F6FBFF|text2:000000FF|candlesUp:1BC870FF|candlesDown:ff4976ff|chartLine:feb74cFF&defaultinterval=15m&showchartbutton=true';
+  `https://teams.bogged.finance/embeds/chart?address=${config.HODLAddress}&chain=bsc&charttype=line&theme=bg:23251AFF|bg2:CFFD3320|primary:CFFD33FF|secondary:1BC870FF|text:F3F6FBFF|text2:000000FF|candlesUp:1BC870FF|candlesDown:ff4976ff|chartLine:feb74cFF&defaultinterval=15m&showchartbutton=true`;
 
 const Chart = () => (
   <>
